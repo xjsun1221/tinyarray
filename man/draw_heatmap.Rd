@@ -4,7 +4,7 @@
 \alias{draw_heatmap}
 \title{draw a heatmap plot}
 \usage{
-draw_heatmap(n, group_list, scale_before = F, n_cutoff = 2)
+draw_heatmap(n, group_list, scale_before = F, n_cutoff = 2, cluster_cols = T)
 }
 \arguments{
 \item{group_list}{A factor with duplicated character or factor}
@@ -12,6 +12,8 @@ draw_heatmap(n, group_list, scale_before = F, n_cutoff = 2)
 \item{scale_before}{logical,if TRUE ,scale before plot,if FALSE,ues scale = "row" param form pheatmap}
 
 \item{n_cutoff}{2 by defalut , scale before plot and set a cutoff,usually 2 or 1.6}
+
+\item{cluster_cols}{if F,heatmap will nor cluster in column}
 }
 \value{
 a heatmap plot according to \code{exp} and grouped by \code{group}.
