@@ -50,6 +50,7 @@ if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
 ##' @inheritParams draw_pca
 ##' @param scale_before logical,if TRUE ,scale before plot,if FALSE,ues scale = "row" param form pheatmap
 ##' @param n_cutoff 2 by defalut , scale before plot and set a cutoff,usually 2 or 1.6
+##' @param annotation_legend logical，show annotation legend or not
 ##' @param cluster_cols if F,heatmap will nor cluster in column
 ##' @return a heatmap plot according to \code{exp} and grouped by \code{group}.
 ##' @author Xiaojie Sun
@@ -72,7 +73,7 @@ if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
 ##' @seealso
 ##' \code{\link{draw_pca}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
 
-draw_heatmap <-  function(n,group_list,scale_before = F,n_cutoff = 2,cluster_cols = T){
+draw_heatmap <-  function(n,group_list,scale_before = F,n_cutoff = 2,cluster_cols = T,annotation_legend=F){
   p1 <-  all(apply(n,2,is.numeric))
   if(!p1) stop("n must be a numeric matrix")
   p2  <-  (sum(!duplicated(group_list)) > 1)
@@ -108,8 +109,9 @@ draw_heatmap <-  function(n,group_list,scale_before = F,n_cutoff = 2,cluster_col
                            scale = "row",
                            annotation_col=annotation_col,
                            annotation_colors = ann_colors,
+                           cluster_cols = cluster_cols,
                            legend = F,
-                           annotation_legend = F,
+                           annotation_legend = annotation_legend,
                            annotation_names_col = F))
   }
   return(p)
