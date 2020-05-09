@@ -1,0 +1,26 @@
+Package: tinyarray
+Type: Package
+Title: What the Package Does (Title Case)
+Version: 0.1.0
+Author: Xiaojie Sun
+Maintainer: Xiaojie Sun <18763899370@163.com>
+Description: Simplify pdata,volcano_plot and PCA_plot,heatmap_plot ,boxplot
+License: MIT
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    dplyr,
+    tibble,
+    FactoMineR,
+    factoextra,
+    pheatmap,
+    ggplotify,
+    ggplot2,
+    VennDiagram
+Suggests: 
+    testthat,
+    knitr,
+    rmarkdown,
+    cowplot
+RoxygenNote: 7.0.2
+VignetteBuilder: knitr
