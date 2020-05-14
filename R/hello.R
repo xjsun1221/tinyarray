@@ -192,3 +192,48 @@ draw_volcano <- function(deg,lab=NA,pvalue_cutoff = 0.05,logFC_cutoff= 1,pkg = 1
   if(symmetry)p <- p+scale_x_continuous(limits = c(-ce,ce),expand = c(0,0))
   return(p)
 }
+
+
+##' draw a venn plot
+##'
+##' print a venn plot for deg result created by three packages
+##'
+##' @param x a list for plot
+##' @param name main of the plot
+##' @return a venn plot according to \code{x}, \code{y} and.\code{z} named "name" paramter
+##' @author Xiaojie Sun
+##' @importFrom VennDiagram venn.diagram
+##' @importFrom ggplotify as.ggplot
+##' @importFrom cowplot as_grob
+##' @export
+##' @examples
+##' x = list(Deseq2=sample(1:100,30),edgeR = sample(1:100,30),limma = sample(1:100,30))
+##' draw_venn(x,"test")
+##' @seealso
+##' \code{\link{draw_pca}};\code{\link{draw_volcano}};\code{\link{draw_heatmap}}
+
+draw_venn <- function(x,name){
+  if(as.numeric(dev.cur())!=1) graphics.off()
+  if(!is.list(x)) stop("x must be a list")
+  if(length(x)>7) stop("why do you give me so many elements to compare, I reject!")
+  colset = c("#66C2A5","#FC8D62","#8DA0CB","#E78AC3","#A6D854","#FFD92F","#E5C494","#B3B3B3")
+  col = colset[1:length(x)]
+  p = venn.diagram(x = x,
+                   imagetype ="png",
+                   filename=NULL,
+                   lwd=1,#圈线粗度
+                   lty=1, #圈线类型
+                   col=col,
+                   fill=col,
+                   cat.col=col,
+                   cat.cex = 1.5,
+                   rotation.degree = 0,
+                   main = name,
+                   main.cex = 1.5,
+                   cex=1.5,
+                   alpha = 0.5,
+                   reverse=TRUE)
+  p = as.ggplot(as_grob(p))
+  file.remove(dir(pattern = ("^VennDiagram.*log$")))
+  return(p)
+}

@@ -2,8 +2,11 @@
 
 export(draw_heatmap)
 export(draw_pca)
+export(draw_venn)
 export(draw_volcano)
 importFrom(FactoMineR,PCA)
+importFrom(VennDiagram,venn.diagram)
+importFrom(cowplot,as_grob)
 importFrom(factoextra,fviz_pca_ind)
 importFrom(ggplot2,aes)
 importFrom(ggplot2,element_text)
