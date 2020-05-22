@@ -5,6 +5,7 @@
 ##' @param x A numeric matrix or data.frame
 ##' @return a data.frame with cor.test p.value and estimate
 ##' @author Xiaojie Sun
+##' @export
 ##' @examples
 ##' x = iris[,-5]
 ##' cor.full(x)
