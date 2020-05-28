@@ -16,11 +16,17 @@ Imports:
     pheatmap,
     ggplotify,
     ggplot2,
-    VennDiagram
+    VennDiagram,
+    GEOquery,
+    Biobase,
+    limma,
+    clusterProfiler,
+    org.Hs.eg.db
 Suggests: 
     testthat,
     knitr,
     rmarkdown,
-    cowplot
+    cowplot,
+    AnnoProbe
 RoxygenNote: 7.0.2
 VignetteBuilder: knitr
