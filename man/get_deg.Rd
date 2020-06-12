@@ -2,7 +2,7 @@
 % Please edit documentation in R/analysis.R
 \name{get_deg}
 \alias{get_deg}
-\title{geo_download}
+\title{get_deg}
 \usage{
 get_deg(
   exp,
@@ -10,7 +10,8 @@ get_deg(
   ids,
   logFC_cutoff = 1,
   pvalue_cutoff = 0.05,
-  adjust = F
+  adjust = F,
+  entriz = T
 )
 }
 \arguments{
@@ -30,7 +31,7 @@ get_deg(
 a deg data.frame with 10 columns
 }
 \description{
-download gse data and get informations
+do diffiencial analysis according to exprission set and group information
 }
 \examples{
 gse = "GSE42872"
@@ -38,7 +39,7 @@ geo_download(gse)
 geo_download(gse,by_annopbrobe = F)
 }
 \seealso{
-\code{\link{simpd}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
+\code{\link{geo_download}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
 }
 \author{
 Xiaojie Sun

@@ -29,7 +29,6 @@ geo_download <-  function(gse,by_annopbrobe = T,simpd=T){
     load(paste0(gse,"_eSet.Rdata"))
     eSet <- gset
     rm(gset)
-    file.remove(paste0(gse,"_eSet.Rdata"))
   }else{
     eSet <- getGEO(gse,
                    destdir = '.',
@@ -64,9 +63,9 @@ geo_download <-  function(gse,by_annopbrobe = T,simpd=T){
   return(re)
 }
 
-##' geo_download
+##' get_deg
 ##'
-##' download gse data and get informations
+##' do diffiencial analysis according to exprission set and group information
 ##'
 ##' @inheritParams draw_pca
 ##' @inheritParams draw_volcano
@@ -85,9 +84,15 @@ geo_download <-  function(gse,by_annopbrobe = T,simpd=T){
 ##' geo_download(gse)
 ##' geo_download(gse,by_annopbrobe = F)
 ##' @seealso
-##' \code{\link{simpd}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
+##' \code{\link{geo_download}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
 
-get_deg <- function(exp,group_list,ids,logFC_cutoff=1,pvalue_cutoff=0.05,adjust = F){
+get_deg <- function(exp,
+                    group_list,
+                    ids,
+                    logFC_cutoff=1,
+                    pvalue_cutoff=0.05,
+                    adjust = F,
+                    entriz = T) {
   if(ncol(exp)!=length(group_list))stop("wrong group_list or exp")
   if(ncol(ids)!=2)stop("wrong ids pramater,it should be a data.frame with probe_id and symbol")
   colnames(ids) = c("probe_id","symbol")
@@ -123,11 +128,13 @@ get_deg <- function(exp,group_list,ids,logFC_cutoff=1,pvalue_cutoff=0.05,adjust 
   deg <- mutate(deg,change)
   #4.加ENTREZID列，用于富集分析（symbol转entrezid，然后inner_join）
 
-  s2e <- bitr(deg$symbol,
-              fromType = "SYMBOL",
-              toType = "ENTREZID",
-              OrgDb = org.Hs.eg.db::org.Hs.eg.db)#人类
-  #其他物种http://bioconductor.org/packages/release/BiocViews.html#___OrgDb
-  deg <- inner_join(deg,s2e,by=c("symbol"="SYMBOL"))
+  if(entriz){
+    s2e <- bitr(deg$symbol,
+                fromType = "SYMBOL",
+                toType = "ENTREZID",
+                OrgDb = org.Hs.eg.db::org.Hs.eg.db)#人类
+    #其他物种http://bioconductor.org/packages/release/BiocViews.html#___OrgDb
+    deg <- inner_join(deg,s2e,by=c("symbol"="SYMBOL"))
+  }
   return(deg)
 }
