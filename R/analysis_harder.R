@@ -77,7 +77,8 @@ get_deg_all <- function(exp,
     plots = wrap_plots(heatmap,pca_plot,volcano_plot)
   )
   print(paste0(length(cgs$downgenes)," down genes,",length(cgs$upgenes)," up genes"))
-  ggsave(result$plots,filename = paste0(str_split(Sys.time()," ")[[1]][2],"_plots.png"),
+  nm = paste0(str_split(Sys.time()," ")[[1]][2],"_plots.png")
+  ggsave(result$plots,filename = nm,
          height = 5,width = 15)
   return(result)
 }
