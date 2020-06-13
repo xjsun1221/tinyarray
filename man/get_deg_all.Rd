@@ -62,8 +62,10 @@ do diffiencial analysis according to exprission set and group information
 }
 \examples{
 gse = "GSE42872"
-geo_download(gse)
-geo_download(gse,by_annopbrobe = F)
+geo = geo_download(gse)
+group_list = rep(c("A","B"),each = 3)
+ids = AnnoProbe::idmap('GPL6244')
+get_deg_all(geo$exp,group_list,ids)
 }
 \seealso{
 \code{\link{geo_download}};\code{\link{draw_volcano}};\code{\link{draw_venn}}

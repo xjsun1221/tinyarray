@@ -16,9 +16,7 @@ a list with deg data.frame, volcano plot and a list with DEGs.
 find gpl annotation package or files
 }
 \examples{
-gse = "GSE42872"
-geo_download(gse)
-geo_download(gse,by_annopbrobe = F)
+find_anno(GPL570)
 }
 \seealso{
 \code{\link{geo_download}};\code{\link{draw_volcano}};\code{\link{draw_venn}}

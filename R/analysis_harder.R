@@ -11,11 +11,16 @@
 ##' @param gene_number how many DEGs will heatmap show .
 ##' @return a list with deg data.frame, volcano plot and a list with DEGs.
 ##' @author Xiaojie Sun
+##' @importFrom patchwork wrap_plots
+##' @importFrom ggplot2 ggsave
+##' @importFrom stringr str_split
 ##' @export
 ##' @examples
 ##' gse = "GSE42872"
-##' geo_download(gse)
-##' geo_download(gse,by_annopbrobe = F)
+##' geo = geo_download(gse)
+##' group_list = rep(c("A","B"),each = 3)
+##' ids = AnnoProbe::idmap('GPL6244')
+##' get_deg_all(geo$exp,group_list,ids)
 ##' @seealso
 ##' \code{\link{geo_download}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
 
@@ -59,13 +64,21 @@ get_deg_all <- function(exp,
              ht  = rbind(head(np2,gene_number),
                          tail(np2,gene_number)),
              top = head(np,gene_number))
-  heatmap = draw_heatmap(n,group_list,scale_before,n_cut_off,annotation_legend)
+  heatmap = draw_heatmap(n,group_list,
+                         scale_before = scale_before,
+                         n_cutoff = n_cutoff,
+                         cluster_cols = cluster_cols,
+                         annotation_legend = annotation_legend
+                         )
   if(as.numeric(dev.cur())!=1) graphics.off()
   result = list(
     deg = deg,
     cgs = cgs,
-    plots = list(pca_plot,heatmap,volcano_plot)
+    plots = wrap_plots(heatmap,pca_plot,volcano_plot)
   )
+  print(paste0(length(cgs$downgenes)," down genes,",length(cgs$upgenes)," up genes"))
+  ggsave(result$plots,filename = paste0(str_split(Sys.time()," ")[[1]][2],"_plots.png"),
+         height = 5,width = 15)
   return(result)
 }
 
@@ -77,15 +90,15 @@ get_deg_all <- function(exp,
 ##' @return a list with deg data.frame, volcano plot and a list with DEGs.
 ##' @author Xiaojie Sun
 ##' @importFrom stringr str_remove_all
+##' @importFrom stringr str_to_upper
 ##' @export
 ##' @examples
-##' gse = "GSE42872"
-##' geo_download(gse)
-##' geo_download(gse,by_annopbrobe = F)
+##' find_anno(GPL570)
 ##' @seealso
 ##' \code{\link{geo_download}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
 
 find_anno <-function(gpl){
+  gpl = str_to_upper(gpl)
   data("pkg_all")
   data("exists_anno_list")
   if(!any(pkg_all$gpl==gpl)) {
@@ -96,13 +109,13 @@ find_anno <-function(gpl){
       print("no annotation avliable in Bioconductor and AnnoProbe")
     }
   }else {
-    qz = pkg_all$bioc_package[pkg_all$gpl==geo$gpl]
+    qz = pkg_all$bioc_package[pkg_all$gpl== gpl]
     if(!suppressMessages(require(paste0(qz,".db"),character.only = T)))BiocManager::install(paste0(qz,".db"))
     suppressMessages(library(paste0(qz,".db"),character.only = T))
     ml1 = str_remove_all(paste0("`ids <- AnnoProbe::idmap\\(","\\'",gpl,"\\'","\\)`"),"\\\\")
     ml2 = str_remove_all(paste0("`ids <- toTable\\(",qz,"SYMBOL\\)`"),"\\\\")
     print(paste0(ml2," or ",ml1 ," is both avaliable"))
-    }
+  }
 }
 
 
