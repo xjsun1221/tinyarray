@@ -77,6 +77,7 @@ get_deg_all <- function(exp,
 ##' find gpl annotation package or files
 ##'
 ##' @param gpl a gpl accession
+##' @param install if R packages will be installed
 ##' @return a list with deg data.frame, volcano plot and a list with DEGs.
 ##' @author Xiaojie Sun
 ##' @importFrom stringr str_remove_all
@@ -87,24 +88,35 @@ get_deg_all <- function(exp,
 ##' @seealso
 ##' \code{\link{geo_download}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
 
-find_anno <-function(gpl){
+find_anno <-function(gpl,install = F){
   gpl = str_to_upper(gpl)
   data("pkg_all")
   data("exists_anno_list")
   if(!any(pkg_all$gpl==gpl)) {
+    # R包不可用
     if(gpl %in% setdiff(exists_anno_list,pkg_all$gpl)){
+      # 只有idmap可用
       ml1 = str_remove_all(paste0("`ids <- AnnoProbe::idmap\\(","\\'",gpl,"\\'","\\)`"),"\\\\")
       print(paste0("no annotation packages avliable,please use ",ml1))
     }else{
+      # R包和idmap都不可用
       print("no annotation avliable in Bioconductor and AnnoProbe")
     }
   }else {
     qz = pkg_all$bioc_package[pkg_all$gpl== gpl]
-    if(!suppressMessages(require(paste0(qz,".db"),character.only = T)))BiocManager::install(paste0(qz,".db"))
-    suppressMessages(library(paste0(qz,".db"),character.only = T))
     ml1 = str_remove_all(paste0("`ids <- AnnoProbe::idmap\\(","\\'",gpl,"\\'","\\)`"),"\\\\")
     ml2 = str_remove_all(paste0("`ids <- toTable\\(",qz,"SYMBOL\\)`"),"\\\\")
-    print(paste0(ml2," and ",ml1 ," are both avaliable"))
+    if(install){
+      if(!suppressMessages(require(paste0(qz,".db"),character.only = T)))BiocManager::install(paste0(qz,".db"))
+      suppressMessages(library(paste0(qz,".db"),character.only = T))
+    }
+    if(!(gpl %in% exists_anno_list)) {
+      #仅有R包可用
+      print(paste0(ml2," is avaliable"))
+    }else {
+      #idmap和R包都可用
+      print(paste0(ml2," and ",ml1 ," are both avaliable"))
+      }
   }
 }
 

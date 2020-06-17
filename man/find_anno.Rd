@@ -4,10 +4,12 @@
 \alias{find_anno}
 \title{find annotation package or files}
 \usage{
-find_anno(gpl)
+find_anno(gpl, install = F)
 }
 \arguments{
 \item{gpl}{a gpl accession}
+
+\item{install}{if R packages will be installed}
 }
 \value{
 a list with deg data.frame, volcano plot and a list with DEGs.
