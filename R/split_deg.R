@@ -24,7 +24,7 @@
 ##' group_list=factor(group_list,levels = c("NonObese","Obese","MObese"))
 ##' find_anno(geo$gpl)
 ##' ids <- toTable(hgu133aSYMBOL)
-##' deg = get_multi_deg(geo$exp,group_list,ids,adjust = F)
+##' deg = multi_deg(geo$exp,group_list,ids,adjust = F)
 ##' cgs = get_cgs(deg)
 ##' @seealso
 ##' \code{\link{geo_download}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
@@ -79,7 +79,7 @@ get_cgs <- function(deg){
 ##' group_list=factor(group_list,levels = c("NonObese","Obese","MObese"))
 ##' find_anno(geo$gpl)
 ##' ids <- toTable(hgu133aSYMBOL)
-##' deg = get_multi_deg(geo$exp,group_list,ids,adjust = F)
+##' deg = multi_deg(geo$exp,group_list,ids,adjust = F)
 ##' draw_volcano2(deg)
 ##' @seealso
 ##' \code{\link{geo_download}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
@@ -140,7 +140,7 @@ draw_volcano2 = function(deg,
 ##' group_list=factor(group_list,levels = c("NonObese","Obese","MObese"))
 ##' find_anno(geo$gpl)
 ##' ids <- toTable(hgu133aSYMBOL)
-##' deg = get_multi_deg(geo$exp,group_list,ids,adjust = F)
+##' deg = multi_deg(geo$exp,group_list,ids,adjust = F)
 ##' draw_heatmap2(geo$exp,group_list,deg)
 ##' @seealso
 ##' \code{\link{draw_pca}};\code{\link{draw_volcano}};\code{\link{draw_venn}}

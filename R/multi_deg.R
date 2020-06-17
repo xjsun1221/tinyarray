@@ -1,4 +1,4 @@
-##' get_multi_deg
+##' multi_deg
 ##'
 ##' do diffiencial analysis according to exprission set and group information
 ##'
@@ -25,17 +25,17 @@
 ##' group_list=factor(group_list,levels = c("NonObese","Obese","MObese"))
 ##' find_anno(geo$gpl)
 ##' ids <- toTable(hgu133aSYMBOL)
-##' deg = get_multi_deg(geo$exp,group_list,ids,adjust = F)
+##' deg = multi_deg(geo$exp,group_list,ids,adjust = F)
 ##' @seealso
 ##' \code{\link{geo_download}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
 
-get_multi_deg <- function(exp,
-                          group_list,
-                          ids,
-                          logFC_cutoff=1,
-                          pvalue_cutoff=0.05,
-                          adjust = F,
-                          entriz = T){
+multi_deg <- function(exp,
+                      group_list,
+                      ids,
+                      logFC_cutoff = 1,
+                      pvalue_cutoff = 0.05,
+                      adjust = F,
+                      entriz = T) {
   p1 <-  all(apply(exp,2,is.numeric))
   if(!p1) stop("exp must be a numeric matrix")
   p2  <-  (sum(!duplicated(group_list)) > 1)
@@ -91,8 +91,8 @@ get_multi_deg <- function(exp,
   fit <- lmFit(exp, design)
   fit2 <- contrasts.fit(fit, contrast.matrix)
   fit2 <- eBayes(fit2)
-
-  deg = lapply(1:ncol(design), function(i){
+  if(length(px)>3) n = 1:(length(px)-1) else{n = 1:length(px)}
+  deg = lapply(n, function(i){
     topTable(fit2,coef = i,number = Inf)
   })
   names(deg) = colnames(contrast.matrix)

@@ -33,7 +33,7 @@ group_list=ifelse(str_detect(geo$pd$title,"MObese"),"MObese",ifelse(str_detect(g
 group_list=factor(group_list,levels = c("NonObese","Obese","MObese"))
 find_anno(geo$gpl)
 ids <- toTable(hgu133aSYMBOL)
-deg = get_multi_deg(geo$exp,group_list,ids,adjust = F)
+deg = multi_deg(geo$exp,group_list,ids,adjust = F)
 cgs = get_cgs(deg)
 }
 \seealso{

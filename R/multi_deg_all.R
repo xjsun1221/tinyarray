@@ -6,7 +6,7 @@
 ##' @inheritParams draw_volcano
 ##' @inheritParams draw_heatmap
 ##' @inheritParams draw_heatmap2
-##' @inheritParams get_multi_deg
+##' @inheritParams multi_deg
 ##' @return a list with deg data.frame, volcano plot and a list with DEGs.
 ##' @author Xiaojie Sun
 ##' @importFrom patchwork wrap_plots
@@ -46,11 +46,15 @@ multi_deg_all <- function(exp,
                           heat_union = T,
                           heat_id = 2,
                           gene_number = 200) {
-  deg = get_multi_deg(exp,group_list,ids,
-                      logFC_cutoff=logFC_cutoff,
-                      pvalue_cutoff=pvalue_cutoff,
-                      adjust = adjust,
-                      entriz = entriz)
+  deg = multi_deg(
+    exp,
+    group_list,
+    ids,
+    logFC_cutoff = logFC_cutoff,
+    pvalue_cutoff = pvalue_cutoff,
+    adjust = adjust,
+    entriz = entriz
+  )
   #exp = data.frame(exp)
   #exp = exp[match(deg[[1]]$probe_id,rownames(exp)),]
   cgs = get_cgs(deg)
