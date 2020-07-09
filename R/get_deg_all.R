@@ -63,7 +63,12 @@ get_deg_all <- function(exp,
   pca_plot = draw_pca(exp,group_list)
   heatmap = draw_heatmap2(exp,group_list,deg,
                           heat_id = heat_id,
-                          gene_number = gene_number)
+                          gene_number = gene_number,
+                          scale_before = scale_before,
+                          n_cutoff = n_cutoff,
+                          cluster_cols = cluster_cols,
+                          annotation_legend=annotation_legend
+                          )
   if(as.numeric(dev.cur())!=1) graphics.off()
   result = list(
     deg = deg,

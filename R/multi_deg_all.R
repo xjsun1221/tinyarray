@@ -60,7 +60,15 @@ multi_deg_all <- function(exp,
   cgs = get_cgs(deg)
   volcano_plot = draw_volcano2(deg)
   pca_plot = draw_pca(exp,group_list)
-  heatmap = draw_heatmap2(geo$exp,group_list,deg)
+  heatmap = draw_heatmap2(geo$exp,group_list,
+                          deg,
+                          heat_id=heat_id,
+                          gene_number=gene_number,
+                          scale_before = scale_before,
+                          n_cutoff = n_cutoff,
+                          cluster_cols = cluster_cols,
+                          annotation_legend=annotation_legend
+                          )
   x = lapply(cgs,function(x)x$diff$diffprobes)
   venn = draw_venn(x," ")
   if(as.numeric(dev.cur())!=1) graphics.off()
