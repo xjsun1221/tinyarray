@@ -45,15 +45,7 @@ get_deg_all <- function(exp,
                 pvalue_cutoff=pvalue_cutoff,
                 adjust = adjust,
                 entriz = entriz)
-  cgs <- list(upgenes = deg$symbol[deg$change=="up"],
-              downgenes = deg$symbol[deg$change=="down"],
-              diffgenes = deg$symbol[deg$change!="stable"])
-  cd = gene_number> length(cgs$upgenes) | gene_number> length(cgs$downgenes)
-  er = paste0("gene_number must less than ",min(c(length(cgs$upgenes),length(cgs$downgenes))))
-  if(heat_id==3 & cd) stop(er)
-  if(heat_id==2 & gene_number> length(cgs$diffgenes))stop(
-    paste0("gene_number must less than ",length(cgs$diffgenes))
-  )
+  cgs = get_cgs(deg)
   volcano_plot = draw_volcano(deg,pkg=pkg,
                               lab =lab,
                               pvalue_cutoff = pvalue_cutoff,
