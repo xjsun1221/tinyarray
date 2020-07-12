@@ -6,6 +6,7 @@
 ##' @param genes a vector with some genes
 ##' @param up_only keep up genes in the result only
 ##' @param down_only keep down genes in the result only
+##' @export
 ##' @return a vector with diffrencial expressed genes
 ##' @author Xiaojie Sun
 ##' @examples
