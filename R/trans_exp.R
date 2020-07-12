@@ -37,7 +37,7 @@ trans_exp = function(exp,mrna_only = F,lncrna_only = F){
   message(paste0(n1,
                  " of genes successfully mapping to mRNA,",
                  n2,
-                 " of genes successfully mapping to lncRNA,"))
+                 " of genes successfully mapping to lncRNA"))
   mRNA_exp = exp[rownames(exp) %in% manno$gene_id,]
   tmp = data.frame(gene_id = rownames(exp))
   x = dplyr::inner_join(tmp,manno,by = "gene_id")
