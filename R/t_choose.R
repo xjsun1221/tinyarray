@@ -26,7 +26,6 @@
 
 t_choose <- function(genes,exp,group_list,up_only = F,down_only = F,pvalue_cutoff = 0.05){
   if(up_only&down_only)stop("please change neither up_only or down_only to FALSE")
-  table(genes %in% rownames(exp))
   exp_small = exp[rownames(exp) %in% genes,]
   dat = data.frame(t(exp_small))
   dat$group_list = group_list
@@ -34,7 +33,6 @@ t_choose <- function(genes,exp,group_list,up_only = F,down_only = F,pvalue_cutof
     t.test(dat[,i] ~group_list)$p.value
   })
   names(p_v) = colnames(dat)[-ncol(dat)]
-  table(p_v<pvalue_cutoff)
   exp_genes = names(p_v[p_v < pvalue_cutoff])
   if(up_only){
     es_up <- sapply(1:(ncol(dat)-1), function(i){
@@ -42,7 +40,7 @@ t_choose <- function(genes,exp,group_list,up_only = F,down_only = F,pvalue_cutof
       k = tmp$estimate[2]-tmp$estimate[1] >0
       return(k)
     })
-    up_genes = genes[p_v <pvalue_cutoff & es_up]
+    up_genes = names(p_v)[p_v < pvalue_cutoff & es_up]
     return(up_genes)
   }else if(down_only){
     es_down <- sapply(1:(ncol(dat)-1), function(i){
@@ -50,7 +48,7 @@ t_choose <- function(genes,exp,group_list,up_only = F,down_only = F,pvalue_cutof
       k = tmp$estimate[2]-tmp$estimate[1] <0
       return(k)
     })
-    down_genes = genes[p_v <pvalue_cutoff & es_down]
+    down_genes = names(p_v)[p_v <pvalue_cutoff & es_down]
     return(down_genes)
   }else{
     return(exp_genes)
