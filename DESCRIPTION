@@ -1,7 +1,7 @@
 Package: tinyarray
 Type: Package
 Title: What the Package Does (Title Case)
-Version: 1.1.0
+Version: 1.2.0
 Author: Xiaojie Sun
 Maintainer: Xiaojie Sun <18763899370@163.com>
 Description: Simplify pdata,volcano_plot and PCA_plot,heatmap_plot ,boxplot
@@ -22,7 +22,9 @@ Imports:
     Biobase,
     limma,
     clusterProfiler,
-    org.Hs.eg.db
+    org.Hs.eg.db,
+    survival,
+    survminer
 Suggests: 
     testthat,
     knitr,
