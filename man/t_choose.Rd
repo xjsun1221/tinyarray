@@ -4,7 +4,14 @@
 \alias{t_choose}
 \title{t_choose}
 \usage{
-t_choose(genes, exp, group_list, up_only = F, down_only = F)
+t_choose(
+  genes,
+  exp,
+  group_list,
+  up_only = F,
+  down_only = F,
+  pvalue_cutoff = 0.05
+)
 }
 \arguments{
 \item{genes}{a vector with some genes}
@@ -16,6 +23,8 @@ t_choose(genes, exp, group_list, up_only = F, down_only = F)
 \item{up_only}{keep up genes in the result only}
 
 \item{down_only}{keep down genes in the result only}
+
+\item{pvalue_cutoff}{p value cut off ,0.05 by defult}
 }
 \value{
 a vector with diffrencial expressed genes

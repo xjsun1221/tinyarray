@@ -35,8 +35,8 @@ point_cut <- function(exprSet_hub,meta){
 ##' caculate log_rank test p values for genes
 ##'
 ##' @inheritParams point_cut
+##' @inheritParams t_choose
 ##' @param cut.point logical , use cut_point or not, if FALSE,use median by defult
-##' @param pvalue_cutoff p value cut off ,0.05 by defult
 ##' @importFrom survival Surv
 ##' @importFrom survival survdiff
 ##' @export

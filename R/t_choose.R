@@ -6,6 +6,7 @@
 ##' @param genes a vector with some genes
 ##' @param up_only keep up genes in the result only
 ##' @param down_only keep down genes in the result only
+##' @param pvalue_cutoff p value cut off ,0.05 by defult
 ##' @export
 ##' @return a vector with diffrencial expressed genes
 ##' @author Xiaojie Sun
@@ -23,7 +24,8 @@
 ##' \code{\link{geo_download}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
 
 
-t_choose <- function(genes,exp,group_list,up_only = F,down_only = F){
+t_choose <- function(genes,exp,group_list,up_only = F,down_only = F,pvalue_cutoff = 0.05){
+  if(up_only&down_only)stop("please change neither up_only or down_only to FALSE")
   table(genes %in% rownames(exp))
   exp_small = exp[rownames(exp) %in% genes,]
   dat = data.frame(t(exp_small))
@@ -32,15 +34,15 @@ t_choose <- function(genes,exp,group_list,up_only = F,down_only = F){
     t.test(dat[,i] ~group_list)$p.value
   })
   names(p_v) = colnames(dat)[-ncol(dat)]
-  table(p_v<0.05)
-  exp_genes = names(p_v[p_v < 0.05])
+  table(p_v<pvalue_cutoff)
+  exp_genes = names(p_v[p_v < pvalue_cutoff])
   if(up_only){
     es_up <- sapply(1:(ncol(dat)-1), function(i){
       tmp = t.test(dat[,i] ~group_list)
       k = tmp$estimate[2]-tmp$estimate[1] >0
       return(k)
     })
-    up_genes = genes[p_v <0.05 & es_up]
+    up_genes = genes[p_v <pvalue_cutoff & es_up]
     return(up_genes)
   }else if(down_only){
     es_down <- sapply(1:(ncol(dat)-1), function(i){
@@ -48,7 +50,7 @@ t_choose <- function(genes,exp,group_list,up_only = F,down_only = F){
       k = tmp$estimate[2]-tmp$estimate[1] <0
       return(k)
     })
-    down_genes = genes[p_v <0.05 & es_down]
+    down_genes = genes[p_v <pvalue_cutoff & es_down]
     return(down_genes)
   }else{
     return(exp_genes)
