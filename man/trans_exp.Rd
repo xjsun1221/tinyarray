@@ -4,7 +4,7 @@
 \alias{trans_exp}
 \title{trans_exp}
 \usage{
-trans_exp(exp, mrna_only = F, lncrna_only = F)
+trans_exp(exp, mrna_only = F, lncrna_only = F, order = F)
 }
 \arguments{
 \item{exp}{tcga or tcga_gtex expression set from gdc or xena}
@@ -12,6 +12,8 @@ trans_exp(exp, mrna_only = F, lncrna_only = F)
 \item{mrna_only}{only keep mrna rows in result}
 
 \item{lncrna_only}{only keep lncrna rows in result}
+
+\item{order}{logical ,if T, make decreasing rowsum order for the matrix before getting unique rownames}
 }
 \value{
 a transformed expression set with symbol
