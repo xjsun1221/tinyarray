@@ -97,6 +97,7 @@ surv_cox <-function(exprSet_hub,meta,cut.point = F,pvalue_cutoff = 0.05,HRkeep =
     }else{
       meta$group=ifelse(gene>median(gene),'high','low')
     }
+    meta$group = factor(meta$group,levels = c("low","high"))
     m=survival::coxph(survival::Surv(time, event) ~　group, data =  meta)
 
     beta <- coef(m)
@@ -110,7 +111,7 @@ surv_cox <-function(exprSet_hub,meta,cut.point = F,pvalue_cutoff = 0.05,HRkeep =
                        HRz = (HR - 1) / HRse, HRp = 1 - pchisq(((HR - 1)/HRse)^2, 1),
                        HRCILL = exp(beta - qnorm(.975, 0, 1) * se),
                        HRCIUL = exp(beta + qnorm(.975, 0, 1) * se)), 3)
-    cox_results[[i]] = tmp['grouplow',]
+    cox_results[[i]] = tmp['grouphigh',]
   }
   cox_results = do.call(cbind,cox_results)
   cox_results=t(cox_results)
