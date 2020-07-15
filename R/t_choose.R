@@ -26,14 +26,17 @@
 
 t_choose <- function(genes,exp,group_list,up_only = F,down_only = F,pvalue_cutoff = 0.05){
   if(up_only&down_only)stop("please change neither up_only or down_only to FALSE")
-  exp_small = exp[rownames(exp) %in% genes,]
-  dat = data.frame(t(exp_small))
+  genes = genes[genes %in% rownames(exp)]
+  exp_small = exp[genes,]
+  dat = data.frame(t(exp_small),check.names = F)
   dat$group_list = group_list
   p_v <- sapply(1:(ncol(dat)-1), function(i){
     t.test(dat[,i] ~group_list)$p.value
   })
   names(p_v) = colnames(dat)[-ncol(dat)]
+
   exp_genes = names(p_v[p_v < pvalue_cutoff])
+
   if(up_only){
     es_up <- sapply(1:(ncol(dat)-1), function(i){
       tmp = t.test(dat[,i] ~group_list)
