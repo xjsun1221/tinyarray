@@ -1,7 +1,7 @@
 Package: tinyarray
 Type: Package
 Title: What the Package Does (Title Case)
-Version: 1.3.0
+Version: 1.3.2
 Author: Xiaojie Sun
 Maintainer: Xiaojie Sun <18763899370@163.com>
 Description: Simplify pdata,volcano_plot and PCA_plot,heatmap_plot ,boxplot

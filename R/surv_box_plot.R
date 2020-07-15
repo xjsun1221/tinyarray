@@ -83,6 +83,8 @@ exp_surv <- function(exprSet_hub,meta){
 exp_boxplot <-  function(exp_hub){
   if(nrow(exp_hub)>15)warning(paste0(nrow(exp_hub)," figures will be produced"))
   group_list = make_tcga_group(exp_hub)
+  k = rownames(exp_hub)
+  rownames(exp_hub) = paste0("gene",1:nrow(exp_hub))
   dat = as.data.frame(t(exp_hub))
   dat$group_list = group_list
   bplots = lapply(1:nrow(exp_hub),function(i){
@@ -93,6 +95,7 @@ exp_boxplot <-  function(exp_hub){
       geom_boxplot()+
       scale_fill_manual(values = c("normal" = "grey",
                                    "tumor" = "red"))+
+      labs(y = k[[i]])+
       stat_compare_means(method = "t.test")+
       #stat_compare_means(label.y = 15)  +
       theme_classic()+
