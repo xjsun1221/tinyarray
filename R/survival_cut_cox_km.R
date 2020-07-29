@@ -62,6 +62,7 @@ surv_KM <- function(exprSet_hub,meta,cut.point = F,pvalue_cutoff = 0.05){
     data.survdiff=survival::survdiff(survival::Surv(time, event)~group,data=meta)
     log_rank_p[[i]] = 1 - pchisq(data.survdiff$chisq, length(data.survdiff$n) - 1)
   }
+  if(is.list(log_rank_p)) log_rank_p = unlist(log_rank_p)
   names(log_rank_p) = rownames(exprSet_hub)
   log_rank_p=sort(log_rank_p)
   tp = log_rank_p[log_rank_p<pvalue_cutoff]

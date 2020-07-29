@@ -54,7 +54,7 @@ cor.one <- function(x,var){
   p = list()
   ss1 = matrix(c(rep(var,times = (ncol(x)-1)),
                  setdiff(colnames(x),var)),
-               nrow = 2)
+               nrow = 2,byrow = T)
   ss2 = setdiff(colnames(x),var)
 
   for(i in (1:ncol(ss1))){

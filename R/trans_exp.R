@@ -5,7 +5,6 @@
 ##' @param exp tcga or tcga_gtex expression set from gdc or xena
 ##' @param mrna_only only keep mrna rows in result
 ##' @param lncrna_only only keep lncrna rows in result
-##' @param order logical ,if T, make decreasing rowsum order for the matrix before getting unique rownames
 ##' @return a transformed expression set with symbol
 ##' @author Xiaojie Sun
 ##' @importFrom stringr str_detect
@@ -45,7 +44,6 @@ trans_exp = function(exp,mrna_only = F,lncrna_only = F,order = F){
   lnc_exp = exp[rownames(exp) %in% lanno$gene_id,]
   tmp = data.frame(gene_id = rownames(exp))
   x = dplyr::inner_join(tmp,lanno,by = "gene_id")
-  if(order) lnc_exp = lnc_exp[order(rowsum(lnc_exp),decreasing = T),]
   lnc_exp = lnc_exp[!duplicated(x$gene_name),]
   x = x[!duplicated(x$gene_name),]
   rownames(lnc_exp) = x$gene_name
