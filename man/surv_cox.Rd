@@ -4,13 +4,7 @@
 \alias{surv_cox}
 \title{surv_cox}
 \usage{
-surv_cox(
-  exprSet_hub,
-  meta,
-  cut.point = F,
-  pvalue_cutoff = 0.05,
-  HRkeep = "all"
-)
+surv_cox(exprSet, meta, cut.point = F, pvalue_cutoff = 0.05, HRkeep = "all")
 }
 \arguments{
 \item{HRkeep}{one of "all","protect"or"risk"}

@@ -87,12 +87,12 @@ surv_KM <- function(exprSet_hub,meta,cut.point = F,pvalue_cutoff = 0.05){
 ##' \code{\link{geo_download}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
 
 
-surv_cox <-function(exprSet_hub,meta,cut.point = F,pvalue_cutoff = 0.05,HRkeep = "all"){
-  cut_point = point_cut(exprSet_hub,meta)
+surv_cox <-function(exprSet,meta,cut.point = F,pvalue_cutoff = 0.05,HRkeep = "all"){
+  cut_point = point_cut(exprSet,meta)
   cox_results <-list()
-  for(i in 1:nrow(exprSet_hub)){
+  for(i in 1:nrow(exprSet)){
     #i = 1
-    gene= as.numeric(exprSet_hub[i,])
+    gene= as.numeric(exprSet[i,])
     if(cut.point){
       meta$group=ifelse(gene>cut_point[i],'high','low')
     }else{
@@ -116,19 +116,29 @@ surv_cox <-function(exprSet_hub,meta,cut.point = F,pvalue_cutoff = 0.05,HRkeep =
   }
   cox_results = do.call(cbind,cox_results)
   cox_results=t(cox_results)
-  rownames(cox_results)= rownames(exprSet_hub)
-  cox_results=cox_results[cox_results[,4]<pvalue_cutoff,]
+  rownames(cox_results)= rownames(exprSet)
+  k = cox_results[,4]<pvalue_cutoff;table(k)
+
+  if(sum(k)==1){
+    tmp = matrix(cox_results[k,],nrow = 1)
+    colnames(tmp) = colnames(cox_results)
+    rownames(tmp) = rownames(cox_results)[k]
+    cox_results = tmp
+  }else{
+    cox_results=cox_results[k,]
+  }
+
   if(HRkeep == "all"){
     return(cox_results)
-    message(paste0(nrow(cox_results)," of ",nrow(exprSet_hub)," genes selected"))
+    message(paste0(nrow(cox_results)," of ",nrow(exprSet)," genes selected"))
   }else if(HRkeep == "protect"){
     k = cox_results[,5]<1
     return(cox_results[k])
-    message(paste0(sum(k)," of ",nrow(exprSet_hub)," genes selected"))
+    message(paste0(sum(k)," of ",nrow(exprSet)," genes selected"))
   }else if(HRkeep == "risk"){
     k = cox_results[,5]>1
     return(cox_results[k])
-    message(paste0(sum(k)," of ",nrow(exprSet_hub)," genes selected"))
+    message(paste0(sum(k)," of ",nrow(exprSet)," genes selected"))
   }else if(!(HRkeep %in% c("all","protect","risk"))){
     stop('HRkeep should be one of "all","protect"or"risk"')
   }
