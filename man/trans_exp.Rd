@@ -4,7 +4,7 @@
 \alias{trans_exp}
 \title{trans_exp}
 \usage{
-trans_exp(exp, mrna_only = F, lncrna_only = F, order = F)
+trans_exp(exp, mrna_only = F, lncrna_only = F, gtex = F)
 }
 \arguments{
 \item{exp}{tcga or tcga_gtex expression set from gdc or xena}
@@ -12,6 +12,8 @@ trans_exp(exp, mrna_only = F, lncrna_only = F, order = F)
 \item{mrna_only}{only keep mrna rows in result}
 
 \item{lncrna_only}{only keep lncrna rows in result}
+
+\item{gtex}{logical,whether including gtex data}
 }
 \value{
 a transformed expression set with symbol

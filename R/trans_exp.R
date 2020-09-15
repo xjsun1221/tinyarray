@@ -5,6 +5,7 @@
 ##' @param exp tcga or tcga_gtex expression set from gdc or xena
 ##' @param mrna_only only keep mrna rows in result
 ##' @param lncrna_only only keep lncrna rows in result
+##' @param gtex logical,whether including gtex data
 ##' @return a transformed expression set with symbol
 ##' @author Xiaojie Sun
 ##' @importFrom stringr str_detect
@@ -19,11 +20,11 @@
 ##' @seealso
 ##' \code{\link{simpd}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
 
-trans_exp = function(exp,mrna_only = F,lncrna_only = F,order = F){
+trans_exp = function(exp,mrna_only = F,lncrna_only = F,gtex = F){
   k00 = any(str_detect(colnames(exp),"TCGA"))
   if(!k00)warning("this expression set probably not from TCGA,please ensure it")
   k0 = any(str_detect(colnames(exp),"GTEX"))
-  if(!k0){
+  if(!(k0|gtex)){
     lanno = lnc_anno
     manno = mRNA_anno
   }else{
@@ -37,7 +38,6 @@ trans_exp = function(exp,mrna_only = F,lncrna_only = F,order = F){
   mRNA_exp = exp[rownames(exp) %in% manno$gene_id,]
   tmp = data.frame(gene_id = rownames(exp))
   x = dplyr::inner_join(tmp,manno,by = "gene_id")
-  if(order) mRNA_exp = mRNA_exp[order(rowsum(mRNA_exp),decreasing = T),]
   mRNA_exp = mRNA_exp[!duplicated(x$gene_name),]
   x = x[!duplicated(x$gene_name),]
   rownames(mRNA_exp) = x$gene_name
