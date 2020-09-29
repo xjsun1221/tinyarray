@@ -25,7 +25,7 @@
 geo_download <-  function(gse,by_annopbrobe = T,simpd=T){
   if((by_annopbrobe) & !require(AnnoProbe)) stop("you must install AnnoProbe first by devtools::install_github('jmzeng1314/AnnoProbe')")
   if(by_annopbrobe){
-    if((!file.exists(paste0(gse,"_eSet.Rdata"))) & by_annopbrobe) geoChina(gse)
+    if((!file.exists(paste0(gse,"_eSet.Rdata")))) geoChina(gse)
     load(paste0(gse,"_eSet.Rdata"))
     eSet <- gset
     rm(gset)

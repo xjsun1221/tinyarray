@@ -99,7 +99,8 @@ draw_heatmap <-  function(n,group_list,scale_before = F,n_cutoff = 2,cluster_col
                            cluster_cols = cluster_cols,
                            annotation_legend = F,
                            annotation_colors = ann_colors,
-                           annotation_names_col = F
+                           annotation_names_col = F,
+                           slient = T
     ))
   }
   if(!scale_before){
@@ -111,6 +112,7 @@ draw_heatmap <-  function(n,group_list,scale_before = F,n_cutoff = 2,cluster_col
                            annotation_colors = ann_colors,
                            cluster_cols = cluster_cols,
                            legend = F,
+                           slient = T,
                            annotation_legend = annotation_legend,
                            annotation_names_col = F))
   }
