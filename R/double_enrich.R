@@ -4,9 +4,7 @@
 ##'
 ##' @param deg a data.frame contains at least two columns:"ENTREZID" and "change"
 ##' @param n how many terms will you perform for up and down genes respectively
-##' @param breaks_kegg breaks for kegg bar plot x axis
-##' @param breaks_go breaks for kegg bar plot x axis
-##' @return a bar plot according to up and down genes enrichment result.
+##' @return a list with kegg and go bar plot according to up and down genes enrichment result.
 ##' @author Xiaojie Sun
 ##' @importFrom stringr str_to_lower
 ##' @importFrom dplyr mutate
@@ -26,7 +24,7 @@
 ##' @seealso
 ##' \code{\link{draw_heatmap}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
 
-double_enrich <- function(deg,n = 10,breaks_kegg = 5,breaks_go = 5){
+double_enrich <- function(deg,n = 10){
   deg$change = str_to_lower(deg$change)
   up = quick_enrich(deg$ENTREZID[deg$change=="up"],"up.rdata")
   down = quick_enrich(deg$ENTREZID[deg$change=="down"],"down.rdata")

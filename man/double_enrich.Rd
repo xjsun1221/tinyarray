@@ -4,19 +4,15 @@
 \alias{double_enrich}
 \title{draw enrichment bar plots for both up and down genes}
 \usage{
-double_enrich(deg, n = 10, breaks_kegg = 5, breaks_go = 5)
+double_enrich(deg, n = 10)
 }
 \arguments{
 \item{deg}{a data.frame contains at least two columns:"ENTREZID" and "change"}
 
 \item{n}{how many terms will you perform for up and down genes respectively}
-
-\item{breaks_kegg}{breaks for kegg bar plot x axis}
-
-\item{breaks_go}{breaks for kegg bar plot x axis}
 }
 \value{
-a bar plot according to up and down genes enrichment result.
+a list with kegg and go bar plot according to up and down genes enrichment result.
 }
 \description{
 draw enrichment bar plots for both up and down genes
