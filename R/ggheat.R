@@ -9,6 +9,7 @@
 ##' @param show_colnames logical,show colnames in plot or not,default T
 ##' @param groupname name of group legend
 ##' @param expname name of exp legene
+##' @param fill_mid use median value as geom_tile fill midpoint
 ##' @return a ggplot object
 ##' @author Xiaojie Sun
 ##' @importFrom pheatmap pheatmap
@@ -45,7 +46,8 @@
 
 ggheat = function(dat,group,cluster = F,
                   show_rownames = T,show_colnames = T,
-                  groupname = "group",expname = "exp"){
+                  groupname = "group",expname = "exp",
+                  fill_mid = T){
   dat = data.frame(dat)
 
   if(cluster){
@@ -77,6 +79,8 @@ ggheat = function(dat,group,cluster = F,
     scale_x_continuous(expand = c(0,0))+
     labs(fill = groupname)
 
+  midpoint = ifelse(fill_mid,median(dat2$exp),0)
+
   p2 = ggplot(dat2, aes(samples, gene, fill = exp)) +
     geom_tile()+
     theme(panel.grid = element_blank(),
@@ -90,7 +94,7 @@ ggheat = function(dat,group,cluster = F,
     scale_fill_gradient2(low = "blue",
                          mid = "white",
                          high = "red",
-                         midpoint = median(dat2$exp))+
+                         midpoint = midpoint)+
     scale_x_discrete(expand = c(0,0))+
     labs(fill = expname)
   if(!show_rownames) p2 = p2 + theme(axis.text.x = element_blank())

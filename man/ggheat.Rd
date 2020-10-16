@@ -11,7 +11,8 @@ ggheat(
   show_rownames = T,
   show_colnames = T,
   groupname = "group",
-  expname = "exp"
+  expname = "exp",
+  fill_mid = T
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ ggheat(
 \item{groupname}{name of group legend}
 
 \item{expname}{name of exp legene}
+
+\item{fill_mid}{use median value as geom_tile fill midpoint}
 }
 \value{
 a ggplot object

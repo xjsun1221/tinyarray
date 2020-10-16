@@ -177,14 +177,14 @@ draw_volcano <- function(deg,lab=NA,pvalue_cutoff = 0.05,logFC_cutoff= 1,pkg = 1
                                ifelse(logFC< -logFC_cutoff & P.value<pvalue_cutoff , "DOWN","NOT")))
   if(is.na(lab)) lab = c("DESeq2","edgeR","limma(voom)","limma")[pkg]
   this_tile <- paste0(nrow(dat[dat$change =='DOWN',]),
-                      'down gene,',
+                      ' down, ',
                       nrow(dat[dat$change =='UP',]),
-                      'up gene'
+                      ' up'
   )
   p <- ggplot(data = dat,
               aes(x = logFC,
                   y = -log10(P.value))) +
-    geom_point(alpha=0.4, size=3.5,
+    geom_point(alpha=0.4, size=1.75,
                aes(color=change)) +
     scale_color_manual(values=c("blue", "grey","red"))+
     geom_vline(xintercept=c(-logFC_cutoff,logFC_cutoff),lty=4,col="black",lwd=0.8) +
