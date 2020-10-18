@@ -58,7 +58,12 @@ multi_deg_all <- function(exp,
   #exp = data.frame(exp)
   #exp = exp[match(deg[[1]]$probe_id,rownames(exp)),]
   cgs = get_cgs(deg)
-  volcano_plot = draw_volcano2(deg)
+  volcano_plot = draw_volcano2(deg,
+                               pkg = 4,
+                               pvalue_cutoff = pvalue_cutoff,
+                               logFC_cutoff = logFC_cutoff,
+                               adjust = adjust,
+                               symmetry = T)
   pca_plot = draw_pca(exp,group_list)
   heatmap = draw_heatmap2(exp,group_list,
                           deg,
