@@ -7,6 +7,7 @@
 ##' @return a list with kegg and go bar plot according to up and down genes enrichment result.
 ##' @author Xiaojie Sun
 ##' @importFrom stringr str_to_lower
+##' @importFrom stringr str_wrap
 ##' @importFrom dplyr mutate
 ##' @importFrom dplyr arrange
 ##' @importFrom ggplot2 ggplot
@@ -51,7 +52,6 @@ double_enrich <- function(deg,n = 10){
       scale_y_continuous(breaks = tmp,
                          labels = abs(tmp))+
       theme(
-        legend.position = "none",
         panel.border = element_blank()
       )
   }

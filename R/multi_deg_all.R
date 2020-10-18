@@ -60,7 +60,7 @@ multi_deg_all <- function(exp,
   cgs = get_cgs(deg)
   volcano_plot = draw_volcano2(deg)
   pca_plot = draw_pca(exp,group_list)
-  heatmap = draw_heatmap2(geo$exp,group_list,
+  heatmap = draw_heatmap2(exp,group_list,
                           deg,
                           heat_id=heat_id,
                           gene_number=gene_number,
