@@ -9,6 +9,7 @@
 ##' @return a transformed expression set with symbol
 ##' @author Xiaojie Sun
 ##' @importFrom stringr str_detect
+##' @importFrom stringr str_remove
 ##' @importFrom dplyr inner_join
 ##' @export
 ##' @examples
@@ -24,13 +25,18 @@ trans_exp = function(exp,mrna_only = F,lncrna_only = F,gtex = F){
   k00 = any(str_detect(colnames(exp),"TCGA"))
   if(!k00)warning("this expression set probably not from TCGA,please ensure it")
   k0 = any(str_detect(colnames(exp),"GTEX"))
-  if(!(k0|gtex)){
+  kd = any(str_detect(rownames(exp),"\\."))
+  if((!(k0|gtex))){
     lanno = lnc_anno
     manno = mRNA_anno
-  }else{
+  }else if(k00){
     lanno = lnc_annov23
     manno = mRNA_annov23
-    }
+  }
+  if(!kd){
+    lanno$gene_id = str_remove(lanno$gene_id,"\\.\\d*")
+    manno$gene_id = str_remove(manno$gene_id,"\\.\\d*")
+  }
   n1 = sum(rownames(exp) %in% manno$gene_id)
   k1 = length(n1)/nrow(exp)< 0.25 & length(n1)<5000
   n2 = sum(rownames(exp) %in% lanno$gene_id)
@@ -58,4 +64,33 @@ trans_exp = function(exp,mrna_only = F,lncrna_only = F,gtex = F){
   }else{
       return(rbind(mRNA_exp,lnc_exp))
     }
-  }
+}
+
+##' sam_filter
+##'
+##' drop duplicated samples from the same patients
+##'
+##' @param exp tcga or tcga_gtex expression set from gdc or xena
+##' @return a transformed expression set without duplicated samples
+##' @author Xiaojie Sun
+##' @export
+##' @examples
+##' cod2 = sam_filter(cod)
+
+##' @seealso
+##' \code{\link{simpd}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
+
+sam_filter = function(exp){
+  exp = exp[,order(colnames(exp))]
+  n1 = ncol(exp)
+  group = make_tcga_group(exp)
+  exptumor = exp[,group == "tumor"]
+
+  expnormol = exp[,group == "normal"]
+  exptumor = exptumor[,!duplicated(str_sub(colnames(exptumor),1,12))]
+  expnormol = expnormol[,!duplicated(str_sub(colnames(expnormol),1,12))]
+
+  exp = cbind(exptumor,expnormol)
+  message(paste("filtered",n1-ncol(exp),"samples."))
+  return(exp)
+}

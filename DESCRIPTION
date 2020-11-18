@@ -24,7 +24,9 @@ Imports:
     clusterProfiler,
     org.Hs.eg.db,
     survival,
-    survminer
+    survminer,
+    patchwork,
+    GO.db
 Suggests: 
     testthat,
     knitr,
