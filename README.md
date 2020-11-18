@@ -4,6 +4,14 @@
 
 hi，我是小洁。这是我基于自己的数据分析需求写的R包，很高兴被你看到了。我会在公众号《生信星球》更新这里面一些好用的小函数，也做一些其他的分享。
 
+###  安装代码
+
+```
+if(!require(devtools))install.packages("devtools")
+if(!require(AnnoProbe))devtools::install_github("jmzeng1314/AnnoProbe")
+if(!require(tinyarray))devtools::install_github("xjsun1221/tinyarray")
+```
+
 ### 函数介绍
 geo_download() : 提供geo编号，返回表达矩阵、临床信息表格和使用的平台编号。
 
@@ -16,6 +24,8 @@ cor.full()和cor.one() :批量计算基因间的相关性
 几个绘图函数：draw_heatmap,draw_volcano,draw_venn
 
 trans_exp():将tcga或tcga+gtex数据进行基因id转换
+
+sam_filter():去除tcga中属于同一病人的的重复样本
 
 t_choose():批量做单个基因的t检验
 
