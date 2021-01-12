@@ -347,7 +347,7 @@ draw_boxplot = function(exp,Group,
   col = colset[1:length(levels(Group))]
   p = ggplot(dat,aes(rows,exp,fill = group))+
     stat_boxplot(geom ='errorbar', width = width)+
-    geom_boxplot( width = width)
+    geom_boxplot( width = width)+
     theme_bw()+
     theme(legend.position = "top")+
     labs(fill = grouplab,
