@@ -293,7 +293,7 @@ draw_boxplot = function(exp,Group,
                         ylab = "Expression",
                         grouplab = "Group",
                         p.label = F){
-  p0 <-  all(apply(exp,2,is.numeric)) &is.null(rownames(exp))
+  p0 <-  all(apply(exp,2,is.numeric)) & (!is.null(rownames(exp)))
   if(!p0) stop("exp must be a numeric matrix with rownames")
   p1 = method %in% c("kruskal.test","aov","t.test","wilcox.test")
   if(!p1) stop("method should be one of kruskal.test,aov,t.test and wilcox.test")
@@ -325,6 +325,7 @@ draw_boxplot = function(exp,Group,
   }
   if(drop) x = x[ x < pvalue_cutoff]
 
+  if(length(x)>40) message("seems to be too many rows")
   dat = rownames_to_column(as.data.frame(t(exp)),var = "sample")
   dat$group = str_to_title(Group)
   dat = gather(dat,
