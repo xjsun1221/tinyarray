@@ -253,6 +253,7 @@ draw_venn <- function(x,name){
 ##' @param exp A numeric matrix
 ##' @param group_list A factor with duplicated character or factor
 ##' @param method one of kruskal.test,aov,t.test and wilcox.test
+##' @param width wdith of boxplot and error bar
 ##' @param sort whether the boxplot will be sorted
 ##' @param drop whether to discard insignificant values
 ##' @param pvalue_cutoff if drop = T，genes with p-values below the threshold will be drawn
@@ -264,8 +265,8 @@ draw_venn <- function(x,name){
 ##' @author Xiaojie Sun
 ##' @importFrom tidyr gather
 ##' @importFrom ggpubr stat_compare_means
-##' @importFrom stringr str_to_title
 ##' @importFrom tibble rownames_to_column
+##' @importFrom ggplot2 stat_boxplot
 ##' @importFrom ggplot2 ggplot
 ##' @importFrom ggplot2 geom_boxplot
 ##' @importFrom ggplot2 theme
@@ -290,6 +291,7 @@ draw_boxplot = function(exp,Group,
                         method = "kruskal.test",
                         sort = T,
                         drop = F,
+                        width = 0.3,
                         pvalue_cutoff = 0.05,
                         xlab = "Gene",
                         ylab = "Expression",
@@ -332,7 +334,7 @@ draw_boxplot = function(exp,Group,
 
   if(length(x)>40) message("seems to be too many rows")
   dat = rownames_to_column(as.data.frame(t(exp)),var = "sample")
-  dat$group = str_to_title(Group)
+  dat$group = Group
   dat = gather(dat,
                rows,exp,-sample,-group)
   if(sort){
@@ -344,7 +346,9 @@ draw_boxplot = function(exp,Group,
              "#FFD92F", "#E5C494", "#B3B3B3")
   col = colset[1:length(levels(Group))]
   p = ggplot(dat,aes(rows,exp,fill = group))+
-    geom_boxplot()+theme_bw()+
+    stat_boxplot(geom ='errorbar', width = width)+
+    geom_boxplot( width = width)
+    theme_bw()+
     theme(legend.position = "top")+
     labs(fill = grouplab,
          x = xlab,

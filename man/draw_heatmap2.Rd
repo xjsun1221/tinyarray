@@ -15,6 +15,7 @@ draw_heatmap2(
   n_cutoff = 3,
   cluster_cols = T,
   annotation_legend = F,
+  legend = F,
   color = colorRampPalette(c("#2166AC", "white", "#B2182B"))(100)
 )
 }
@@ -38,6 +39,8 @@ draw_heatmap2(
 \item{cluster_cols}{if F,heatmap will nor cluster in column}
 
 \item{annotation_legend}{logical，show annotation legend or not}
+
+\item{legend}{logical,show legend or not}
 
 \item{color}{color for heatmap}
 }

@@ -28,9 +28,11 @@ multi_deg() : 多个分组（最多5个）的差异分析
 
 cor.full()和cor.one() :批量计算基因间的相关性
 
-几个绘图函数：draw_heatmap,draw_volcano,draw_venn
+几个绘图函数：draw_heatmap,draw_volcano,draw_venn,draw_boxplot
 
 trans_exp():将tcga或tcga+gtex数据进行基因id转换
+
+trans_array():替换行名，比如把表达矩阵的探针名替换为基因名
 
 sam_filter():去除tcga中的重复样本
 

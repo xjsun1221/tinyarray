@@ -10,6 +10,7 @@ draw_heatmap(
   scale_before = F,
   n_cutoff = 3,
   cluster_cols = T,
+  legend = F,
   annotation_legend = F,
   color = colorRampPalette(c("#2166AC", "white", "#B2182B"))(100)
 )
@@ -22,6 +23,8 @@ draw_heatmap(
 \item{n_cutoff}{3 by defalut , scale before plot and set a cutoff,usually 2 or 1.6}
 
 \item{cluster_cols}{if F,heatmap will nor cluster in column}
+
+\item{legend}{logical,show legend or not}
 
 \item{annotation_legend}{logical，show annotation legend or not}
 

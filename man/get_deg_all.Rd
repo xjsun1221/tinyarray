@@ -16,6 +16,7 @@ get_deg_all(
   n_cutoff = 3,
   cluster_cols = T,
   annotation_legend = F,
+  legend = F,
   lab = NA,
   pkg = 4,
   symmetry = F,
@@ -45,6 +46,8 @@ get_deg_all(
 \item{cluster_cols}{if F,heatmap will nor cluster in column}
 
 \item{annotation_legend}{logical，show annotation legend or not}
+
+\item{legend}{logical,show legend or not}
 
 \item{pkg}{a integer ,means which Differential analysis packages you used,we support three packages by now, 1,2,3,4 respectively means "DESeq2","edgeR","limma(voom)","limma"}
 

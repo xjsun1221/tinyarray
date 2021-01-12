@@ -10,6 +10,7 @@ draw_boxplot(
   method = "kruskal.test",
   sort = T,
   drop = F,
+  width = 0.3,
   pvalue_cutoff = 0.05,
   xlab = "Gene",
   ylab = "Expression",
@@ -25,6 +26,8 @@ draw_boxplot(
 \item{sort}{whether the boxplot will be sorted}
 
 \item{drop}{whether to discard insignificant values}
+
+\item{width}{wdith of boxplot and error bar}
 
 \item{pvalue_cutoff}{if drop = T，genes with p-values below the threshold will be drawn}
 
