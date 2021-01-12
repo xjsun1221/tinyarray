@@ -158,6 +158,7 @@ draw_volcano <- function(deg,lab=NA,pvalue_cutoff = 0.05,logFC_cutoff= 1,pkg = 1
   if(!is.data.frame(deg)) stop("deg must be a data.frame created by Differential analysis")
   if(pvalue_cutoff>0.1)warning("Your pvalue_cutoff seems too large")
   if(pvalue_cutoff>=1)stop("pvalue_cutoff will never larger than 1")
+
   if(!adjust){
     dat = switch(EXPR = pkg,
                  v1 = deg[,c(2,5)],
@@ -240,5 +241,115 @@ draw_venn <- function(x,name){
                    reverse=TRUE)
   p = as.ggplot(as_grob(p))
   file.remove(dir(pattern = ("^VennDiagram.*log$")))
+  return(p)
+}
+
+
+##' draw boxplot for expression
+##'
+##' draw boxplot for expression
+##'
+##' @param exp A numeric matrix
+##' @param group_list A factor with duplicated character or factor
+##' @param method one of kruskal.test,aov,t.test and wilcox.test
+##' @param sort whether the boxplot will be sorted
+##' @param drop whether to discard insignificant values
+##' @param pvalue_cutoff if drop = T，genes with p-values below the threshold will be drawn
+##' @param xlab title of the x axis
+##' @param ylab title of the y axis
+##' @param grouplab title of group legend
+##' @param p.label whether to show p vlaue in the plot
+##' @return a boxplot according to \code{exp} and grouped by \code{group}.
+##' @author Xiaojie Sun
+##' @importFrom tidyr gather
+##' @importFrom ggpubr stat_compare_means
+##' @importFrom stringr str_to_title
+##' @importFrom tibble rownames_to_column
+##' @importFrom ggplot2 ggplot
+##' @importFrom ggplot2 geom_boxplot
+##' @importFrom ggplot2 theme
+##' @importFrom ggplot2 aes
+##' @importFrom ggplot2 labs
+##' @importFrom ggplot2 scale_fill_manual
+##' @importFrom ggplot2 element_text
+##' @export
+##' @examples
+##' draw_boxplot(t(iris[,1:4]),iris$Species)
+##' exp <-  matrix(rnorm(60),nrow = 10)
+##' colnames(exp) <- paste0("sample",1:6)
+##' rownames(exp) <- paste0("gene",1:10)
+##' exp[,4:6] = exp[,4:6] +10
+##' exp[1:4,1:4]
+##' Group <- rep(c("A","B"),each = 3)
+##' draw_boxplot(exp,Group)
+##' @seealso
+##' \code{\link{draw_heatmap}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
+
+draw_boxplot = function(exp,Group,
+                        method = "kruskal.test",
+                        sort = T,
+                        drop = F,
+                        pvalue_cutoff = 0.05,
+                        xlab = "Gene",
+                        ylab = "Expression",
+                        grouplab = "Group",
+                        p.label = F){
+  p0 <-  all(apply(exp,2,is.numeric)) &is.null(rownames(exp))
+  if(!p0) stop("exp must be a numeric matrix with rownames")
+  p1 = method %in% c("kruskal.test","aov","t.test","wilcox.test")
+  if(!p1) stop("method should be one of kruskal.test,aov,t.test and wilcox.test")
+  if(length(unique(Group))>2 & method %in% c("t.test","wilcox.test")) stop("Group parameter must have exactly 2 group")
+  p2  <-  (sum(!duplicated(Group)) > 1)
+  if(!p2) stop("Group must more than 1")
+  p3 <- is.factor(Group)
+  if(!p3) stop("Group must be a factor")
+  if(method=="kruskal.test"){
+    x = apply(exp, 1, function(x){
+      kruskal.test(x~Group)$p.value
+    })
+  }else if(method=="aov"){
+    x = apply(exp, 1, function(x){
+      aov(x~Group)$p.value
+    })
+  }else if(method=="t.test"){
+    x = apply(exp, 1, function(x){
+      t.test(x~Group)$p.value
+    })
+  }else if(method=="wilcox.test"){
+    x = apply(exp, 1, function(x){
+      wilcox.test(x~Group)$p.value
+    })
+  }
+  if(sum(x<0.05)==0) {
+    message("No rows below the threshold,plot all rows")
+    drop = F
+  }
+  if(drop) x = x[ x < pvalue_cutoff]
+
+  dat = rownames_to_column(as.data.frame(t(exp)),var = "sample")
+  dat$group = str_to_title(Group)
+  dat = gather(dat,
+               rows,exp,-sample,-group)
+  if(sort){
+    dat$rows = factor(dat$rows,
+                      levels = names(sort(x)),
+                      ordered = T)
+  }
+  colset = c("#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854",
+             "#FFD92F", "#E5C494", "#B3B3B3")
+  col = colset[1:length(levels(Group))]
+  p = ggplot(dat,aes(rows,exp,fill = group))+
+    geom_boxplot()+theme_bw()+
+    theme(legend.position = "top")+
+    labs(fill = grouplab,
+         x = xlab,
+         y = ylab)+
+    scale_fill_manual(values = col)
+  if(!p.label){
+    p = p + stat_compare_means(aes(group = group,label = ..p.signif..),method = method)
+  }else{
+    p = p + stat_compare_means(aes(group = group,label = ..p.format..),method = method)
+  }
+  if(length(x)>10) p = p + theme(axis.text.x = element_text(angle=50,vjust = 0.5))
   return(p)
 }
