@@ -53,6 +53,7 @@ if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
 ##' @param annotation_legend logical，show annotation legend or not
 ##' @param cluster_cols if F,heatmap will nor cluster in column
 ##' @param color color for heatmap
+##' @param legend logical,show legend or not
 ##' @return a heatmap plot according to \code{exp} and grouped by \code{group}.
 ##' @author Xiaojie Sun
 ##' @importFrom pheatmap pheatmap
@@ -80,6 +81,7 @@ draw_heatmap <-  function(n,
                           scale_before = F,
                           n_cutoff = 3,
                           cluster_cols = T,
+                          legend = F,
                           annotation_legend=F,
                           color = colorRampPalette(c("#2166AC", "white", "#B2182B"))(100)){
   n = as.data.frame(n)
@@ -110,7 +112,7 @@ draw_heatmap <-  function(n,
                            annotation_colors = ann_colors,
                            cluster_cols = cluster_cols,
                            breaks = seq(-n_cutoff,n_cutoff,length.out = length(color)),
-                           legend = F,
+                           legend = legend,
                            slient = T,
                            annotation_legend = annotation_legend,
                            annotation_names_col = F))

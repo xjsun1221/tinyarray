@@ -156,6 +156,7 @@ draw_heatmap2 <- function(exp,
                           n_cutoff = 3,
                           cluster_cols = T,
                           annotation_legend=F,
+                          legend = F,
                           color = colorRampPalette(c("#2166AC", "white", "#B2182B"))(100)
                           ){
   cgs = get_cgs(deg)
