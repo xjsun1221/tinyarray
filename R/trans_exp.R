@@ -86,7 +86,7 @@ trans_exp = function(exp,mrna_only = F,lncrna_only = F,gtex = F){
 trans_array = function(exp,ids,from = "probe_id",
                        to = "symbol"){
   a = intersect(rownames(exp),ids[,from])
-  message(paste0(a ," of ",nrow(exp)," rownames matched"))
+  message(paste0(length(a) ," of ",nrow(exp)," rownames matched"))
   ids = ids[!duplicated(ids[,to]),]
   exp = exp[rownames(exp) %in% ids[,from],]
   ids = ids[ids[,from]%in% rownames(exp),]
