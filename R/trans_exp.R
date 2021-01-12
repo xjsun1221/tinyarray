@@ -66,6 +66,37 @@ trans_exp = function(exp,mrna_only = F,lncrna_only = F,gtex = F){
     }
 }
 
+##' trans_array
+##'
+##' transform rownames for microarray expression matrix
+##'
+##' @param exp tcga or tcga_gtex expression set from gdc or xena
+##' @param ids data.frame  with original rownames and new rownames
+##' @param from colname for original rownames
+##' @param to colname for new rownames
+##' @return a transformed expression set with new rownames
+##' @author Xiaojie Sun
+##' @export
+##' @examples
+##' exp = matrix(1:50,nrow = 10)
+##' rownames(exp) = paste0("g",1:10)
+##' ids = data.frame(probe_id = paste0("g",1:10),
+##'                 symbol = paste0("G",c(1:9,9)))
+
+trans_array = function(exp,ids,from = "probe_id",
+                       to = "symbol"){
+  a = intersect(rownames(exp),ids[,from])
+  message(paste0(a ," of ",nrow(exp)," rownames matched"))
+  ids = ids[!duplicated(ids[,to]),]
+  exp = exp[rownames(exp) %in% ids[,from],]
+  ids = ids[ids[,from]%in% rownames(exp),]
+  exp = exp[ids[,from],]
+  rownames(exp)=ids[,to]
+  message(paste0(nrow(exp)," rownames transformed after duplicate rows removed"))
+  return(exp)
+}
+
+
 ##' sam_filter
 ##'
 ##' drop duplicated samples from the same patients

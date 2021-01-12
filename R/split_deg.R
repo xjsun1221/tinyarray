@@ -153,9 +153,10 @@ draw_heatmap2 <- function(exp,
                           heat_id=1,
                           gene_number=200,
                           scale_before = F,
-                          n_cutoff = 2,
+                          n_cutoff = 3,
                           cluster_cols = T,
-                          annotation_legend=F
+                          annotation_legend=F,
+                          color = colorRampPalette(c("#2166AC", "white", "#B2182B"))(100)
                           ){
   cgs = get_cgs(deg)
   if(length(cgs)==1){
@@ -184,10 +185,12 @@ draw_heatmap2 <- function(exp,
              ht  = rbind(head(np2,gene_number),
                          tail(np2,gene_number)),
              top = head(np,gene_number))
-  heatmap = draw_heatmap(n,group_list,
+  heatmap = draw_heatmap(n,
+                         group_list,
                          scale_before = scale_before,
                          n_cutoff = n_cutoff,
                          cluster_cols = cluster_cols,
-                         annotation_legend = annotation_legend
+                         annotation_legend = annotation_legend,
+                         color = color
   )
 }

@@ -13,13 +13,13 @@ get_deg_all(
   adjust = F,
   entriz = T,
   scale_before = F,
-  n_cutoff = 2,
+  n_cutoff = 3,
   cluster_cols = T,
   annotation_legend = F,
   lab = NA,
   pkg = 4,
   symmetry = F,
-  heat_id = 2,
+  heat_id = 1,
   gene_number = 200
 )
 }
@@ -38,9 +38,9 @@ get_deg_all(
 
 \item{entriz}{logical , if TRUE ,convert symbol to entriz id.}
 
-\item{scale_before}{logical,if TRUE ,scale before plot,if FALSE,ues scale = "row" param form pheatmap}
+\item{scale_before}{deprecated parameter}
 
-\item{n_cutoff}{2 by defalut , scale before plot and set a cutoff,usually 2 or 1.6}
+\item{n_cutoff}{3 by defalut , scale before plot and set a cutoff,usually 2 or 1.6}
 
 \item{cluster_cols}{if F,heatmap will nor cluster in column}
 

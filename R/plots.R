@@ -48,14 +48,16 @@ if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
 ##' print a heatmap plot for expression matrix and group by group_list paramter
 ##'
 ##' @inheritParams draw_pca
-##' @param scale_before logical,if TRUE ,scale before plot,if FALSE,ues scale = "row" param form pheatmap
-##' @param n_cutoff 2 by defalut , scale before plot and set a cutoff,usually 2 or 1.6
+##' @param scale_before deprecated parameter
+##' @param n_cutoff 3 by defalut , scale before plot and set a cutoff,usually 2 or 1.6
 ##' @param annotation_legend logical，show annotation legend or not
 ##' @param cluster_cols if F,heatmap will nor cluster in column
+##' @param color color for heatmap
 ##' @return a heatmap plot according to \code{exp} and grouped by \code{group}.
 ##' @author Xiaojie Sun
 ##' @importFrom pheatmap pheatmap
 ##' @importFrom ggplotify as.ggplot
+##' @importFrom RColorBrewer brewer.pal
 ##' @export
 ##' @examples
 ##' #use your example data
@@ -73,7 +75,18 @@ if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
 ##' @seealso
 ##' \code{\link{draw_pca}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
 
-draw_heatmap <-  function(n,group_list,scale_before = F,n_cutoff = 2,cluster_cols = T,annotation_legend=F){
+draw_heatmap <-  function(n,
+                          group_list,
+                          scale_before = F,
+                          n_cutoff = 3,
+                          cluster_cols = T,
+                          annotation_legend=F,
+                          color = colorRampPalette(c("#2166AC", "white", "#B2182B"))(100)){
+  n = as.data.frame(n)
+  if(scale_before) {
+    message("scale_before parameter is deprecated")
+    scale_before = F
+  }
   p1 <-  all(apply(n,2,is.numeric))
   if(!p1) stop("n must be a numeric matrix")
   p2  <-  (sum(!duplicated(group_list)) > 1)
@@ -82,35 +95,21 @@ draw_heatmap <-  function(n,group_list,scale_before = F,n_cutoff = 2,cluster_col
   if(!p3) stop("group_list must be a factor")
   annotation_col=data.frame(group=group_list)
   rownames(annotation_col)=colnames(n)
-  library(RColorBrewer)
-  colset = c("#66C2A5","#FC8D62","#8DA0CB","#E78AC3","#A6D854","#FFD92F","#E5C494","#B3B3B3")
+  colset = c("#92C5DE","#F4A582","#66C2A5","#FC8D62","#8DA0CB","#E78AC3","#A6D854","#FFD92F","#E5C494","#B3B3B3")
   col = colset[1:length(levels(group_list))]
   ann_colors = list(group = col)
   names(ann_colors$group)=levels(group_list)
-  if(scale_before){
-    n = t(scale(t(n)))
-    n[n>n_cutoff] = n_cutoff
-    n[n< -n_cutoff] = -n_cutoff
-    p = as.ggplot(pheatmap(n,
-                           show_colnames =F,
-                           show_rownames = F,
-                           annotation_col=annotation_col,
-                           legend = F,
-                           cluster_cols = cluster_cols,
-                           annotation_legend = F,
-                           annotation_colors = ann_colors,
-                           annotation_names_col = F,
-                           slient = T
-    ))
-  }
+
   if(!scale_before){
     p = as.ggplot(pheatmap(n,
                            show_colnames =F,
                            show_rownames = F,
                            scale = "row",
+                           color = color,
                            annotation_col=annotation_col,
                            annotation_colors = ann_colors,
                            cluster_cols = cluster_cols,
+                           breaks = seq(-n_cutoff,n_cutoff,length.out = length(color)),
                            legend = F,
                            slient = T,
                            annotation_legend = annotation_legend,
