@@ -319,11 +319,14 @@ draw_boxplot = function(exp,Group,
       wilcox.test(x~Group)$p.value
     })
   }
-  if(sum(x<0.05)==0) {
+  if(sum(x< pvalue_cutoff)==0) {
     message("No rows below the threshold,plot all rows")
     drop = F
   }
-  if(drop) x = x[ x < pvalue_cutoff]
+  if(drop){
+    x = x[ x < pvalue_cutoff]
+    exp = exp[rownames(exp) %in% names(x),]
+  }
 
   if(length(x)>40) message("seems to be too many rows")
   dat = rownames_to_column(as.data.frame(t(exp)),var = "sample")
