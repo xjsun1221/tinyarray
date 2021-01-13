@@ -6,7 +6,7 @@
 \usage{
 draw_boxplot(
   exp,
-  Group,
+  group_list,
   method = "kruskal.test",
   sort = T,
   drop = F,
@@ -20,6 +20,8 @@ draw_boxplot(
 }
 \arguments{
 \item{exp}{A numeric matrix}
+
+\item{group_list}{A factor with duplicated character or factor}
 
 \item{method}{one of kruskal.test,aov,t.test and wilcox.test}
 
@@ -38,8 +40,6 @@ draw_boxplot(
 \item{grouplab}{title of group legend}
 
 \item{p.label}{whether to show p vlaue in the plot}
-
-\item{group_list}{A factor with duplicated character or factor}
 }
 \value{
 a boxplot according to \code{exp} and grouped by \code{group}.

@@ -287,7 +287,7 @@ draw_venn <- function(x,name){
 ##' @seealso
 ##' \code{\link{draw_heatmap}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
 
-draw_boxplot = function(exp,Group,
+draw_boxplot = function(exp,group_list,
                         method = "kruskal.test",
                         sort = T,
                         drop = F,
@@ -301,26 +301,26 @@ draw_boxplot = function(exp,Group,
   if(!p0) stop("exp must be a numeric matrix with rownames")
   p1 = method %in% c("kruskal.test","aov","t.test","wilcox.test")
   if(!p1) stop("method should be one of kruskal.test,aov,t.test and wilcox.test")
-  if(length(unique(Group))>2 & method %in% c("t.test","wilcox.test")) stop("Group parameter must have exactly 2 group")
-  p2  <-  (sum(!duplicated(Group)) > 1)
-  if(!p2) stop("Group must more than 1")
-  p3 <- is.factor(Group)
-  if(!p3) stop("Group must be a factor")
+  if(length(unique(group_list))>2 & method %in% c("t.test","wilcox.test")) stop("group_list parameter must have exactly 2 group")
+  p2  <-  (sum(!duplicated(group_list)) > 1)
+  if(!p2) stop("group_list must more than 1")
+  p3 <- is.factor(group_list)
+  if(!p3) stop("group_list must be a factor")
   if(method=="kruskal.test"){
     x = apply(exp, 1, function(x){
-      kruskal.test(x~Group)$p.value
+      kruskal.test(x~group_list)$p.value
     })
   }else if(method=="aov"){
     x = apply(exp, 1, function(x){
-      aov(x~Group)$p.value
+      aov(x~group_list)$p.value
     })
   }else if(method=="t.test"){
     x = apply(exp, 1, function(x){
-      t.test(x~Group)$p.value
+      t.test(x~group_list)$p.value
     })
   }else if(method=="wilcox.test"){
     x = apply(exp, 1, function(x){
-      wilcox.test(x~Group)$p.value
+      wilcox.test(x~group_list)$p.value
     })
   }
   if(sum(x< pvalue_cutoff)==0) {
@@ -334,7 +334,7 @@ draw_boxplot = function(exp,Group,
 
   if(length(x)>40) message("seems to be too many rows")
   dat = rownames_to_column(as.data.frame(t(exp)),var = "sample")
-  dat$group = Group
+  dat$group = group_list
   dat = gather(dat,
                rows,exp,-sample,-group)
   if(sort){
@@ -344,7 +344,7 @@ draw_boxplot = function(exp,Group,
   }
   colset = c("#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854",
              "#FFD92F", "#E5C494", "#B3B3B3")
-  col = colset[1:length(levels(Group))]
+  col = colset[1:length(levels(group_list))]
   p = ggplot(dat,aes(rows,exp,fill = group))+
     stat_boxplot(geom ='errorbar', width = width)+
     geom_boxplot( width = width)+
