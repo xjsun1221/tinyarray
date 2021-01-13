@@ -10,7 +10,7 @@ draw_boxplot(
   method = "kruskal.test",
   sort = T,
   drop = F,
-  width = 0.3,
+  width = 0.5,
   pvalue_cutoff = 0.05,
   xlab = "Gene",
   ylab = "Expression",
