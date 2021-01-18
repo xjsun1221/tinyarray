@@ -188,6 +188,7 @@ draw_heatmap2 <- function(exp,
              top = head(np,gene_number))
   heatmap = draw_heatmap(n,
                          group_list,
+                         show_rownames = show_rownames,
                          scale_before = scale_before,
                          n_cutoff = n_cutoff,
                          cluster_cols = cluster_cols,

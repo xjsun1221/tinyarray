@@ -54,6 +54,7 @@ if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
 ##' @param cluster_cols if F,heatmap will nor cluster in column
 ##' @param color color for heatmap
 ##' @param legend logical,show legend or not
+##' @param show_rownames logical,show rownames or not
 ##' @return a heatmap plot according to \code{exp} and grouped by \code{group}.
 ##' @author Xiaojie Sun
 ##' @importFrom pheatmap pheatmap
@@ -82,6 +83,7 @@ draw_heatmap <-  function(n,
                           n_cutoff = 3,
                           cluster_cols = T,
                           legend = F,
+                          show_rownames = F,
                           annotation_legend=F,
                           color = colorRampPalette(c("#2166AC", "white", "#B2182B"))(100)){
   n = as.data.frame(n)
@@ -105,7 +107,7 @@ draw_heatmap <-  function(n,
   if(!scale_before){
     p = as.ggplot(pheatmap(n,
                            show_colnames =F,
-                           show_rownames = F,
+                           show_rownames = show_rownames,
                            scale = "row",
                            color = color,
                            annotation_col=annotation_col,
