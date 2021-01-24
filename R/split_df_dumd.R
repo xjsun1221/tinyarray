@@ -24,7 +24,7 @@ split_df = function(df,a = 1,b = 2,sep = ","){
   gs = str_split(df[,b],sep)
   sdf = data.frame(a1 = rep(df[,a],times = sapply(gs,length)),
                    a2 = unlist(gs))
-  sdf = distinct(a1,a2)
+  sdf = distinct(sdf,a1,a2)
   return(sdf)
 }
 
