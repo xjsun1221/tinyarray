@@ -11,6 +11,7 @@ draw_heatmap2(
   heat_union = T,
   heat_id = 1,
   gene_number = 200,
+  show_rownames = F,
   scale_before = F,
   n_cutoff = 3,
   cluster_cols = T,
@@ -31,6 +32,8 @@ draw_heatmap2(
 \item{heat_id}{id of heatmap,1 for all DEGs,2 for head and tail,3 for top n DEGs}
 
 \item{gene_number}{how many DEGs will heatmap show .}
+
+\item{show_rownames}{logical,show rownames or not}
 
 \item{scale_before}{deprecated parameter}
 

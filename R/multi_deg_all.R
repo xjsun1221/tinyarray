@@ -68,6 +68,7 @@ multi_deg_all <- function(exp,
   pca_plot = draw_pca(exp,group_list)
   heatmap = draw_heatmap2(exp,group_list,
                           deg,
+                          show_rownames = show_rownames,
                           heat_id=heat_id,
                           gene_number=gene_number,
                           scale_before = scale_before,

@@ -16,6 +16,7 @@ get_deg_all(
   n_cutoff = 3,
   cluster_cols = T,
   annotation_legend = F,
+  show_rownames = F,
   legend = F,
   lab = NA,
   pkg = 4,
@@ -46,6 +47,8 @@ get_deg_all(
 \item{cluster_cols}{if F,heatmap will nor cluster in column}
 
 \item{annotation_legend}{logical，show annotation legend or not}
+
+\item{show_rownames}{logical,show rownames or not}
 
 \item{legend}{logical,show legend or not}
 
