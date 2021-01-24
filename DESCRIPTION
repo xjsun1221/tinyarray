@@ -1,7 +1,7 @@
 Package: tinyarray
 Type: Package
 Title: simplify geo and tcga analysis and plots
-Version: 1.7.2
+Version: 1.7.3
 Author: Xiaojie Sun
 Maintainer: Xiaojie Sun <18763899370@163.com>
 Description: Simplify geo and tcga analysis and plots
