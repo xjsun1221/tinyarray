@@ -15,7 +15,10 @@ draw_boxplot(
   xlab = "Gene",
   ylab = "Expression",
   grouplab = "Group",
-  p.label = F
+  p.label = F,
+  add_error_bar = F,
+  colset = c("#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F",
+    "#E5C494", "#B3B3B3")
 )
 }
 \arguments{
@@ -40,6 +43,10 @@ draw_boxplot(
 \item{grouplab}{title of group legend}
 
 \item{p.label}{whether to show p vlaue in the plot}
+
+\item{add_error_bar}{whether to add error bar}
+
+\item{colset}{color for boxplot}
 }
 \value{
 a boxplot according to \code{exp} and grouped by \code{group}.

@@ -263,6 +263,8 @@ draw_venn <- function(x,name){
 ##' @param ylab title of the y axis
 ##' @param grouplab title of group legend
 ##' @param p.label whether to show p vlaue in the plot
+##' @param add_error_bar whether to add error bar
+##' @param colset color for boxplot
 ##' @return a boxplot according to \code{exp} and grouped by \code{group}.
 ##' @author Xiaojie Sun
 ##' @importFrom tidyr gather
@@ -298,7 +300,10 @@ draw_boxplot = function(exp,group_list,
                         xlab = "Gene",
                         ylab = "Expression",
                         grouplab = "Group",
-                        p.label = F){
+                        p.label = F,
+                        add_error_bar = F,
+                        colset = c("#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854",
+                                 "#FFD92F", "#E5C494", "#B3B3B3")){
   p0 <-  all(apply(exp,2,is.numeric)) & (!is.null(rownames(exp)))
   if(!p0) stop("exp must be a numeric matrix with rownames")
   p1 = method %in% c("kruskal.test","aov","t.test","wilcox.test")
@@ -344,11 +349,8 @@ draw_boxplot = function(exp,group_list,
                       levels = names(sort(x)),
                       ordered = T)
   }
-  colset = c("#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854",
-             "#FFD92F", "#E5C494", "#B3B3B3")
   col = colset[1:length(levels(group_list))]
   p = ggplot(dat,aes(rows,exp,fill = group))+
-    stat_boxplot(geom ='errorbar', width = width)+
     geom_boxplot( width = width)+
     theme_bw()+
     theme(legend.position = "top")+
@@ -356,6 +358,7 @@ draw_boxplot = function(exp,group_list,
          x = xlab,
          y = ylab)+
     scale_fill_manual(values = col)
+  if(add_error_bar) p = stat_boxplot(geom ='errorbar', width = width)
   if(!p.label){
     p = p + stat_compare_means(aes(group = group,label = ..p.signif..),method = method)
   }else{
