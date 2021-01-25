@@ -45,7 +45,7 @@ exp_surv <- function(exprSet_hub,meta){
   cut.point = point_cut(exprSet_hub,meta)
   splots <- lapply(rownames(exprSet_hub), function(g){
     i = which(rownames(exprSet_hub)== g)
-    meta$gene=ifelse(as.integer(exprSet_hub[g,]) > cut.point[[i]],'high','low')
+    meta$gene=ifelse(exprSet_hub[g,] > cut.point[[i]],'high','low')
     sfit1=survival::survfit(survival::Surv(time, event)~gene, data=meta)
     p = survminer::ggsurvplot(sfit1,pval =TRUE,
                               palette = c("red", "grey"),
