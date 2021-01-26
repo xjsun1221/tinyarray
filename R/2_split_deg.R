@@ -22,7 +22,7 @@
 ##' library(stringr)
 ##' group_list=ifelse(str_detect(geo$pd$title,"MObese"),"MObese",ifelse(str_detect(geo$pd$title,"NonObese"),"NonObese","Obese"))
 ##' group_list=factor(group_list,levels = c("NonObese","Obese","MObese"))
-##' find_anno(geo$gpl)
+##' find_anno(geo$gpl,install = T)
 ##' ids <- toTable(hgu133aSYMBOL)
 ##' deg = multi_deg(geo$exp,group_list,ids,adjust = F)
 ##' cgs = get_cgs(deg)
@@ -77,10 +77,11 @@ get_cgs <- function(deg){
 ##' library(stringr)
 ##' group_list=ifelse(str_detect(geo$pd$title,"MObese"),"MObese",ifelse(str_detect(geo$pd$title,"NonObese"),"NonObese","Obese"))
 ##' group_list=factor(group_list,levels = c("NonObese","Obese","MObese"))
-##' find_anno(geo$gpl)
+##' find_anno(geo$gpl,install = T)
 ##' ids <- toTable(hgu133aSYMBOL)
 ##' deg = multi_deg(geo$exp,group_list,ids,adjust = F)
 ##' draw_volcano2(deg)
+##' draw_volcano2(deg,color = c("darkgreen","grey","darkred"))
 ##' @seealso
 ##' \code{\link{geo_download}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
 
@@ -90,7 +91,9 @@ draw_volcano2 = function(deg,
                          pvalue_cutoff=0.05,
                          logFC_cutoff=1,
                          adjust=F,
-                         symmetry=T){
+                         symmetry=T,
+                         color = c("blue", "grey", "red")
+                         ){
   if(!is.list(deg) & is.data.frame(deg))stop("deg is a data.frame or list returned by limma")
   if(is.data.frame(deg)) deg = list(deg = deg)
   volcano_plots <- lapply(1:length(deg),
@@ -102,6 +105,7 @@ draw_volcano2 = function(deg,
                               pvalue_cutoff = pvalue_cutoff,
                               logFC_cutoff = logFC_cutoff,
                               adjust = adjust,
+                              color = color,
                               symmetry = symmetry
                             )
                           })
@@ -122,7 +126,7 @@ draw_volcano2 = function(deg,
 ##' @inheritParams draw_volcano
 ##' @inheritParams draw_heatmap
 ##' @inheritParams draw_pca
-##' @param heat_union logical , if TRUE ,use union or intersect DEGs for heatmap
+##' @param heat_union logical ,use union or intersect DEGs for heatmap
 ##' @param heat_id id of heatmap,1 for all DEGs,2 for head and tail,3 for top n DEGs
 ##' @param gene_number how many DEGs will heatmap show .
 ##' @return a heatmap plot according to \code{exp} and grouped by \code{group}.
@@ -138,13 +142,12 @@ draw_volcano2 = function(deg,
 ##' library(stringr)
 ##' group_list=ifelse(str_detect(geo$pd$title,"MObese"),"MObese",ifelse(str_detect(geo$pd$title,"NonObese"),"NonObese","Obese"))
 ##' group_list=factor(group_list,levels = c("NonObese","Obese","MObese"))
-##' find_anno(geo$gpl)
+##' find_anno(geo$gpl,install = T)
 ##' ids <- toTable(hgu133aSYMBOL)
 ##' deg = multi_deg(geo$exp,group_list,ids,adjust = F)
 ##' draw_heatmap2(geo$exp,group_list,deg)
 ##' @seealso
 ##' \code{\link{draw_pca}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
-
 
 draw_heatmap2 <- function(exp,
                           group_list,
@@ -158,7 +161,9 @@ draw_heatmap2 <- function(exp,
                           cluster_cols = T,
                           annotation_legend=F,
                           legend = F,
-                          color = colorRampPalette(c("#2166AC", "white", "#B2182B"))(100)
+                          color = colorRampPalette(c("#2166AC", "white", "#B2182B"))(100),
+                          color_an = c("#92C5DE", "#F4A582", "#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3",
+                                       "#A6D854", "#FFD92F", "#E5C494", "#B3B3B3")
                           ){
   cgs = get_cgs(deg)
   if(length(cgs)==1){
@@ -189,11 +194,13 @@ draw_heatmap2 <- function(exp,
              top = head(np,gene_number))
   heatmap = draw_heatmap(n,
                          group_list,
+                         legend = legend,
                          show_rownames = show_rownames,
                          scale_before = scale_before,
                          n_cutoff = n_cutoff,
                          cluster_cols = cluster_cols,
                          annotation_legend = annotation_legend,
-                         color = color
+                         color = color,
+                         color_an = color_an
   )
 }

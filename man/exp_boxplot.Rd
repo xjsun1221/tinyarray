@@ -4,7 +4,7 @@
 \alias{exp_boxplot}
 \title{exp_boxplot}
 \usage{
-exp_boxplot(exp_hub)
+exp_boxplot(exp_hub, color = c("grey", "red"))
 }
 \arguments{
 \item{exp_hub}{an expression matrix for hubgenes}

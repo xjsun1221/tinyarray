@@ -28,6 +28,11 @@ get_deg <- function(exp,
                     pvalue_cutoff=0.05,
                     adjust = F,
                     entriz = T) {
+  p3 <- is.factor(group_list)
+  if(!p3) {
+    group_list = factor(group_list)
+    warning("group_list was covert to factor")
+  }
   if(ncol(exp)!=length(group_list))stop("wrong group_list or exp")
   if(ncol(ids)!=2)stop("wrong ids pramater,it should be a data.frame with probe_id and symbol")
   colnames(ids) = c("probe_id","symbol")

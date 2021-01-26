@@ -41,14 +41,14 @@ make_tcga_group <- function(exp){
 ##' @seealso
 ##' \code{\link{geo_download}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
 
-exp_surv <- function(exprSet_hub,meta){
+exp_surv <- function(exprSet_hub,meta,color = c("grey", "red")){
   cut.point = point_cut(exprSet_hub,meta)
   splots <- lapply(rownames(exprSet_hub), function(g){
     i = which(rownames(exprSet_hub)== g)
     meta$gene=ifelse(exprSet_hub[g,] > cut.point[[i]],'high','low')
     sfit1=survival::survfit(survival::Surv(time, event)~gene, data=meta)
     p = survminer::ggsurvplot(sfit1,pval =TRUE,
-                              palette = c("red", "grey"),
+                              palette = rev(color),
                               data = meta,
                               legend = c(0.8,0.8),
                               title = rownames(exprSet_hub)[[i]]
@@ -80,21 +80,22 @@ exp_surv <- function(exprSet_hub,meta){
 ##' @seealso
 ##' \code{\link{geo_download}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
 
-exp_boxplot <-  function(exp_hub){
+exp_boxplot <-  function(exp_hub,color = c("grey","red")){
   if(nrow(exp_hub)>15)warning(paste0(nrow(exp_hub)," figures will be produced"))
   group_list = make_tcga_group(exp_hub)
   k = rownames(exp_hub)
   rownames(exp_hub) = paste0("gene",1:nrow(exp_hub))
   dat = as.data.frame(t(exp_hub))
   dat$group_list = group_list
+  color = color[1:length(levels(group_list))]
+  names(color) = levels(group_list)
   bplots = lapply(1:nrow(exp_hub),function(i){
     ggplot(dat,
            aes_string(x = "group_list",
                       y = rownames(exp_hub)[[i]],
                       fill = "group_list"))+
       geom_boxplot()+
-      scale_fill_manual(values = c("normal" = "grey",
-                                   "tumor" = "red"))+
+      scale_fill_manual(color)+
       labs(y = k[[i]])+
       stat_compare_means(method = "t.test")+
       #stat_compare_means(label.y = 15)  +

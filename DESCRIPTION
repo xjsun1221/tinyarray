@@ -1,7 +1,7 @@
 Package: tinyarray
 Type: Package
 Title: simplify geo and tcga analysis and plots
-Version: 1.7.5
+Version: 2.0.1
 Author: Xiaojie Sun
 Maintainer: Xiaojie Sun <18763899370@163.com>
 Description: Simplify geo and tcga analysis and plots
@@ -9,6 +9,7 @@ License: MIT
 Encoding: UTF-8
 LazyData: true
 Imports: 
+    tidyr,
     dplyr,
     stringr,
     tibble,

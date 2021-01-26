@@ -4,6 +4,7 @@
 ##'
 ##' @param exp A numeric matrix
 ##' @param group_list A factor with duplicated character or factor
+##' @param color color vector
 ##' @return a pca plot according to \code{exp} and grouped by \code{group}.
 ##' @author Xiaojie Sun
 ##' @importFrom FactoMineR PCA
@@ -15,22 +16,27 @@
 ##' colnames(exp) <- paste0("sample",1:6)
 ##' rownames(exp) <- paste0("gene",1:10)
 ##' exp[1:4,1:4]
-##' group_list <- rep(c("A","B"),each = 3)
+##' group_list <- factor(rep(c("A","B"),each = 3))
 ##' draw_pca(exp,group_list)
+##' draw_pca(exp,group_list,color = c("blue","red"))
 ##' @seealso
 ##' \code{\link{draw_heatmap}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
 
-draw_pca <-  function(exp,group_list){
+draw_pca <-  function(exp,group_list,
+                      color = c("#92C5DE","#F4A582","#66C2A5","#FC8D62","#8DA0CB","#E78AC3","#A6D854","#FFD92F","#E5C494","#B3B3B3")
+){
   p1 <-  all(apply(exp,2,is.numeric))
   if(!p1) stop("exp must be a numeric matrix")
   p2  <-  (sum(!duplicated(group_list)) > 1)
   if(!p2) stop("group_list must more than 1")
   p3 <- is.factor(group_list)
-  if(!p3) stop("group_list must be a factor")
+  if(!p3) {
+    group_list = factor(group_list)
+    warning("group_list was covert to factor")
+  }
   dat <- as.data.frame(t(exp))
   dat.pca <- PCA(dat, graph = FALSE)
-  colset = c("#66C2A5","#FC8D62","#8DA0CB","#E78AC3","#A6D854","#FFD92F","#E5C494","#B3B3B3")
-  col = colset[1:length(levels(group_list))]
+  col = color[1:length(levels(group_list))]
   fviz_pca_ind(dat.pca,
                geom.ind = "point",
                col.ind = group_list,
@@ -45,7 +51,7 @@ if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
 
 ##' draw a heatmap plot
 ##'
-##' print a heatmap plot for expression matrix and group by group_list paramter
+##' print a heatmap plot for expression matrix and group by group_list paramter, exp will be scaled.
 ##'
 ##' @inheritParams draw_pca
 ##' @param scale_before deprecated parameter
@@ -53,6 +59,7 @@ if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
 ##' @param annotation_legend logical，show annotation legend or not
 ##' @param cluster_cols if F,heatmap will nor cluster in column
 ##' @param color color for heatmap
+##' @param color_an color for column annotation
 ##' @param legend logical,show legend or not
 ##' @param show_rownames logical,show rownames or not
 ##' @return a heatmap plot according to \code{exp} and grouped by \code{group}.
@@ -62,18 +69,21 @@ if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
 ##' @importFrom RColorBrewer brewer.pal
 ##' @export
 ##' @examples
-##' #use your example data
+##' #example data
 ##' exp = matrix(abs(rnorm(60,sd = 16)),nrow = 10)
 ##' exp[,1:3] <- exp[,1:3]+20
 ##' colnames(exp) <- paste0("sample",1:6)
 ##' rownames(exp) <- paste0("gene",1:10)
 ##' exp[1:4,1:4]
-##' group_list = rep(c("A","B"),each = 3)
+##' group_list = factor(rep(c("A","B"),each = 3))
 ##' draw_heatmap(exp,group_list)
 ##' #use iris
 ##' n = t(iris[,1:4]);colnames(n) = 1:150
 ##' group_list = iris$Species
 ##' draw_heatmap(n,group_list)
+##' draw_heatmap(n,group_list)
+##' draw_heatmap(n,group_list,color = colorRampPalette(c("green","black","red"))(100),
+##'              color_an = c("red","blue","pink") )
 ##' @seealso
 ##' \code{\link{draw_pca}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
 
@@ -85,7 +95,8 @@ draw_heatmap <-  function(n,
                           legend = F,
                           show_rownames = F,
                           annotation_legend=F,
-                          color = colorRampPalette(c("#2166AC", "white", "#B2182B"))(100)){
+                          color = colorRampPalette(c("#2166AC", "white", "#B2182B"))(100),
+                          color_an = c("#92C5DE","#F4A582","#66C2A5","#FC8D62","#8DA0CB","#E78AC3","#A6D854","#FFD92F","#E5C494","#B3B3B3")){
   n = as.data.frame(n)
   if(scale_before) {
     message("scale_before parameter is deprecated")
@@ -96,11 +107,13 @@ draw_heatmap <-  function(n,
   p2  <-  (sum(!duplicated(group_list)) > 1)
   if(!p2) stop("group_list must more than 1")
   p3 <- is.factor(group_list)
-  if(!p3) stop("group_list must be a factor")
+  if(!p3) {
+    group_list = factor(group_list)
+    warning("group_list was covert to factor")
+  }
   annotation_col=data.frame(group=group_list)
   rownames(annotation_col)=colnames(n)
-  colset = c("#92C5DE","#F4A582","#66C2A5","#FC8D62","#8DA0CB","#E78AC3","#A6D854","#FFD92F","#E5C494","#B3B3B3")
-  col = colset[1:length(levels(group_list))]
+  col = color_an[1:length(levels(group_list))]
   ann_colors = list(group = col)
   names(ann_colors$group)=levels(group_list)
 
@@ -133,6 +146,7 @@ draw_heatmap <-  function(n,
 ##' @param pkg a integer ,means which Differential analysis packages you used,we support three packages by now, 1,2,3,4 respectively means "DESeq2","edgeR","limma(voom)","limma"
 ##' @param adjust a logical value, would you like to use adjusted pvalue to draw this plot,FAlSE by defult.
 ##' @param symmetry a logical value ,would you like to get your plot symmetrical
+##' @param color color vector
 ##' @return a volcano plot according to logFC and P.value(or adjust P.value)
 ##' @author Xiaojie Sun
 ##' @importFrom ggplot2 ggplot
@@ -154,10 +168,12 @@ draw_heatmap <-  function(n,
 ##' head(deseq_data)
 ##' draw_volcano(deseq_data)
 ##' draw_volcano(deseq_data,pvalue_cutoff = 0.01,logFC_cutoff = 2)
+##' draw_volcano(deseq_data,color = c("darkgreen", "darkgrey", "#B2182B"))
+
 ##' @seealso
 ##' \code{\link{draw_heatmap}};\code{\link{draw_pca}};\code{\link{draw_venn}}
 
-draw_volcano <- function(deg,lab=NA,pvalue_cutoff = 0.05,logFC_cutoff= 1,pkg = 1,adjust = F,symmetry = F){
+draw_volcano <- function(deg,lab=NA,pvalue_cutoff = 0.05,logFC_cutoff= 1,pkg = 1,adjust = F,symmetry = F,color = c("blue", "grey","red")){
   if(!is.data.frame(deg)) stop("deg must be a data.frame created by Differential analysis")
   if(pvalue_cutoff>0.1)warning("Your pvalue_cutoff seems too large")
   if(pvalue_cutoff>=1)stop("pvalue_cutoff will never larger than 1")
@@ -190,7 +206,7 @@ draw_volcano <- function(deg,lab=NA,pvalue_cutoff = 0.05,logFC_cutoff= 1,pkg = 1
                   y = -log10(P.value))) +
     geom_point(alpha=0.4, size=1.75,
                aes(color=change)) +
-    scale_color_manual(values=c("blue", "grey","red"))+
+    scale_color_manual(values=color)+
     geom_vline(xintercept=c(-logFC_cutoff,logFC_cutoff),lty=4,col="black",lwd=0.8) +
     geom_hline(yintercept = -log10(pvalue_cutoff),lty=4,col="black",lwd=0.8) +
     theme_bw()+
@@ -208,6 +224,7 @@ draw_volcano <- function(deg,lab=NA,pvalue_cutoff = 0.05,logFC_cutoff= 1,pkg = 1
 ##'
 ##' @param x a list for plot
 ##' @param name main of the plot
+##' @param color color vector
 ##' @return a venn plot according to \code{x}, \code{y} and.\code{z} named "name" paramter
 ##' @author Xiaojie Sun
 ##' @importFrom VennDiagram venn.diagram
@@ -217,15 +234,15 @@ draw_volcano <- function(deg,lab=NA,pvalue_cutoff = 0.05,logFC_cutoff= 1,pkg = 1
 ##' @examples
 ##' x = list(Deseq2=sample(1:100,30),edgeR = sample(1:100,30),limma = sample(1:100,30))
 ##' draw_venn(x,"test")
+##' draw_venn(x,"test",color = c("darkgreen", "darkblue", "#B2182B"))
 ##' @seealso
 ##' \code{\link{draw_pca}};\code{\link{draw_volcano}};\code{\link{draw_heatmap}}
 
-draw_venn <- function(x,name){
+draw_venn <- function(x,name,color = c("#66C2A5","#FC8D62","#8DA0CB","#E78AC3","#A6D854","#FFD92F","#E5C494","#B3B3B3")){
   if(as.numeric(dev.cur())!=1) graphics.off()
   if(!is.list(x)) stop("x must be a list")
   if(length(x)>7) stop("why do you give me so many elements to compare, I reject!")
-  colset = c("#66C2A5","#FC8D62","#8DA0CB","#E78AC3","#A6D854","#FFD92F","#E5C494","#B3B3B3")
-  col = colset[1:length(x)]
+  col = color[1:length(x)]
   p = venn.diagram(x = x,
                    imagetype ="png",
                    filename=NULL,
@@ -252,8 +269,7 @@ draw_venn <- function(x,name){
 ##'
 ##' draw boxplot for expression
 ##'
-##' @param exp A numeric matrix
-##' @param group_list A factor with duplicated character or factor
+##' @inheritParams draw_pca
 ##' @param method one of kruskal.test,aov,t.test and wilcox.test
 ##' @param width wdith of boxplot and error bar
 ##' @param sort whether the boxplot will be sorted
@@ -264,7 +280,6 @@ draw_venn <- function(x,name){
 ##' @param grouplab title of group legend
 ##' @param p.label whether to show p vlaue in the plot
 ##' @param add_error_bar whether to add error bar
-##' @param colset color for boxplot
 ##' @return a boxplot according to \code{exp} and grouped by \code{group}.
 ##' @author Xiaojie Sun
 ##' @importFrom tidyr gather
@@ -286,8 +301,9 @@ draw_venn <- function(x,name){
 ##' rownames(exp) <- paste0("gene",1:10)
 ##' exp[,4:6] = exp[,4:6] +10
 ##' exp[1:4,1:4]
-##' Group <- rep(c("A","B"),each = 3)
-##' draw_boxplot(exp,Group)
+##' group_list <- factor(rep(c("A","B"),each = 3))
+##' draw_boxplot(exp,group_list)
+##' draw_boxplot(exp,group_list,color = c("grey","red"))
 ##' @seealso
 ##' \code{\link{draw_heatmap}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
 
@@ -302,7 +318,7 @@ draw_boxplot = function(exp,group_list,
                         grouplab = "Group",
                         p.label = F,
                         add_error_bar = F,
-                        colset = c("#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854",
+                        color = c("#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854",
                                  "#FFD92F", "#E5C494", "#B3B3B3")){
   p0 <-  all(apply(exp,2,is.numeric)) & (!is.null(rownames(exp)))
   if(!p0) stop("exp must be a numeric matrix with rownames")
@@ -312,14 +328,17 @@ draw_boxplot = function(exp,group_list,
   p2  <-  (sum(!duplicated(group_list)) > 1)
   if(!p2) stop("group_list must more than 1")
   p3 <- is.factor(group_list)
-  if(!p3) stop("group_list must be a factor")
+  if(!p3) {
+    group_list = factor(group_list)
+    warning("group_list was covert to factor")
+  }
   if(method=="kruskal.test"){
     x = apply(exp, 1, function(x){
       kruskal.test(x~group_list)$p.value
     })
   }else if(method=="aov"){
     x = apply(exp, 1, function(x){
-      aov(x~group_list)$p.value
+      summary(aov(x~group_list))[[1]]$`Pr(>F)`[1]
     })
   }else if(method=="t.test"){
     x = apply(exp, 1, function(x){
@@ -349,7 +368,7 @@ draw_boxplot = function(exp,group_list,
                       levels = names(sort(x)),
                       ordered = T)
   }
-  col = colset[1:length(levels(group_list))]
+  col = color[1:length(levels(group_list))]
   p = ggplot(dat,aes(rows,exp,fill = group))+
     geom_boxplot( width = width)+
     theme_bw()+

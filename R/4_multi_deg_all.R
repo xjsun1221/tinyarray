@@ -22,9 +22,10 @@
 ##' library(stringr)
 ##' group_list=ifelse(str_detect(geo$pd$title,"MObese"),"MObese",ifelse(str_detect(geo$pd$title,"NonObese"),"NonObese","Obese"))
 ##' group_list=factor(group_list,levels = c("NonObese","Obese","MObese"))
-##' find_anno(geo$gpl)
+##' find_anno(geo$gpl,install = T)
 ##' ids <- toTable(hgu133aSYMBOL)
-##' dcp = multi_deg_all(geo$exp,group_list,ids,adjust = F,heat_id = 2,gene_number = 360)
+##' dcp = multi_deg_all(geo$exp,
+##' group_list,ids,adjust = F)
 ##' dcp[[3]]
 ##' @seealso
 ##' \code{\link{geo_download}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
@@ -40,13 +41,15 @@ multi_deg_all <- function(exp,
                           n_cutoff = 3,
                           cluster_cols = T,
                           annotation_legend = F,
+                          show_rownames = F,
                           legend = F,
                           lab = NA,
                           pkg = 4,
                           symmetry = F,
                           heat_union = T,
                           heat_id = 1,
-                          gene_number = 200) {
+                          gene_number = 200,
+                          color_volcano = c("blue","grey","red")) {
   deg = multi_deg(
     exp,
     group_list,
@@ -60,11 +63,12 @@ multi_deg_all <- function(exp,
   #exp = exp[match(deg[[1]]$probe_id,rownames(exp)),]
   cgs = get_cgs(deg)
   volcano_plot = draw_volcano2(deg,
-                               pkg = 4,
+                               pkg = pkg,
                                pvalue_cutoff = pvalue_cutoff,
                                logFC_cutoff = logFC_cutoff,
                                adjust = adjust,
-                               symmetry = T)
+                               symmetry = symmetry,
+                               color = color_volcano)
   pca_plot = draw_pca(exp,group_list)
   heatmap = draw_heatmap2(exp,group_list,
                           deg,

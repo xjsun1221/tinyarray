@@ -81,7 +81,8 @@ get_deg_all <- function(exp,
 ##' find gpl annotation package or files
 ##'
 ##' @param gpl a gpl accession
-##' @param install if R packages will be installed
+##' @param install whether to install and library the package
+##' @param update whether to update the package
 ##' @return a list with deg data.frame, volcano plot and a list with DEGs.
 ##' @author Xiaojie Sun
 ##' @importFrom stringr str_remove_all
@@ -92,7 +93,7 @@ get_deg_all <- function(exp,
 ##' @seealso
 ##' \code{\link{geo_download}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
 
-find_anno <-function(gpl,install = F){
+find_anno <-function(gpl,install = F,update = F){
   gpl = str_to_upper(gpl)
   data("pkg_all")
   data("exists_anno_list")
@@ -111,7 +112,7 @@ find_anno <-function(gpl,install = F){
     ml1 = str_remove_all(paste0("`ids <- AnnoProbe::idmap\\(","\\'",gpl,"\\'","\\)`"),"\\\\")
     ml2 = str_remove_all(paste0("`ids <- toTable\\(",qz,"SYMBOL\\)`"),"\\\\")
     if(install){
-      if(!suppressMessages(require(paste0(qz,".db"),character.only = T)))BiocManager::install(paste0(qz,".db"))
+      if(!suppressMessages(require(paste0(qz,".db"),character.only = T)))BiocManager::install(paste0(qz,".db",update = update))
       suppressMessages(library(paste0(qz,".db"),character.only = T))
     }
     if(!(gpl %in% exists_anno_list)) {

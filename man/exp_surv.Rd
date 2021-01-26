@@ -4,7 +4,7 @@
 \alias{exp_surv}
 \title{exp_surv}
 \usage{
-exp_surv(exprSet_hub, meta)
+exp_surv(exprSet_hub, meta, color = c("grey", "red"))
 }
 \arguments{
 \item{exprSet_hub}{a tumor expression set for hubgenes}
