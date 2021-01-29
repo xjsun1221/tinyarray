@@ -117,19 +117,20 @@ draw_heatmap <-  function(n,
   names(ann_colors$group)=levels(group_list)
 
   if(!scale_before){
-    p = as.ggplot(pheatmap(n,
-                           show_colnames =F,
-                           show_rownames = show_rownames,
-                           scale = "row",
-                           color = color,
-                           annotation_col=annotation_col,
-                           annotation_colors = ann_colors,
-                           cluster_cols = cluster_cols,
-                           breaks = seq(-n_cutoff,n_cutoff,length.out = length(color)),
-                           legend = legend,
-                           slient = T,
-                           annotation_legend = annotation_legend,
-                           annotation_names_col = F))
+    p = pheatmap(n,
+             show_colnames =F,
+             show_rownames = show_rownames,
+             scale = "row",
+             color = color,
+             annotation_col=annotation_col,
+             annotation_colors = ann_colors,
+             cluster_cols = cluster_cols,
+             breaks = seq(-n_cutoff,n_cutoff,length.out = length(color)),
+             legend = legend,
+             slient = T,
+             annotation_legend = annotation_legend,
+             annotation_names_col = F)
+    p = as.ggplot(p)
   }
   return(p)
 }

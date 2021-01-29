@@ -17,8 +17,8 @@ Split the list into sublists
 }
 \examples{
 m = list(x = 1:2,
-y = matrix(1:10,2),
-z = iris)
+         y = matrix(1:10,2),
+         z = iris)
 split_list(m)
 
 }
