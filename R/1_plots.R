@@ -127,7 +127,7 @@ draw_heatmap <-  function(n,
              cluster_cols = cluster_cols,
              breaks = seq(-n_cutoff,n_cutoff,length.out = length(color)),
              legend = legend,
-             slient = T,
+             silent = T,
              annotation_legend = annotation_legend,
              annotation_names_col = F)
     p = as.ggplot(p)
