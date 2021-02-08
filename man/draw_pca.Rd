@@ -8,7 +8,8 @@ draw_pca(
   exp,
   group_list,
   color = c("#92C5DE", "#F4A582", "#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3",
-    "#A6D854", "#FFD92F", "#E5C494", "#B3B3B3")
+    "#A6D854", "#FFD92F", "#E5C494", "#B3B3B3"),
+  addEllipses = T
 )
 }
 \arguments{
@@ -17,6 +18,8 @@ draw_pca(
 \item{group_list}{A factor with duplicated character or factor}
 
 \item{color}{color vector}
+
+\item{addEllipses}{logical,add ellipses or not}
 }
 \value{
 a pca plot according to \code{exp} and grouped by \code{group}.

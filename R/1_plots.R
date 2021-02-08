@@ -5,6 +5,7 @@
 ##' @param exp A numeric matrix
 ##' @param group_list A factor with duplicated character or factor
 ##' @param color color vector
+##' @param addEllipses logical,add ellipses or not
 ##' @return a pca plot according to \code{exp} and grouped by \code{group}.
 ##' @author Xiaojie Sun
 ##' @importFrom FactoMineR PCA
@@ -23,7 +24,8 @@
 ##' \code{\link{draw_heatmap}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
 
 draw_pca <-  function(exp,group_list,
-                      color = c("#92C5DE","#F4A582","#66C2A5","#FC8D62","#8DA0CB","#E78AC3","#A6D854","#FFD92F","#E5C494","#B3B3B3")){
+                      color = c("#92C5DE","#F4A582","#66C2A5","#FC8D62","#8DA0CB","#E78AC3","#A6D854","#FFD92F","#E5C494","#B3B3B3"),
+                      addEllipses = T){
   p1 <-  all(apply(exp,2,is.numeric))
   if(!p1) stop("exp must be a numeric matrix")
   p2  <-  (sum(!duplicated(group_list)) > 1)
@@ -40,7 +42,7 @@ draw_pca <-  function(exp,group_list,
                geom.ind = "point",
                col.ind = group_list,
                palette = col,
-               addEllipses = TRUE,
+               addEllipses = addEllipses,
                legend.title = "Groups")
 }
 
