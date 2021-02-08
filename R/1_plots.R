@@ -116,8 +116,7 @@ draw_heatmap <-  function(n,
   rownames(annotation_col)=colnames(n)
   col = color_an[1:length(levels(group_list))]
   ann_colors = list(group = col)
-  names(ann_colors$group)=levels(group_list)
-
+  if(is.null(names(ann_colors$group)))names(ann_colors$group)=levels(group_list)
   if(!scale_before){
     p = pheatmap(n,
              show_colnames =F,
