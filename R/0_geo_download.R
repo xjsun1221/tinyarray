@@ -22,7 +22,7 @@
 ##' @seealso
 ##' \code{\link{simpd}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
 
-geo_download <-  function(gse,by_annopbrobe = T,simpd=T){
+geo_download <-  function(gse,by_annopbrobe = T,simpd=T,colon_remove = F){
   if((by_annopbrobe) & !require(AnnoProbe)) stop("you must install AnnoProbe first by devtools::install_github('jmzeng1314/AnnoProbe')")
   if(by_annopbrobe){
     if((!file.exists(paste0(gse,"_eSet.Rdata")))) geoChina(gse)
@@ -47,6 +47,10 @@ geo_download <-  function(gse,by_annopbrobe = T,simpd=T){
     }
     df <- data.frame(colname, count,stringsAsFactors = F) %>% arrange(desc(count)) %>% dplyr::filter(count >1)
     pd <-  pd[,df$colname]
+    if(colon_remove){
+      pd = pd[,!apply(pd, 2, function(x){all(str_detect(x,": "))})]
+      colnames(pd) = str_remove(colnames(pd),":ch1")
+    }
   }
   p1 = identical(rownames(pd),colnames(exp))
   p2 = all(rownames(pd) %in% colnames(exp) & colnames(exp) %in% rownames(pd))

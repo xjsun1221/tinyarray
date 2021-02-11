@@ -4,7 +4,7 @@
 \alias{geo_download}
 \title{geo_download}
 \usage{
-geo_download(gse, by_annopbrobe = T, simpd = T)
+geo_download(gse, by_annopbrobe = T, simpd = T, colon_remove = F)
 }
 \arguments{
 \item{gse}{gse assession number}
