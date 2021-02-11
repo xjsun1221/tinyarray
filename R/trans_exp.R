@@ -19,7 +19,7 @@
 ##' k  = trans_exp(exp)
 
 ##' @seealso
-##' \code{\link{simpd}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
+##' \code{\link{trans_array}};\code{\link{sam_filter}};\code{\link{make_tcga_group}}
 
 trans_exp = function(exp,mrna_only = F,lncrna_only = F,gtex = F){
   k00 = any(str_detect(colnames(exp),"TCGA"))
@@ -125,3 +125,46 @@ sam_filter = function(exp){
   message(paste("filtered",n1-ncol(exp),"samples."))
   return(exp)
 }
+
+
+##' match_exp_cl
+##'
+##' match exp and clinical data from tcga
+##'
+##' @param exp tcga  expression set
+##' @param cl tcga clinical data.frame
+##' @param id_column which column containes patient ids, column number or colnmn name.
+##' @param sample_centric logical,deault T,keep all samples from the same patients.if FALSE,keep only one tumor sample for one patient.
+##' @return a transformed clinical data.frame with sample ids.
+##' @author Xiaojie Sun
+##' @export
+##' @examples
+##' cl1 = match_exp_cl(exp_hub1,meta1[,2:4],"X_PATIENT")
+##' cl2 = match_exp_cl(exp_hub1,meta1[,2:4],"X_PATIENT",sample_centric = F)
+##' @seealso
+##' \code{\link{make_tcga_group}};\code{\link{sam_filter}};\code{\link{trans_array}}
+
+match_exp_cl = function(exp,cl,id_column = "id",sample_centric = T){
+  colnames(cl)[colnames(cl)==id_column] = "id"
+  cl = cl[cl$id %in% substr(colnames(exp),1,12),]
+  exp = exp[,substr(colnames(exp),1,12) %in% cl$id]
+  patient <- substr(colnames(exp),1,12)
+  if(nrow(cl)==0) stop("your exp or cl doesn't match,please check them.")
+  da = data.frame(sample_id = colnames(exp),
+                  id = patient)
+  cl = merge(da,cl,by ="id",all.y = T)
+  cl = cl[match(colnames(exp),cl$sample_id),]
+  if(!sample_centric) {
+    Group = make_tcga_group(exp)
+    exp = exp[,Group=="tumor"]
+    cl = cl[Group=="tumor",]
+    cl = cl[order(colnames(exp)),]
+    exp = exp[,sort(colnames(exp))]
+    exp = exp[,!duplicated(cl$id)]
+    cl = cl[!duplicated(cl$id),]
+  }
+  k = identical(colnames(exp),cl$sample_id)
+  if(k)message("match successfully.")
+  return(cl)
+}
+

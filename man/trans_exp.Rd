@@ -28,7 +28,7 @@ colnames(exp) = c(paste0("TCGA",1:5),paste0("GTEX",1:5))
 k  = trans_exp(exp)
 }
 \seealso{
-\code{\link{simpd}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
+\code{\link{trans_array}};\code{\link{sam_filter}};\code{\link{make_tcga_group}}
 }
 \author{
 Xiaojie Sun
