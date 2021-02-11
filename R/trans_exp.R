@@ -165,6 +165,7 @@ match_exp_cl = function(exp,cl,id_column = "id",sample_centric = T){
   }
   k = identical(colnames(exp),cl$sample_id)
   if(k)message("match successfully.")
+  colnames(exp) = cl$sample_id
   return(cl)
 }
 
