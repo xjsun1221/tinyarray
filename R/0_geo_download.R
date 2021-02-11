@@ -5,6 +5,7 @@
 ##' @param gse gse assession number
 ##' @param by_annopbrobe getGEO or geoChina
 ##' @param simpd get simplified pdata,drop out columns with all same values
+##' @param colon_remove wether to remove duplicated columns with colons
 ##' @return a list with exp,pd and gpl
 ##' @author Xiaojie Sun
 ##' @importFrom GEOquery getGEO
@@ -47,6 +48,7 @@ geo_download <-  function(gse,by_annopbrobe = T,simpd=T,colon_remove = F){
     }
     df <- data.frame(colname, count,stringsAsFactors = F) %>% arrange(desc(count)) %>% dplyr::filter(count >1)
     pd <-  pd[,df$colname]
+    pd <- pd[,!(colnames(pd) %in% c("geo_accession", "supplementary_file"))]
     if(colon_remove){
       pd = pd[,!apply(pd, 2, function(x){all(str_detect(x,": "))})]
       colnames(pd) = str_remove(colnames(pd),":ch1")
@@ -64,5 +66,14 @@ geo_download <-  function(gse,by_annopbrobe = T,simpd=T,colon_remove = F){
   #(3)提取芯片平台编号
   gpl <- eSet[[1]]@annotation
   re = list(exp=exp,pd=pd,gpl=gpl)
+  if(is.null(dim(exp))){
+    warning("exp is empty")
+  } else if (any(exp<0)) {
+    warning("nagtive values detected")
+  } else{
+    message(paste(nrow(exp),"probes,",
+                  ncol(exp),"samples",
+                  "from",min(exp),
+                  "to",max(exp)))}
   return(re)
 }

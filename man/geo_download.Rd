@@ -12,6 +12,8 @@ geo_download(gse, by_annopbrobe = T, simpd = T, colon_remove = F)
 \item{by_annopbrobe}{getGEO or geoChina}
 
 \item{simpd}{get simplified pdata,drop out columns with all same values}
+
+\item{colon_remove}{wether to remove duplicated columns with colons}
 }
 \value{
 a list with exp,pd and gpl
