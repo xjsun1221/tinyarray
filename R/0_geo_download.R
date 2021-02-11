@@ -66,7 +66,7 @@ geo_download <-  function(gse,by_annopbrobe = T,simpd=T,colon_remove = F){
   #(3)提取芯片平台编号
   gpl <- eSet[[1]]@annotation
   re = list(exp=exp,pd=pd,gpl=gpl)
-  if(is.null(dim(exp))){
+  if(is.null(dim(exp)) | nrow(exp)==0){
     warning("exp is empty")
   } else if (any(exp<0)) {
     warning("nagtive values detected")
