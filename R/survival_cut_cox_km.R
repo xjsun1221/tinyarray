@@ -76,6 +76,7 @@ surv_KM <- function(exprSet_hub,meta,cut.point = F,pvalue_cutoff = 0.05){
 ##'
 ##' @inheritParams surv_cox
 ##' @param HRkeep one of "all","protect"or"risk"
+##' @param continuous logical, gene expression or gene expression group
 ##' @importFrom survival Surv
 ##' @importFrom survival coxph
 ##' @export
@@ -87,20 +88,25 @@ surv_KM <- function(exprSet_hub,meta,cut.point = F,pvalue_cutoff = 0.05){
 ##' \code{\link{geo_download}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
 
 
-surv_cox <-function(exprSet,meta,cut.point = F,pvalue_cutoff = 0.05,HRkeep = "all"){
+surv_cox <-function(exprSet,meta,cut.point = F,
+                    pvalue_cutoff = 0.05,HRkeep = "all",
+                    continuous = F){
   cut_point = point_cut(exprSet,meta)
   cox_results <-list()
   for(i in 1:nrow(exprSet)){
-    #i = 1
-    gene= as.numeric(exprSet[i,])
-    if(cut.point){
-      meta$group=ifelse(gene>cut_point[i],'high','low')
+    if(continuous) {
+      gene= as.numeric(exprSet[i,])
+      m=survival::coxph(survival::Surv(time, event) ~　gene, data =  meta)
     }else{
-      meta$group=ifelse(gene>median(gene),'high','low')
-    }
-    meta$group = factor(meta$group,levels = c("low","high"))
-    m=survival::coxph(survival::Surv(time, event) ~　group, data =  meta)
-
+      gene= as.numeric(exprSet[i,])
+      if(cut.point){
+        meta$group=ifelse(gene>cut_point[i],'high','low')
+      }else{
+        meta$group=ifelse(gene>median(gene),'high','low')
+      }
+      meta$group = factor(meta$group,levels = c("low","high"))
+      m=survival::coxph(survival::Surv(time, event) ~　group, data =  meta)
+      }
     beta <- coef(m)
     se <- sqrt(diag(vcov(m)))
     HR <- exp(beta)
@@ -112,7 +118,11 @@ surv_cox <-function(exprSet,meta,cut.point = F,pvalue_cutoff = 0.05,HRkeep = "al
                        HRz = (HR - 1) / HRse, HRp = 1 - pchisq(((HR - 1)/HRse)^2, 1),
                        HRCILL = exp(beta - qnorm(.975, 0, 1) * se),
                        HRCIUL = exp(beta + qnorm(.975, 0, 1) * se)), 3)
-    cox_results[[i]] = tmp['grouphigh',]
+    if(continuous){
+      cox_results[[i]] = tmp['gene',]
+    }else{
+      cox_results[[i]] = tmp['grouphigh',]
+    }
   }
   cox_results = do.call(cbind,cox_results)
   cox_results=t(cox_results)

@@ -4,10 +4,19 @@
 \alias{surv_cox}
 \title{surv_cox}
 \usage{
-surv_cox(exprSet, meta, cut.point = F, pvalue_cutoff = 0.05, HRkeep = "all")
+surv_cox(
+  exprSet,
+  meta,
+  cut.point = F,
+  pvalue_cutoff = 0.05,
+  HRkeep = "all",
+  continuous = F
+)
 }
 \arguments{
 \item{HRkeep}{one of "all","protect"or"risk"}
+
+\item{continuous}{logical, gene expression or gene expression group}
 }
 \value{
 a matrix with gene names ,cox p value and HR
