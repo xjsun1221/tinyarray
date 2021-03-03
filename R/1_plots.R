@@ -183,14 +183,14 @@ draw_volcano <- function(deg,lab=NA,pvalue_cutoff = 0.05,logFC_cutoff= 1,pkg = 1
     dat = switch(EXPR = pkg,
                  v1 = deg[,c(2,5)],
                  v2 = deg[,c(1,4)],
-                 v3 = deg[,c(1,4)],
-                 v4 = deg[,c(1,4)])
+                 v3 = deg[,c("logFC", "P.Value")],
+                 v4 = deg[,c("logFC", "P.Value")])
   }else{
     dat = switch(EXPR = pkg,
                  v1 = deg[,c(2,6)],
                  v2 = deg[,c(1,5)],
-                 v3 = deg[,c(1,5)],
-                 v4 = deg[,c(1,5)])
+                 v3 = deg[,c("logFC", "adj.P.Val")],
+                 v4 = deg[,c("logFC", "adj.P.Val")])
   }
   colnames(dat)[1:2]=c("logFC","P.value")
   #logFC_cutoff <- with(dat,mean(abs(logFC)) + 2*sd(abs(logFC)) )
