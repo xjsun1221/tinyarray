@@ -44,7 +44,11 @@ get_deg <- function(exp,
 
   #为deg数据框添加几列
   #1.加probe_id列，把行名变成一列
+  if("ID" %in% colnames(deg)){
   deg <- mutate(deg,probe_id=deg$ID)
+}elsd{
+  deg <- mutate(deg,probe_id=rownames(deg))
+}
   head(deg)
   #2.加symbol列，火山图要用
   ids = ids[!duplicated(ids$symbol),]
