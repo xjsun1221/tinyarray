@@ -46,7 +46,7 @@ get_deg <- function(exp,
   #1.加probe_id列，把行名变成一列
   if("ID" %in% colnames(deg)){
   deg <- mutate(deg,probe_id=deg$ID)
-}elsd{
+}else{
   deg <- mutate(deg,probe_id=rownames(deg))
 }
   head(deg)
