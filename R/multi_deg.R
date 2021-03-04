@@ -23,7 +23,7 @@
 ##' library(stringr)
 ##' group_list=ifelse(str_detect(geo$pd$title,"MObese"),"MObese",ifelse(str_detect(geo$pd$title,"NonObese"),"NonObese","Obese"))
 ##' group_list=factor(group_list,levels = c("NonObese","Obese","MObese"))
-##' find_anno(geo$gpl)
+##' find_anno(geo$gpl,install = T)
 ##' ids <- toTable(hgu133aSYMBOL)
 ##' deg = multi_deg(geo$exp,group_list,ids,adjust = F)
 ##' @seealso

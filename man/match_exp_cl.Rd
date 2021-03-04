@@ -22,8 +22,8 @@ a transformed clinical data.frame with sample ids.
 match exp and clinical data from tcga
 }
 \examples{
-cl1 = match_exp_cl(exp_hub1,meta1[,2:4],"X_PATIENT")
-cl2 = match_exp_cl(exp_hub1,meta1[,2:4],"X_PATIENT",sample_centric = F)
+match_exp_cl(exp_hub1,meta1[,2:4],"X_PATIENT")
+match_exp_cl(exp_hub1,meta1[,2:4],"X_PATIENT",sample_centric = F)
 }
 \seealso{
 \code{\link{make_tcga_group}};\code{\link{sam_filter}};\code{\link{trans_array}}

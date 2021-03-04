@@ -60,6 +60,8 @@ trans_array():替换矩阵的行名，比如把表达矩阵的探针名替换为
 
 sam_filter():去除tcga中的重复tumor样本
 
+match_exp_cl():匹配tcga表达矩阵与临床信息
+
 trans_exp():将tcga或tcga+gtex数据进行基因id转换
 
 t_choose():批量做单个基因的t检验
@@ -102,3 +104,12 @@ edges_to_nodes():根据连接表格生成节点表格
 ### 还会继续更新
 
 写于2021.1.26
+
+更新日志：
+
+#### 2.1.1
+limma更新，第一列为ID，随之改了get_deg和draw_volcano
+ggplot2更新，手动指定颜色必须加values=，已加
+ifelse更新，允许矩阵数据，生成结果也为矩阵，为此改了表达矩阵箱线图、KM图系列
+表达矩阵与分组信息的匹配
+

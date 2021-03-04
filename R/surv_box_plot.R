@@ -45,7 +45,8 @@ exp_surv <- function(exprSet_hub,meta,color = c("grey", "red")){
   cut.point = point_cut(exprSet_hub,meta)
   splots <- lapply(rownames(exprSet_hub), function(g){
     i = which(rownames(exprSet_hub)== g)
-    meta$gene=ifelse(exprSet_hub[g,] > cut.point[[i]],'high','low')
+    meta$gene=ifelse(as.numeric(exprSet_hub[g,]) > cut.point[[i]],'high','low')
+    if(length(unique(meta$gene))==1) stop(paste0("gene",g,"with too low expression"))
     sfit1=survival::survfit(survival::Surv(time, event)~gene, data=meta)
     p = survminer::ggsurvplot(sfit1,pval =TRUE,
                               palette = rev(color),
@@ -95,7 +96,7 @@ exp_boxplot <-  function(exp_hub,color = c("grey","red")){
                       y = rownames(exp_hub)[[i]],
                       fill = "group_list"))+
       geom_boxplot()+
-      scale_fill_manual(color)+
+      scale_fill_manual(values = color)+
       labs(y = k[[i]])+
       stat_compare_means(method = "t.test")+
       #stat_compare_means(label.y = 15)  +
