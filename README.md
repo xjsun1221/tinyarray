@@ -109,7 +109,15 @@ edges_to_nodes():根据连接表格生成节点表格
 
 #### 2.1.1
 limma更新，第一列为ID，随之改了get_deg和draw_volcano
+
 ggplot2更新，手动指定颜色必须加values=，已加
+
 ifelse更新，允许矩阵数据，生成结果也为矩阵，为此改了表达矩阵箱线图、KM图系列
+
 表达矩阵与分组信息的匹配
+
+#### 2.1.2
+mRNA与lncRNA都有时矩阵去重
+
+
 

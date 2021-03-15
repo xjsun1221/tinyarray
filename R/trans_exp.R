@@ -62,7 +62,9 @@ trans_exp = function(exp,mrna_only = F,lncrna_only = F,gtex = F){
   }else if(lncrna_only){
       return(lnc_exp)
   }else{
-      return(rbind(mRNA_exp,lnc_exp))
+    expa  = rbind(mRNA_exp,lnc_exp)
+    expa = !duplicated(rownames(expa))
+      return(expa)
     }
 }
 
