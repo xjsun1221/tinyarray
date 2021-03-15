@@ -63,8 +63,11 @@ trans_exp = function(exp,mrna_only = F,lncrna_only = F,gtex = F){
       return(lnc_exp)
   }else{
     expa  = rbind(mRNA_exp,lnc_exp)
-    expa = !duplicated(rownames(expa))
-      return(expa)
+    k = !duplicated(rownames(expa))
+    expa = expa[k,]
+    return(expa)
+    message(paste0(sum(!k),
+                   " of duplicaterd genes removed"))
     }
 }
 
