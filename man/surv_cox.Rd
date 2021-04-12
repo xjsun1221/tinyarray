@@ -10,13 +10,22 @@ surv_cox(
   cut.point = F,
   pvalue_cutoff = 0.05,
   HRkeep = "all",
-  continuous = F
+  continuous = F,
+  min_gn = 0.1
 )
 }
 \arguments{
+\item{meta}{meta data corresponds to expression set}
+
+\item{cut.point}{logical , use cut_point or not, if FALSE,use median by defult}
+
+\item{pvalue_cutoff}{p value cut off ,0.05 by defult}
+
 \item{HRkeep}{one of "all","protect"or"risk"}
 
 \item{continuous}{logical, gene expression or gene expression group}
+
+\item{min_gn}{Depending on the expression of a gene, there may be a large difference in the number of samples between the two groups, and if a smaller group of samples is less than 10%(default) of all, the gene will be discarded}
 }
 \value{
 a matrix with gene names ,cox p value and HR

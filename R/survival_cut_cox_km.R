@@ -37,6 +37,7 @@ point_cut <- function(exprSet_hub,meta){
 ##' @inheritParams point_cut
 ##' @inheritParams t_choose
 ##' @param cut.point logical , use cut_point or not, if FALSE,use median by defult
+##' @param min_gn Depending on the expression of a gene, there may be a large difference in the number of samples between the two groups, and if a smaller group of samples is less than 10%(default) of all, the gene will be discarded
 ##' @importFrom survival Surv
 ##' @importFrom survival survdiff
 ##' @export
@@ -49,7 +50,7 @@ point_cut <- function(exprSet_hub,meta){
 ##' \code{\link{geo_download}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
 
 
-surv_KM <- function(exprSet_hub,meta,cut.point = F,pvalue_cutoff = 0.05){
+surv_KM <- function(exprSet_hub,meta,cut.point = F,pvalue_cutoff = 0.05,min_gn = 0.1){
   cut_point = point_cut(exprSet_hub,meta)
   log_rank_p = c()
   for(i in 1:nrow(exprSet_hub)){
@@ -61,6 +62,8 @@ surv_KM <- function(exprSet_hub,meta,cut.point = F,pvalue_cutoff = 0.05){
     }
     data.survdiff=survival::survdiff(survival::Surv(time, event)~group,data=meta)
     log_rank_p[[i]] = 1 - pchisq(data.survdiff$chisq, length(data.survdiff$n) - 1)
+    nn = min(table(meta$group))<= min_gn * nrow(meta)
+    if(nn) log_rank_p[[i]] = 1
   }
   if(is.list(log_rank_p)) log_rank_p = unlist(log_rank_p)
   names(log_rank_p) = rownames(exprSet_hub)
@@ -74,7 +77,7 @@ surv_KM <- function(exprSet_hub,meta,cut.point = F,pvalue_cutoff = 0.05){
 ##'
 ##' caculate cox p values and HR for genes
 ##'
-##' @inheritParams surv_cox
+##' @inheritParams surv_KM
 ##' @param HRkeep one of "all","protect"or"risk"
 ##' @param continuous logical, gene expression or gene expression group
 ##' @importFrom survival Surv
@@ -90,7 +93,7 @@ surv_KM <- function(exprSet_hub,meta,cut.point = F,pvalue_cutoff = 0.05){
 
 surv_cox <-function(exprSet,meta,cut.point = F,
                     pvalue_cutoff = 0.05,HRkeep = "all",
-                    continuous = F){
+                    continuous = F,min_gn = 0.1){
   cut_point = point_cut(exprSet,meta)
   cox_results <-list()
   for(i in 1:nrow(exprSet)){
@@ -122,7 +125,7 @@ surv_cox <-function(exprSet,meta,cut.point = F,
       cox_results[[i]] = tmp['gene',]
     }else{
       cox_results[[i]] = tmp['grouphigh',]
-      nn = min(table(meta$group))<= 0.1 * nrow(meta)
+      nn = min(table(meta$group))<= min_gn * nrow(meta)
       if(nn) cox_results[[i]] = rep(NA,times = length(cox_results[[i]]))
     }
   }
