@@ -122,11 +122,15 @@ surv_cox <-function(exprSet,meta,cut.point = F,
       cox_results[[i]] = tmp['gene',]
     }else{
       cox_results[[i]] = tmp['grouphigh',]
+      nn = min(table(meta$group))<= 0.1 * nrow(meta)
+      if(nn) cox_results[[i]] = rep(NA,times = length(cox_results[[i]]))
     }
   }
   cox_results = do.call(cbind,cox_results)
   cox_results=t(cox_results)
   rownames(cox_results)= rownames(exprSet)
+  nn2 = apply(cox_results,1,function(x){all(is.na(x))})
+  cox_results = cox_results[!nn2,]
   k = cox_results[,4]<pvalue_cutoff;table(k)
 
   if(sum(k)==1){
