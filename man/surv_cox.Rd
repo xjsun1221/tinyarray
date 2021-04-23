@@ -25,7 +25,7 @@ surv_cox(
 
 \item{continuous}{logical, gene expression or gene expression group}
 
-\item{min_gn}{Depending on the expression of a gene, there may be a large difference in the number of samples between the two groups, and if a smaller group of samples is less than 10%(default) of all, the gene will be discarded}
+\item{min_gn}{Depending on the expression of a gene, there may be a large difference in the number of samples between the two groups, and if a smaller group of samples is less than 10 percent (default) of all, the gene will be discarded}
 }
 \value{
 a matrix with gene names ,cox p value and HR

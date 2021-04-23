@@ -112,7 +112,7 @@ find_anno <-function(gpl,install = F,update = F){
     ml1 = str_remove_all(paste0("`ids <- AnnoProbe::idmap\\(","\\'",gpl,"\\'","\\)`"),"\\\\")
     ml2 = str_remove_all(paste0("`ids <- toTable\\(",qz,"SYMBOL\\)`"),"\\\\")
     if(install){
-      if(!suppressMessages(require(paste0(qz,".db"),character.only = T)))BiocManager::install(paste0(qz,".db",update = update))
+      if(!suppressMessages(require(paste0(qz,".db"),character.only = T)))BiocManager::install(paste0(qz,".db"),update = update)
       suppressMessages(library(paste0(qz,".db"),character.only = T))
     }
     if(!(gpl %in% exists_anno_list)) {

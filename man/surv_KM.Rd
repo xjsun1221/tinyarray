@@ -15,7 +15,7 @@ surv_KM(exprSet_hub, meta, cut.point = F, pvalue_cutoff = 0.05, min_gn = 0.1)
 
 \item{pvalue_cutoff}{p value cut off ,0.05 by defult}
 
-\item{min_gn}{Depending on the expression of a gene, there may be a large difference in the number of samples between the two groups, and if a smaller group of samples is less than 10%(default) of all, the gene will be discarded}
+\item{min_gn}{Depending on the expression of a gene, there may be a large difference in the number of samples between the two groups, and if a smaller group of samples is less than 10 percent (default) of all, the gene will be discarded}
 }
 \value{
 a vector with gene names and log_rank p value

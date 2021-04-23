@@ -33,7 +33,11 @@ quick_enrich <- function(genes,kkgo_file = "kkgo_file.Rdata"){
     kk <- enrichKEGG(gene         = genes,
                      organism     = 'hsa',
                      pvalueCutoff = 0.05)
-    go <- enrichGO(genes, OrgDb = "org.Hs.eg.db", ont="all")
+    kk = setReadable(kk,OrgDb = "org.Hs.eg.db",keyType = "ENTREZID")
+    go <- enrichGO(genes,
+                   OrgDb = "org.Hs.eg.db",
+                   ont="all",
+                   readable = T)
     save(kk,go,file = kkgo_file)
   }
   load(kkgo_file)

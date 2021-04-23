@@ -37,11 +37,11 @@ point_cut <- function(exprSet_hub,meta){
 ##' @inheritParams point_cut
 ##' @inheritParams t_choose
 ##' @param cut.point logical , use cut_point or not, if FALSE,use median by defult
-##' @param min_gn Depending on the expression of a gene, there may be a large difference in the number of samples between the two groups, and if a smaller group of samples is less than 10%(default) of all, the gene will be discarded
+##' @param min_gn Depending on the expression of a gene, there may be a large difference in the number of samples between the two groups, and if a smaller group of samples is less than 10 percent (default) of all, the gene will be discarded
 ##' @importFrom survival Surv
 ##' @importFrom survival survdiff
 ##' @export
-##' @return a vector with gene names and log_rank p value
+##' @return  a vector with gene names and log_rank p value
 ##' @author Xiaojie Sun
 ##' @examples
 ##' surv_KM(exprSet_hub1,meta1)
