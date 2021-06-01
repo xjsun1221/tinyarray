@@ -45,6 +45,9 @@
 
 
 ggheat = function(dat,group,cluster = F,
+                  color = c("#66C2A5", "white","#FC8D62"),
+                  legend_color = c("#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F",
+                                   "#E5C494", "#B3B3B3"),
                   show_rownames = T,show_colnames = T,
                   groupname = "group",expname = "exp",
                   fill_mid = T){
@@ -65,7 +68,8 @@ ggheat = function(dat,group,cluster = F,
   dat2$gene = factor(dat2$gene,levels = rev(colnames(dat)))
 
   if(!cluster) dat2 = arrange(dat2,group)
-  col = c("blue","red")
+  ng = length(unique(group))
+  col = legend_color[1:ng]
   names(col) = levels(group)
   p1 = ggplot(dat, aes(x = 1:nrow(dat), y = 1)) +
     geom_tile(aes(fill = group))+
@@ -91,9 +95,9 @@ ggheat = function(dat,group,cluster = F,
           axis.ticks = element_blank(),
           axis.title = element_blank()
     ) +
-    scale_fill_gradient2(low = "blue",
-                         mid = "white",
-                         high = "red",
+    scale_fill_gradient2(low = color[1],
+                         mid = color[2],
+                         high = color[3],
                          midpoint = midpoint)+
     scale_x_discrete(expand = c(0,0))+
     labs(fill = expname)
