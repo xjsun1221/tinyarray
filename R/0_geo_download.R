@@ -68,7 +68,9 @@ geo_download <-  function(gse,by_annopbrobe = T,simpd=T,colon_remove = F){
   re = list(exp=exp,pd=pd,gpl=gpl)
   if(is.null(dim(exp)) | nrow(exp)==0){
     warning("exp is empty")
-  } else if (any(exp<0)) {
+  } else if (any(is.na(exp)|is.nan(exp))) {
+    warning("NA or NAN values detected")
+  }else if (any(exp<0)) {
     warning("nagtive values detected")
   } else{
     message(paste(nrow(exp),"probes,",
