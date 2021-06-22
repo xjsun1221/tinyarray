@@ -99,7 +99,7 @@ surv_cox <-function(exprSet,meta,cut.point = F,
   for(i in 1:nrow(exprSet)){
     if(continuous) {
       gene= as.numeric(exprSet[i,])
-      m=survival::coxph(survival::Surv(time, event) ~　gene, data =  meta)
+      m=survival::coxph(survival::Surv(time, event)~gene, data =  meta)
     }else{
       gene= as.numeric(exprSet[i,])
       if(cut.point){
@@ -108,7 +108,7 @@ surv_cox <-function(exprSet,meta,cut.point = F,
         meta$group=ifelse(gene>median(gene),'high','low')
       }
       meta$group = factor(meta$group,levels = c("low","high"))
-      m=survival::coxph(survival::Surv(time, event) ~　group, data =  meta)
+      m=survival::coxph(survival::Surv(time, event)~group, data =  meta)
       }
     beta <- coef(m)
     se <- sqrt(diag(vcov(m)))
