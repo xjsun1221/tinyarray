@@ -123,5 +123,11 @@ mRNA与lncRNA都有时矩阵去重
 
 GEO下载的表达矩阵有异常值时不再报错，而是只给个warning啦
 
+#### 2.1.6
 
+解决mac tab键编码方式报错问题
+
+#### 2.1.7
+
+draw_heatmap 添加参数scale，F即为原矩阵画图，不scale.
 

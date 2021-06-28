@@ -63,6 +63,7 @@ if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
 ##' @param color_an color for column annotation
 ##' @param legend logical,show legend or not
 ##' @param show_rownames logical,show rownames or not
+##' @param scale logical,scale the matrix or not
 ##' @return a heatmap plot according to \code{exp} and grouped by \code{group}.
 ##' @author Xiaojie Sun
 ##' @importFrom pheatmap pheatmap
@@ -97,7 +98,8 @@ draw_heatmap <-  function(n,
                           show_rownames = F,
                           annotation_legend=F,
                           color = colorRampPalette(c("#2166AC", "white", "#B2182B"))(100),
-                          color_an = c("#92C5DE","#F4A582","#66C2A5","#FC8D62","#8DA0CB","#E78AC3","#A6D854","#FFD92F","#E5C494","#B3B3B3")){
+                          color_an = c("#92C5DE","#F4A582","#66C2A5","#FC8D62","#8DA0CB","#E78AC3","#A6D854","#FFD92F","#E5C494","#B3B3B3"),
+                          scale = T){
   n = as.data.frame(n)
   if(scale_before) {
     message("scale_before parameter is deprecated")
@@ -117,16 +119,23 @@ draw_heatmap <-  function(n,
   col = color_an[1:length(levels(group_list))]
   ann_colors = list(group = col)
   if(is.null(names(ann_colors$group)))names(ann_colors$group)=levels(group_list)
+  if(scale) {
+    scale_row = "row"
+    breaks = seq(-n_cutoff,n_cutoff,length.out = length(color))
+  } else {
+    scale_row = "none"
+    breaks = NA
+  }
   if(!scale_before){
     p = pheatmap(n,
              show_colnames =F,
              show_rownames = show_rownames,
-             scale = "row",
+             scale = scale_row,
              color = color,
              annotation_col=annotation_col,
              annotation_colors = ann_colors,
              cluster_cols = cluster_cols,
-             breaks = seq(-n_cutoff,n_cutoff,length.out = length(color)),
+             breaks = breaks,
              legend = legend,
              silent = T,
              annotation_legend = annotation_legend,
