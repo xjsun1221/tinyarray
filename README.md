@@ -131,3 +131,6 @@ GEO下载的表达矩阵有异常值时不再报错，而是只给个warning啦
 
 draw_heatmap 添加参数scale，F即为原矩阵画图，不scale.
 
+#### 2.1.8
+
+draw_heatmap 添加参数main，标题

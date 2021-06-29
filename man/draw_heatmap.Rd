@@ -16,7 +16,8 @@ draw_heatmap(
   color = colorRampPalette(c("#2166AC", "white", "#B2182B"))(100),
   color_an = c("#92C5DE", "#F4A582", "#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3",
     "#A6D854", "#FFD92F", "#E5C494", "#B3B3B3"),
-  scale = T
+  scale = T,
+  main = NA
 )
 }
 \arguments{
@@ -39,6 +40,8 @@ draw_heatmap(
 \item{color_an}{color for column annotation}
 
 \item{scale}{logical,scale the matrix or not}
+
+\item{main}{the title of the plot}
 }
 \value{
 a heatmap plot according to \code{exp} and grouped by \code{group}.

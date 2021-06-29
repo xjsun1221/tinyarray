@@ -64,6 +64,7 @@ if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
 ##' @param legend logical,show legend or not
 ##' @param show_rownames logical,show rownames or not
 ##' @param scale logical,scale the matrix or not
+##' @param main the title of the plot
 ##' @return a heatmap plot according to \code{exp} and grouped by \code{group}.
 ##' @author Xiaojie Sun
 ##' @importFrom pheatmap pheatmap
@@ -99,7 +100,8 @@ draw_heatmap <-  function(n,
                           annotation_legend=F,
                           color = colorRampPalette(c("#2166AC", "white", "#B2182B"))(100),
                           color_an = c("#92C5DE","#F4A582","#66C2A5","#FC8D62","#8DA0CB","#E78AC3","#A6D854","#FFD92F","#E5C494","#B3B3B3"),
-                          scale = T){
+                          scale = T,
+                          main = NA){
   n = as.data.frame(n)
   if(scale_before) {
     message("scale_before parameter is deprecated")
@@ -139,6 +141,7 @@ draw_heatmap <-  function(n,
              legend = legend,
              silent = T,
              annotation_legend = annotation_legend,
+             main = main,
              annotation_names_col = F)
     p = as.ggplot(p)
   }
