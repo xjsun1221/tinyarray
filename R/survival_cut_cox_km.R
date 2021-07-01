@@ -116,7 +116,7 @@ surv_cox <-function(exprSet,meta,cut.point = F,
     HRse <- HR * se
 
     #summary(m)
-    tmp <- data.frame(coef = beta, se = se, z = beta/se, p = 1 - pchisq((beta/se)^2, 1),
+    tmp <- cbind(coef = beta, se = se, z = beta/se, p = 1 - pchisq((beta/se)^2, 1),
                  HR = HR, HRse = HRse,
                  HRz = (HR - 1) / HRse, HRp = 1 - pchisq(((HR - 1)/HRse)^2, 1),
                  HRCILL = exp(beta - qnorm(.975, 0, 1) * se),
