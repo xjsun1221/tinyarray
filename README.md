@@ -134,3 +134,7 @@ draw_heatmap 添加参数scale，F即为原矩阵画图，不scale.
 #### 2.1.8
 
 draw_heatmap 添加参数main，标题
+
+#### 2.1.9
+
+surv_cox 输出结果改为数据框，小数点位数不限制（因为有些p值太小，会变成零）

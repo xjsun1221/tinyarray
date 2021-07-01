@@ -116,11 +116,11 @@ surv_cox <-function(exprSet,meta,cut.point = F,
     HRse <- HR * se
 
     #summary(m)
-    tmp <- round(cbind(coef = beta, se = se, z = beta/se, p = 1 - pchisq((beta/se)^2, 1),
-                       HR = HR, HRse = HRse,
-                       HRz = (HR - 1) / HRse, HRp = 1 - pchisq(((HR - 1)/HRse)^2, 1),
-                       HRCILL = exp(beta - qnorm(.975, 0, 1) * se),
-                       HRCIUL = exp(beta + qnorm(.975, 0, 1) * se)), 3)
+    tmp <- data.frame(coef = beta, se = se, z = beta/se, p = 1 - pchisq((beta/se)^2, 1),
+                 HR = HR, HRse = HRse,
+                 HRz = (HR - 1) / HRse, HRp = 1 - pchisq(((HR - 1)/HRse)^2, 1),
+                 HRCILL = exp(beta - qnorm(.975, 0, 1) * se),
+                 HRCIUL = exp(beta + qnorm(.975, 0, 1) * se))
     if(continuous){
       cox_results[[i]] = tmp['gene',]
     }else{
