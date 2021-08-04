@@ -87,6 +87,7 @@ trans_exp = function(exp,mrna_only = F,lncrna_only = F,gtex = F){
 ##' rownames(exp) = paste0("g",1:10)
 ##' ids = data.frame(probe_id = paste0("g",1:10),
 ##'                 symbol = paste0("G",c(1:9,9)))
+##' trans_array(exp,ids)
 
 trans_array = function(exp,ids,from = "probe_id",
                        to = "symbol"){
@@ -111,7 +112,14 @@ trans_array = function(exp,ids,from = "probe_id",
 ##' @author Xiaojie Sun
 ##' @export
 ##' @examples
+##' cod[1:4,1:4]
+##' dim(cod)
 ##' cod2 = sam_filter(cod)
+##' dim(cod2)
+##' g = make_tcga_group(cod);table(g)
+##' library(stringr)
+##' table(!duplicated(str_sub(colnames(cod[,g=="tumor"]),1,12)))
+
 
 ##' @seealso
 ##' \code{\link{simpd}};\code{\link{draw_volcano}};\code{\link{draw_venn}}

@@ -26,6 +26,7 @@ exp = matrix(1:50,nrow = 10)
 rownames(exp) = paste0("g",1:10)
 ids = data.frame(probe_id = paste0("g",1:10),
                 symbol = paste0("G",c(1:9,9)))
+trans_array(exp,ids)
 }
 \author{
 Xiaojie Sun

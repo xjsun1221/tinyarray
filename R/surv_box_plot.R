@@ -16,7 +16,7 @@
 make_tcga_group <- function(exp){
   k1 = stringr::str_starts(colnames(exp),"TCGA")
   if(!any(k1))stop("no tcga samples detected,please check it")
-  k2 = as.numeric(stringr::str_sub(colnames(exp),14,15))<10
+  k2 = suppressWarnings(as.numeric(stringr::str_sub(colnames(exp),14,15))<10)
   group_list = ifelse(k1&k2,"tumor","normal")
   group_list = factor(group_list,levels = c("normal","tumor"))
   return(group_list)

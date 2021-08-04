@@ -16,8 +16,13 @@
 ##' @export
 ##' @examples
 ##' gse = "GSE42872"
-##' geo_download(gse)
-##' geo_download(gse,by_annopbrobe = F)
+##' geo = geo_download(gse)
+##' Group = rep(c("control","treat"),each = 3)
+##' Group = factor(Group)
+##' find_anno(geo$gpl,install = T)
+##' ids <- toTable(hugene10sttranscriptclusterSYMBOL)
+##' deg = get_deg(geo$exp,Group,ids)
+##' head(deg)
 ##' @seealso
 ##' \code{\link{geo_download}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
 

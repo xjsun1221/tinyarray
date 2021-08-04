@@ -16,7 +16,13 @@ a transformed expression set without duplicated samples
 drop duplicated samples from the same patients
 }
 \examples{
+cod[1:4,1:4]
+dim(cod)
 cod2 = sam_filter(cod)
+dim(cod2)
+g = make_tcga_group(cod);table(g)
+library(stringr)
+table(!duplicated(str_sub(colnames(cod[,g=="tumor"]),1,12)))
 }
 \seealso{
 \code{\link{simpd}};\code{\link{draw_volcano}};\code{\link{draw_venn}}

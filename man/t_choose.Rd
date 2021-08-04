@@ -36,12 +36,11 @@ choose diffrencial expressed genes by simple t.test
 exp = matrix(rnorm(1000),ncol = 10)
 rownames(exp) = sample(mRNA_annov23$gene_id,100)
 colnames(exp) = c(paste0("TCGA",1:5),paste0("GTEX",1:5))
-k  = trans_exp(exp)
-k[,1:5] = k[,1:5]+10
-exp = k
+exp2  = trans_exp(exp)
+exp2[,1:5] = exp2[,1:5]+10
 group_list = rep(c("A","B"),each = 5)
-genes = sample(rownames(k),3)
-t_choose(genes,k,group_list)
+genes = sample(rownames(exp2),3)
+t_choose(genes,exp2,group_list)
 }
 \seealso{
 \code{\link{geo_download}};\code{\link{draw_volcano}};\code{\link{draw_venn}}

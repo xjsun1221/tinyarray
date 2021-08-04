@@ -10,18 +10,23 @@
 ##' @importFrom clusterProfiler enrichKEGG
 ##' @importFrom clusterProfiler enrichGO
 ##' @importFrom clusterProfiler dotplot
+##' @importFrom clusterProfiler setReadable
 ##' @importFrom org.Hs.eg.db org.Hs.eg.db
 ##' @importFrom ggplot2 facet_grid
 ##' @importFrom ggplot2 scale_x_discrete
 ##' @export
 ##' @examples
-##' gse = "GSE42872"
-
+##' head(genes)
+##' g = quick_enrich(genes)
+##' names(g)
+##' g[[1]][1:4,1:4]
+##' g[[3]]
+##' g[[4]]
 ##' @seealso
 ##' \code{\link{geo_download}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
 
 quick_enrich <- function(genes,kkgo_file = "kkgo_file.Rdata"){
-  if(any(is.na(as.numeric(genes)))){
+  if(any(is.na(suppressWarnings(as.numeric(genes))))){
     s2e <- bitr(genes, fromType = "SYMBOL",
                 toType = c( "ENTREZID"),
                 OrgDb = org.Hs.eg.db::org.Hs.eg.db)

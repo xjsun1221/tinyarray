@@ -18,7 +18,12 @@ enrichment reslut and dotplots
 do diffiencial analysis according to exprission set and group information
 }
 \examples{
-gse = "GSE42872"
+head(genes)
+g = quick_enrich(genes)
+names(g)
+g[[1]][1:4,1:4]
+g[[3]]
+g[[4]]
 }
 \seealso{
 \code{\link{geo_download}};\code{\link{draw_volcano}};\code{\link{draw_venn}}

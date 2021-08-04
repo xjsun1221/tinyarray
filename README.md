@@ -10,7 +10,6 @@ hi，我是小洁。这是我基于自己的数据分析需求写的R包，很�
 
 ```
 if(!require(devtools))install.packages("devtools")
-if(!require(AnnoProbe))devtools::install_github("jmzeng1314/AnnoProbe",upgrade = F)
 if(!require(tinyarray))devtools::install_github("xjsun1221/tinyarray",upgrade = F)
 ```
 
@@ -56,6 +55,7 @@ quick_enrich() : 简单直观的富集分析
 #### 3.表达矩阵探索
 
 make_tcga_group():根据TCGA的样本命名规则，快速得出分组
+
 trans_array():替换矩阵的行名，比如把表达矩阵的探针名替换为基因名
 
 sam_filter():去除tcga中的重复tumor样本
@@ -80,7 +80,7 @@ surv_cox():批量做单因素cox，支持用最佳截点分组
 
 [太好用了！批量生存分析加画图，一步到位，还支持最佳截点~](https://mp.weixin.qq.com/s/WYBhGxfGg6QFUPHFBashaA)
 
-exp_boxplot()：给感兴趣的基因画箱线图
+exp_boxplot()：给感兴趣的基因画T-N箱线图
 
 exp_surv()：给感兴趣的基因画KM-plot
 
@@ -138,3 +138,7 @@ draw_heatmap 添加参数main，标题
 #### 2.1.9
 
 surv_cox 输出结果小数点位数不限制（因为有些p值太小，会变成零）
+
+### 2.2.0
+
+检查了exp_boxplot之前的所有函数及其帮助文档，quickenrich和make_tcga_group不再报warning

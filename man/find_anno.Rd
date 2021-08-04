@@ -20,7 +20,7 @@ a list with deg data.frame, volcano plot and a list with DEGs.
 find gpl annotation package or files
 }
 \examples{
-find_anno(GPL570)
+find_anno("GPL570")
 }
 \seealso{
 \code{\link{geo_download}};\code{\link{draw_volcano}};\code{\link{draw_venn}}

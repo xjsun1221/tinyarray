@@ -22,6 +22,7 @@
 ##' group_list = factor(group_list)
 ##' ids = AnnoProbe::idmap('GPL6244')
 ##' dcp = get_deg_all(geo$exp,group_list,ids)
+##' head(dcp$deg)
 ##' dcp$plots
 ##' @seealso
 ##' \code{\link{geo_download}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
@@ -89,7 +90,7 @@ get_deg_all <- function(exp,
 ##' @importFrom stringr str_to_upper
 ##' @export
 ##' @examples
-##' find_anno(GPL570)
+##' find_anno("GPL570")
 ##' @seealso
 ##' \code{\link{geo_download}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
 

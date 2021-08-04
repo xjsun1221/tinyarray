@@ -26,6 +26,10 @@
 ##' find_anno(geo$gpl,install = T)
 ##' ids <- toTable(hgu133aSYMBOL)
 ##' deg = multi_deg(geo$exp,group_list,ids,adjust = F)
+##' names(deg)
+##' head(deg[[1]])
+##' head(deg[[2]])
+##' head(deg[[3]])
 ##' @seealso
 ##' \code{\link{geo_download}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
 
