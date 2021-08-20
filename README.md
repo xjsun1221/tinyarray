@@ -30,6 +30,12 @@ if(!require(tinyarray))devtools::install_github("xjsun1221/tinyarray",upgrade = 
 
 draw_heatmap(),draw_volcano(),draw_venn(),draw_boxplot()
 
+ggheat(),也是字面意思，用ggplot2的函数来画热图，目前还不怎么成熟，这个主要是为了拼图对齐和图例收集。
+
+##### 详细的介绍在：
+
+[披着ggplot皮的pheatmap,深夜激动更新我的包](https://mp.weixin.qq.com/s/WhsBf6QAhVXeXeScM59cSA)
+
 #### 2.GEO芯片下游分析
 
 geo_download() : 提供geo编号，返回表达矩阵、临床信息表格和使用的平台编号。
@@ -46,6 +52,8 @@ multi_deg() : 多个分组（最多5个）的差异分析
 
 quick_enrich() : 简单直观的富集分析
 
+double_enrich():上下调基因分开富集，合并画图
+
 ##### 详细的介绍在：
 
 [我写了一个R包，简化芯片的差异分析](https://mp.weixin.qq.com/s/YQQoDsE5JaKpgFGlbEfQNg)
@@ -56,19 +64,17 @@ quick_enrich() : 简单直观的富集分析
 
 make_tcga_group():根据TCGA的样本命名规则，快速得出分组
 
-trans_array():替换矩阵的行名，比如把表达矩阵的探针名替换为基因名
-
 sam_filter():去除tcga中的重复tumor样本
 
 match_exp_cl():匹配tcga表达矩阵与临床信息
+
+trans_array():替换矩阵的行名，比如把表达矩阵的探针名替换为基因名
 
 trans_exp():将tcga或tcga+gtex数据进行基因id转换
 
 t_choose():批量做单个基因的t检验
 
 cor.full()和cor.one() :批量计算基因间的相关性
-
-dumd():统计数据框每一列各有多少个取值
 
 #### 4.生存分析及可视化
 
@@ -92,23 +98,28 @@ hypertest():批量做mRNA和lncRNA的超几何分布检验
 
 plcortest():批量做mRNA和lncRNA的相关性检验
 
+[**两个检验给ceRNA锦上添花**](https://www.yuque.com/xiaojiewanglezenmofenshen/bsgk2d/dt0isp)
+
 interaction_to_edges():根据关系表格生成网络图的连接表格
 
 edges_to_nodes():根据连接表格生成节点表格
 
-还有一个函数叫ggheat,也是字面意思，用ggplot2的函数来画热图，这个主要是为了拼图对齐和图例收集。
+#### 6.灵活小函数
 
-##### 详细的介绍在：
-[披着ggplot皮的pheatmap,深夜激动更新我的包](https://mp.weixin.qq.com/s/WhsBf6QAhVXeXeScM59cSA)
+dumd():统计数据框每一列各有多少个取值
 
-### 还会继续更新
+intersect_all()：任意数量的向量取交集
+
+union_all():任意数量的向量取合集
+
+split_list():拆分列表，每个元素成为一个数据
+
+### 更新日志：
 
 写于2021.1.26
 
-更新日志：
-
 #### 2.1.1
-limma更新，第一列为ID，随之改了get_deg和draw_volcano
+limma如果表达矩阵有重复行名，则第一列为ID，随之改了get_deg和draw_volcano
 
 ggplot2更新，手动指定颜色必须加values=，已加
 
@@ -139,6 +150,25 @@ draw_heatmap 添加参数main，标题
 
 surv_cox 输出结果小数点位数不限制（因为有些p值太小，会变成零）
 
-### 2.2.0
+#### 2.2.0
 
 检查了exp_boxplot之前的所有函数及其帮助文档，quickenrich和make_tcga_group不再报warning
+
+#### 2.2.1
+
+检查了exp_boxplot之后的所有函数及其帮助文档，调整了脚本里的函数顺序，加上编号以后方便查找。
+
+去掉了加载R包时的提示信息，整理了所有的seealso
+
+我要整理整理投放到cran咯，用CMD check检查发现：
+
+帮助文档里的示例逻辑值必须写TRUE，FALSE ,不能写T和F
+
+示例需要保证运行正确，示例代码里library的包也需要写进依赖包。
+
+写函数的代码里的require用requireNamespace()代替。
+
+data用use_data生成，不自己保存，避免错误的编码方式
+
+
+

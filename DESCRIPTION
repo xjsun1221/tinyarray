@@ -1,38 +1,43 @@
 Package: tinyarray
 Type: Package
 Title: simplify geo and tcga analysis and plots
-Version: 2.2.0
+Version: 2.2.1
 Author: Xiaojie Sun
 Maintainer: Xiaojie Sun <18763899370@163.com>
-Description: Simplify geo and tcga analysis and plots
-License: MIT
+Description: Simplify geo and tcga analysis and plots.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-Imports: 
-    tidyr,
-    dplyr,
-    stringr,
-    tibble,
-    FactoMineR,
-    factoextra,
-    pheatmap,
-    ggplotify,
-    ggplot2,
-    VennDiagram,
-    GEOquery,
-    Biobase,
-    limma,
+Imports:
+    BiocManager, 
     clusterProfiler,
-    org.Hs.eg.db,
+    dplyr, 
+    limma, 
+    org.Hs.eg.db, 
+    stringr, 
+    tibble, 
+    pheatmap,
+    ggplot2,
     survival,
     survminer,
-    patchwork,
-    GO.db
+    patchwork
 Suggests: 
     testthat,
+    AnnoProbe,
+    GEOquery,
+    Biobase,
+    VennDiagram,
+    FactoMineR,
+    factoextra,
     knitr,
     rmarkdown,
+    hgu133a.db,
+    hugene10sttranscriptcluster.db,
     cowplot,
-    AnnoProbe
+    ggpubr,
+    ggplotify,
+    tidyr,
+    labeling
+Depends:R (>= 3.5.0)
 RoxygenNote: 7.1.1
 VignetteBuilder: knitr

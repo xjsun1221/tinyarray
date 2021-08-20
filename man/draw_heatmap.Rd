@@ -7,20 +7,22 @@
 draw_heatmap(
   n,
   group_list,
-  scale_before = F,
+  scale_before = FALSE,
   n_cutoff = 3,
-  cluster_cols = T,
-  legend = F,
-  show_rownames = F,
+  cluster_cols = TRUE,
+  legend = FALSE,
+  show_rownames = FALSE,
   annotation_legend = F,
-  color = colorRampPalette(c("#2166AC", "white", "#B2182B"))(100),
+  color = (grDevices::colorRampPalette(c("#2166AC", "white", "#B2182B")))(100),
   color_an = c("#92C5DE", "#F4A582", "#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3",
     "#A6D854", "#FFD92F", "#E5C494", "#B3B3B3"),
-  scale = T,
+  scale = TRUE,
   main = NA
 )
 }
 \arguments{
+\item{n}{A numeric matrix}
+
 \item{group_list}{A factor with duplicated character or factor}
 
 \item{scale_before}{deprecated parameter}

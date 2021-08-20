@@ -9,7 +9,7 @@ draw_pca(
   group_list,
   color = c("#92C5DE", "#F4A582", "#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3",
     "#A6D854", "#FFD92F", "#E5C494", "#B3B3B3"),
-  addEllipses = T
+  addEllipses = TRUE
 )
 }
 \arguments{

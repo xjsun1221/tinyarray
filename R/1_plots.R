@@ -8,8 +8,6 @@
 ##' @param addEllipses logical,add ellipses or not
 ##' @return a pca plot according to \code{exp} and grouped by \code{group}.
 ##' @author Xiaojie Sun
-##' @importFrom FactoMineR PCA
-##' @importFrom factoextra fviz_pca_ind
 ##' @export
 ##' @examples
 ##' draw_pca(t(iris[,1:4]),iris$Species)
@@ -25,7 +23,15 @@
 
 draw_pca <-  function(exp,group_list,
                       color = c("#92C5DE","#F4A582","#66C2A5","#FC8D62","#8DA0CB","#E78AC3","#A6D854","#FFD92F","#E5C494","#B3B3B3"),
-                      addEllipses = T){
+                      addEllipses = TRUE){
+  if(!requireNamespace("FactoMineR",quietly = TRUE)) {
+    stop("Package \"FactoMineR\" needed for this function to work.
+         Please install it by install.packages('FactoMineR')",call. = FALSE)
+  }
+  if(!requireNamespace("factoextra",quietly = TRUE)) {
+    stop("Package \"factoextra\" needed for this function to work.
+         Please install it by install.packages('factoextra')",call. = FALSE)
+  }
   p1 <-  all(apply(exp,2,is.numeric))
   if(!p1) stop("exp must be a numeric matrix")
   p2  <-  (sum(!duplicated(group_list)) > 1)
@@ -36,9 +42,9 @@ draw_pca <-  function(exp,group_list,
     warning("group_list was covert to factor")
   }
   dat <- as.data.frame(t(exp))
-  dat.pca <- PCA(dat, graph = FALSE)
+  dat.pca <- FactoMineR::PCA(dat, graph = FALSE)
   col = color[1:length(levels(group_list))]
-  fviz_pca_ind(dat.pca,
+  factoextra::fviz_pca_ind(dat.pca,
                geom.ind = "point",
                col.ind = group_list,
                palette = col,
@@ -55,6 +61,7 @@ if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
 ##' print a heatmap plot for expression matrix and group by group_list paramter, exp will be scaled.
 ##'
 ##' @inheritParams draw_pca
+##' @param n  A numeric matrix
 ##' @param scale_before deprecated parameter
 ##' @param n_cutoff 3 by defalut , scale before plot and set a cutoff,usually 2 or 1.6
 ##' @param annotation_legend logical，show annotation legend or not
@@ -68,8 +75,6 @@ if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
 ##' @return a heatmap plot according to \code{exp} and grouped by \code{group}.
 ##' @author Xiaojie Sun
 ##' @importFrom pheatmap pheatmap
-##' @importFrom ggplotify as.ggplot
-##' @importFrom RColorBrewer brewer.pal
 ##' @export
 ##' @examples
 ##' #example data
@@ -92,20 +97,23 @@ if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
 
 draw_heatmap <-  function(n,
                           group_list,
-                          scale_before = F,
+                          scale_before = FALSE,
                           n_cutoff = 3,
-                          cluster_cols = T,
-                          legend = F,
-                          show_rownames = F,
+                          cluster_cols = TRUE,
+                          legend = FALSE,
+                          show_rownames = FALSE,
                           annotation_legend=F,
-                          color = colorRampPalette(c("#2166AC", "white", "#B2182B"))(100),
+                          color = grDevices::colorRampPalette(c("#2166AC", "white", "#B2182B"))(100),
                           color_an = c("#92C5DE","#F4A582","#66C2A5","#FC8D62","#8DA0CB","#E78AC3","#A6D854","#FFD92F","#E5C494","#B3B3B3"),
-                          scale = T,
+                          scale = TRUE,
                           main = NA){
+  if(!requireNamespace("ggplotify",quietly = TRUE)) {
+    stop("Package \"ggplotify\" needed for this function to work. Please install it by install.packages('ggplotify')",call. = FALSE)
+  }
   n = as.data.frame(n)
   if(scale_before) {
     message("scale_before parameter is deprecated")
-    scale_before = F
+    scale_before = FALSE
   }
   p1 <-  all(apply(n,2,is.numeric))
   if(!p1) stop("n must be a numeric matrix")
@@ -139,11 +147,11 @@ draw_heatmap <-  function(n,
              cluster_cols = cluster_cols,
              breaks = breaks,
              legend = legend,
-             silent = T,
+             silent = TRUE,
              annotation_legend = annotation_legend,
              main = main,
-             annotation_names_col = F)
-    p = as.ggplot(p)
+             annotation_names_col = FALSE)
+    p = ggplotify::as.ggplot(p)
   }
   return(p)
 }
@@ -160,6 +168,7 @@ draw_heatmap <-  function(n,
 ##' @param adjust a logical value, would you like to use adjusted pvalue to draw this plot,FAlSE by defult.
 ##' @param symmetry a logical value ,would you like to get your plot symmetrical
 ##' @param color color vector
+##' @param lab label for  x axis in volcano plot
 ##' @return a volcano plot according to logFC and P.value(or adjust P.value)
 ##' @author Xiaojie Sun
 ##' @importFrom ggplot2 ggplot
@@ -186,7 +195,7 @@ draw_heatmap <-  function(n,
 ##' @seealso
 ##' \code{\link{draw_heatmap}};\code{\link{draw_pca}};\code{\link{draw_venn}}
 
-draw_volcano <- function(deg,lab=NA,pvalue_cutoff = 0.05,logFC_cutoff= 1,pkg = 1,adjust = F,symmetry = F,color = c("blue", "grey","red")){
+draw_volcano <- function(deg,lab=NA,pvalue_cutoff = 0.05,logFC_cutoff= 1,pkg = 1,adjust = FALSE,symmetry = FALSE,color = c("blue", "grey","red")){
   if(!is.data.frame(deg)) stop("deg must be a data.frame created by Differential analysis")
   if(pvalue_cutoff>0.1)warning("Your pvalue_cutoff seems too large")
   if(pvalue_cutoff>=1)stop("pvalue_cutoff will never larger than 1")
@@ -229,7 +238,7 @@ draw_volcano <- function(deg,lab=NA,pvalue_cutoff = 0.05,logFC_cutoff= 1,pkg = 1
   if(symmetry)p <- p+scale_x_continuous(limits = c(-ce,ce),expand = c(0,0))
   return(p)
 }
-
+utils::globalVariables(c("logFC","P.value","change"))
 
 ##' draw a venn plot
 ##'
@@ -240,9 +249,6 @@ draw_volcano <- function(deg,lab=NA,pvalue_cutoff = 0.05,logFC_cutoff= 1,pkg = 1
 ##' @param color color vector
 ##' @return a venn plot according to \code{x}, \code{y} and.\code{z} named "name" paramter
 ##' @author Xiaojie Sun
-##' @importFrom VennDiagram venn.diagram
-##' @importFrom ggplotify as.ggplot
-##' @importFrom cowplot as_grob
 ##' @export
 ##' @examples
 ##' x = list(Deseq2=sample(1:100,30),edgeR = sample(1:100,30),limma = sample(1:100,30))
@@ -252,11 +258,20 @@ draw_volcano <- function(deg,lab=NA,pvalue_cutoff = 0.05,logFC_cutoff= 1,pkg = 1
 ##' \code{\link{draw_pca}};\code{\link{draw_volcano}};\code{\link{draw_heatmap}}
 
 draw_venn <- function(x,name,color = c("#66C2A5","#FC8D62","#8DA0CB","#E78AC3","#A6D854","#FFD92F","#E5C494","#B3B3B3")){
-  if(as.numeric(dev.cur())!=1) graphics.off()
+  if(as.numeric(grDevices::dev.cur())!=1) grDevices::graphics.off()
+  if(!requireNamespace("VennDiagram",quietly = TRUE)) {
+    stop("Package \"VennDiagram\" needed for this function to work. Please install it byby install.packages('VennDiagram')",call. = FALSE)
+  }
+  if(!requireNamespace("ggplotify",quietly = TRUE)) {
+    stop("Package \"ggplotify\" needed for this function to work. Please install it by install.packages('ggplotify')",call. = FALSE)
+  }
+  if(!requireNamespace("cowplot",quietly = TRUE)) {
+    stop("Package \"cowplot\" needed for this function to work. Please install it by install.packages('cowplot')",call. = FALSE)
+  }
   if(!is.list(x)) stop("x must be a list")
   if(length(x)>7) stop("why do you give me so many elements to compare, I reject!")
   col = color[1:length(x)]
-  p = venn.diagram(x = x,
+  p = VennDiagram::venn.diagram(x = x,
                    imagetype ="png",
                    filename=NULL,
                    lwd=1,#圈线粗度
@@ -272,7 +287,7 @@ draw_venn <- function(x,name,color = c("#66C2A5","#FC8D62","#8DA0CB","#E78AC3","
                    cex=1,
                    alpha = 0.1,
                    reverse=TRUE)
-  p = as.ggplot(as_grob(p))
+  p = ggplotify::as.ggplot(cowplot::as_grob(p))
   file.remove(dir(pattern = ("^VennDiagram.*log$")))
   return(p)
 }
@@ -287,7 +302,7 @@ draw_venn <- function(x,name,color = c("#66C2A5","#FC8D62","#8DA0CB","#E78AC3","
 ##' @param width wdith of boxplot and error bar
 ##' @param sort whether the boxplot will be sorted
 ##' @param drop whether to discard insignificant values
-##' @param pvalue_cutoff if drop = T，genes with p-values below the threshold will be drawn
+##' @param pvalue_cutoff if drop = TRUE，genes with p-values below the threshold will be drawn
 ##' @param xlab title of the x axis
 ##' @param ylab title of the y axis
 ##' @param grouplab title of group legend
@@ -295,8 +310,6 @@ draw_venn <- function(x,name,color = c("#66C2A5","#FC8D62","#8DA0CB","#E78AC3","
 ##' @param add_error_bar whether to add error bar
 ##' @return a boxplot according to \code{exp} and grouped by \code{group}.
 ##' @author Xiaojie Sun
-##' @importFrom tidyr gather
-##' @importFrom ggpubr stat_compare_means
 ##' @importFrom tibble rownames_to_column
 ##' @importFrom ggplot2 stat_boxplot
 ##' @importFrom ggplot2 ggplot
@@ -322,17 +335,25 @@ draw_venn <- function(x,name,color = c("#66C2A5","#FC8D62","#8DA0CB","#E78AC3","
 
 draw_boxplot = function(exp,group_list,
                         method = "kruskal.test",
-                        sort = T,
-                        drop = F,
+                        sort = TRUE,
+                        drop = FALSE,
                         width = 0.5,
                         pvalue_cutoff = 0.05,
                         xlab = "Gene",
                         ylab = "Expression",
                         grouplab = "Group",
-                        p.label = F,
-                        add_error_bar = F,
+                        p.label = FALSE,
+                        add_error_bar = FALSE,
                         color = c("#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854",
                                  "#FFD92F", "#E5C494", "#B3B3B3")){
+  if(!requireNamespace("ggpubr",quietly = TRUE)) {
+    stop("Package \"ggpubr\" needed for this function to work.
+         Please install it by install.packages('ggpubr')",call. = FALSE)
+  }
+  if(!requireNamespace("tidyr",quietly = TRUE)) {
+    stop("Package \"tidyr\" needed for this function to work.
+         Please install it by install.packages('tidyr')",call. = FALSE)
+  }
   p0 <-  all(apply(exp,2,is.numeric)) & (!is.null(rownames(exp)))
   if(!p0) stop("exp must be a numeric matrix with rownames")
   p1 = method %in% c("kruskal.test","aov","t.test","wilcox.test")
@@ -347,24 +368,24 @@ draw_boxplot = function(exp,group_list,
   }
   if(method=="kruskal.test"){
     x = apply(exp, 1, function(x){
-      kruskal.test(x~group_list)$p.value
+      stats::kruskal.test(x~group_list)$p.value
     })
   }else if(method=="aov"){
     x = apply(exp, 1, function(x){
-      summary(aov(x~group_list))[[1]]$`Pr(>F)`[1]
+      summary(stats::aov(x~group_list))[[1]]$`Pr(>F)`[1]
     })
   }else if(method=="t.test"){
     x = apply(exp, 1, function(x){
-      t.test(x~group_list)$p.value
+      stats::t.test(x~group_list)$p.value
     })
   }else if(method=="wilcox.test"){
     x = apply(exp, 1, function(x){
-      wilcox.test(x~group_list)$p.value
+      stats::wilcox.test(x~group_list)$p.value
     })
   }
   if(sum(x< pvalue_cutoff)==0) {
     message("No rows below the threshold,plot all rows")
-    drop = F
+    drop = FALSE
   }
   if(drop){
     x = x[ x < pvalue_cutoff]
@@ -374,12 +395,12 @@ draw_boxplot = function(exp,group_list,
   if(length(x)>40) message("seems to be too many rows")
   dat = rownames_to_column(as.data.frame(t(exp)),var = "sample")
   dat$group = group_list
-  dat = gather(dat,
+  dat = tidyr::gather(dat,
                rows,exp,-sample,-group)
   if(sort){
     dat$rows = factor(dat$rows,
                       levels = names(sort(x)),
-                      ordered = T)
+                      ordered = TRUE)
   }
   col = color[1:length(levels(group_list))]
   p = ggplot(dat,aes(rows,exp,fill = group))+
@@ -392,10 +413,128 @@ draw_boxplot = function(exp,group_list,
     scale_fill_manual(values = col)
   if(add_error_bar) p = stat_boxplot(geom ='errorbar', width = width)
   if(!p.label){
-    p = p + stat_compare_means(aes(group = group,label = ..p.signif..),method = method)
+    p = p + ggpubr::stat_compare_means(aes(group = group,label = ..p.signif..),method = method)
   }else{
-    p = p + stat_compare_means(aes(group = group,label = ..p.format..),method = method)
+    p = p + ggpubr::stat_compare_means(aes(group = group,label = ..p.format..),method = method)
   }
   if(length(x)>10) p = p + theme(axis.text.x = element_text(angle=50,vjust = 0.5))
   return(p)
 }
+
+utils::globalVariables(c(".","rows","group","..p.signif..","..p.format.."))
+
+##' ggheat
+##'
+##' draw heatmap plot with annotation by ggplot2
+##'
+##' @param dat expression matrix for plot
+##' @param group group for expression colnames
+##' @param cluster logical,cluster or not, default F
+##' @param show_rownames logical,show rownames in plot or not,default T
+##' @param show_colnames logical,show colnames in plot or not,default T
+##' @param groupname name of group legend
+##' @param expname name of exp legene
+##' @param fill_mid use median value as geom_tile fill midpoint
+##' @param color color for heatmap
+##' @param legend_color color for legend
+##' @return a ggplot object
+##' @author Xiaojie Sun
+##' @importFrom pheatmap pheatmap
+##' @importFrom tibble rownames_to_column
+##' @importFrom ggplot2 ggplot
+##' @importFrom ggplot2 geom_tile
+##' @importFrom ggplot2 scale_fill_manual
+##' @importFrom ggplot2 theme
+##' @importFrom ggplot2 aes
+##' @importFrom ggplot2 element_blank
+##' @importFrom ggplot2 scale_x_continuous
+##' @importFrom ggplot2 element_rect
+##' @importFrom ggplot2 scale_fill_gradient2
+##' @importFrom ggplot2 scale_x_discrete
+##' @importFrom ggplot2 labs
+##' @importFrom patchwork wrap_plots
+##' @export
+##' @examples
+##' rm(list = ls())
+##' exp_dat = matrix(sample(100:1000,40),ncol = 4)
+##' exp_dat[1:(nrow(exp_dat)/2),] =  exp_dat[1:(nrow(exp_dat)/2),]-1000
+##' rownames(exp_dat) = paste0("sample",1:nrow(exp_dat))
+##' colnames(exp_dat) = paste0("gene",1:ncol(exp_dat))
+
+##' group = rep(c("A","B"),each = nrow(exp_dat)/2)
+##' group = factor(group,levels = c("A","B"))
+##' ggheat(exp_dat,group)
+##' ggheat(exp_dat,group,cluster = TRUE)
+##' ggheat(exp_dat,group,cluster = TRUE,show_rownames = FALSE,
+##'        show_colnames = FALSE,groupname = "risk",expname = "expression")
+
+
+
+ggheat = function(dat,group,cluster = FALSE,
+                  color = c("#66C2A5", "white","#FC8D62"),
+                  legend_color = c("#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F",
+                                   "#E5C494", "#B3B3B3"),
+                  show_rownames = TRUE,show_colnames = TRUE,
+                  groupname = "group",expname = "exp",
+                  fill_mid = TRUE){
+  dat = data.frame(dat)
+
+  if(cluster){
+    ph = pheatmap::pheatmap(t(dat),silent = TRUE)
+    dat = dat[ph$tree_col$order,ph$tree_row$order]
+    group = group[ph$tree_col$order]
+  }
+
+  dat$group = group
+  dat2 = tidyr::gather(rownames_to_column(dat,
+                                   "samples"),
+                gene,exp,-group,-samples)
+
+  dat2$samples = factor(dat2$samples,levels = rownames(dat))
+  dat2$gene = factor(dat2$gene,levels = rev(colnames(dat)))
+
+  if(!cluster) dat2 = arrange(dat2,group)
+  ng = length(unique(group))
+  col = legend_color[1:ng]
+  names(col) = levels(group)
+  p1 = ggplot(dat, aes(x = 1:nrow(dat), y = 1)) +
+    geom_tile(aes(fill = group))+
+    scale_fill_manual(values = col)+
+    theme(panel.grid = element_blank(),
+          panel.background = element_blank(),
+          axis.line = element_blank(),
+          axis.ticks = element_blank(),
+          axis.text = element_blank(),
+          axis.title = element_blank()) +
+    scale_x_continuous(expand = c(0,0))+
+    labs(fill = groupname)
+
+  midpoint = ifelse(fill_mid,stats::median(dat2$exp),0)
+
+  p2 = ggplot(dat2, aes(samples, gene, fill = exp)) +
+    geom_tile()+
+    theme(panel.grid = element_blank(),
+          panel.background = element_rect(fill = NA),
+          legend.background = element_rect(fill = NA),
+          plot.background = element_rect(fill = NA),
+          axis.line = element_blank(),
+          axis.ticks = element_blank(),
+          axis.title = element_blank()
+    ) +
+    scale_fill_gradient2(low = color[1],
+                         mid = color[2],
+                         high = color[3],
+                         midpoint = midpoint)+
+    scale_x_discrete(expand = c(0,0))+
+    labs(fill = expname)
+  if(!show_rownames) p2 = p2 + theme(axis.text.x = element_blank())
+  if(!show_colnames) p2 = p2 + theme(axis.text.y = element_blank())
+  p = wrap_plots(p1,p2,nrow = 2,heights = c(1,11))
+  return(p)
+}
+
+utils::globalVariables(c("gene","samples"))
+
+
+
+

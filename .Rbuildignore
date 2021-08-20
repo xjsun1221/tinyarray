@@ -1,2 +1,8 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+GPL6244_bioc.rda
+GSE42872_eSet.Rdata
+GSE42872_series_matrix.txt.gz
+GSE474_eSet.Rdata
+down.rdata
+up.rdata

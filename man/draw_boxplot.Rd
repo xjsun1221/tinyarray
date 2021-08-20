@@ -8,15 +8,15 @@ draw_boxplot(
   exp,
   group_list,
   method = "kruskal.test",
-  sort = T,
-  drop = F,
+  sort = TRUE,
+  drop = FALSE,
   width = 0.5,
   pvalue_cutoff = 0.05,
   xlab = "Gene",
   ylab = "Expression",
   grouplab = "Group",
-  p.label = F,
-  add_error_bar = F,
+  p.label = FALSE,
+  add_error_bar = FALSE,
   color = c("#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F",
     "#E5C494", "#B3B3B3")
 )
@@ -34,7 +34,7 @@ draw_boxplot(
 
 \item{width}{wdith of boxplot and error bar}
 
-\item{pvalue_cutoff}{if drop = T，genes with p-values below the threshold will be drawn}
+\item{pvalue_cutoff}{if drop = TRUE，genes with p-values below the threshold will be drawn}
 
 \item{xlab}{title of the x axis}
 

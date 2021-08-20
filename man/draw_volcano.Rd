@@ -10,13 +10,15 @@ draw_volcano(
   pvalue_cutoff = 0.05,
   logFC_cutoff = 1,
   pkg = 1,
-  adjust = F,
-  symmetry = F,
+  adjust = FALSE,
+  symmetry = FALSE,
   color = c("blue", "grey", "red")
 )
 }
 \arguments{
 \item{deg}{a data.frame created by Differential analysis}
+
+\item{lab}{label for  x axis in volcano plot}
 
 \item{pvalue_cutoff}{Cutoff value of pvalue,0.05 by defult.}
 
