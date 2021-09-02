@@ -12,7 +12,7 @@ draw_volcano(
   pkg = 1,
   adjust = FALSE,
   symmetry = FALSE,
-  color = c("blue", "grey", "red")
+  color = c("#2874C5", "grey", "#f87669")
 )
 }
 \arguments{
@@ -39,7 +39,6 @@ a volcano plot according to logFC and P.value(or adjust P.value)
 print a volcano plot for Differential analysis result in data.frame fomat.
 }
 \examples{
-data("des")
 head(deseq_data)
 draw_volcano(deseq_data)
 draw_volcano(deseq_data,pvalue_cutoff = 0.01,logFC_cutoff = 2)

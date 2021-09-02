@@ -13,9 +13,10 @@ draw_heatmap(
   legend = FALSE,
   show_rownames = FALSE,
   annotation_legend = F,
-  color = (grDevices::colorRampPalette(c("#2166AC", "white", "#B2182B")))(100),
-  color_an = c("#92C5DE", "#F4A582", "#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3",
-    "#A6D854", "#FFD92F", "#E5C494", "#B3B3B3"),
+  color = (grDevices::colorRampPalette(c("#2fa1dd", "white", "#f87669")))(100),
+  color_an = c("#2fa1dd", "#f87669", "#e6b707", "#868686", "#92C5DE", "#F4A582",
+    "#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F", "#E5C494",
+    "#B3B3B3"),
   scale = TRUE,
   main = NA
 )
@@ -54,7 +55,7 @@ print a heatmap plot for expression matrix and group by group_list paramter, exp
 \examples{
 #example data
 exp = matrix(abs(rnorm(60,sd = 16)),nrow = 10)
-exp[,1:3] <- exp[,1:3]+20
+exp[,4:6] <- exp[,4:6]+20
 colnames(exp) <- paste0("sample",1:6)
 rownames(exp) <- paste0("gene",1:10)
 exp[1:4,1:4]
@@ -63,7 +64,6 @@ draw_heatmap(exp,group_list)
 #use iris
 n = t(iris[,1:4]);colnames(n) = 1:150
 group_list = iris$Species
-draw_heatmap(n,group_list)
 draw_heatmap(n,group_list)
 draw_heatmap(n,group_list,color = colorRampPalette(c("green","black","red"))(100),
              color_an = c("red","blue","pink") )

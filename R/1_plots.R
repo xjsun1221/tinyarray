@@ -22,7 +22,7 @@
 ##' \code{\link{draw_heatmap}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
 
 draw_pca <-  function(exp,group_list,
-                      color = c("#92C5DE","#F4A582","#66C2A5","#FC8D62","#8DA0CB","#E78AC3","#A6D854","#FFD92F","#E5C494","#B3B3B3"),
+                      color = c("#2874C5","#f87669","#e6b707","#868686","#92C5DE","#F4A582","#66C2A5","#FC8D62","#8DA0CB","#E78AC3","#A6D854","#FFD92F","#E5C494","#B3B3B3"),
                       addEllipses = TRUE){
   if(!requireNamespace("FactoMineR",quietly = TRUE)) {
     stop("Package \"FactoMineR\" needed for this function to work.
@@ -79,7 +79,7 @@ if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
 ##' @examples
 ##' #example data
 ##' exp = matrix(abs(rnorm(60,sd = 16)),nrow = 10)
-##' exp[,1:3] <- exp[,1:3]+20
+##' exp[,4:6] <- exp[,4:6]+20
 ##' colnames(exp) <- paste0("sample",1:6)
 ##' rownames(exp) <- paste0("gene",1:10)
 ##' exp[1:4,1:4]
@@ -88,7 +88,6 @@ if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
 ##' #use iris
 ##' n = t(iris[,1:4]);colnames(n) = 1:150
 ##' group_list = iris$Species
-##' draw_heatmap(n,group_list)
 ##' draw_heatmap(n,group_list)
 ##' draw_heatmap(n,group_list,color = colorRampPalette(c("green","black","red"))(100),
 ##'              color_an = c("red","blue","pink") )
@@ -103,8 +102,8 @@ draw_heatmap <-  function(n,
                           legend = FALSE,
                           show_rownames = FALSE,
                           annotation_legend=F,
-                          color = grDevices::colorRampPalette(c("#2166AC", "white", "#B2182B"))(100),
-                          color_an = c("#92C5DE","#F4A582","#66C2A5","#FC8D62","#8DA0CB","#E78AC3","#A6D854","#FFD92F","#E5C494","#B3B3B3"),
+                          color = grDevices::colorRampPalette(c("#2fa1dd", "white", "#f87669"))(100),
+                          color_an = c("#2fa1dd","#f87669","#e6b707","#868686","#92C5DE","#F4A582","#66C2A5","#FC8D62","#8DA0CB","#E78AC3","#A6D854","#FFD92F","#E5C494","#B3B3B3"),
                           scale = TRUE,
                           main = NA){
   if(!requireNamespace("ggplotify",quietly = TRUE)) {
@@ -186,7 +185,6 @@ draw_heatmap <-  function(n,
 ##' @importFrom ggplot2 theme
 ##' @export
 ##' @examples
-##' data("des")
 ##' head(deseq_data)
 ##' draw_volcano(deseq_data)
 ##' draw_volcano(deseq_data,pvalue_cutoff = 0.01,logFC_cutoff = 2)
@@ -195,7 +193,7 @@ draw_heatmap <-  function(n,
 ##' @seealso
 ##' \code{\link{draw_heatmap}};\code{\link{draw_pca}};\code{\link{draw_venn}}
 
-draw_volcano <- function(deg,lab=NA,pvalue_cutoff = 0.05,logFC_cutoff= 1,pkg = 1,adjust = FALSE,symmetry = FALSE,color = c("blue", "grey","red")){
+draw_volcano <- function(deg,lab=NA,pvalue_cutoff = 0.05,logFC_cutoff= 1,pkg = 1,adjust = FALSE,symmetry = FALSE,color = c("#2874C5", "grey","#f87669")){
   if(!is.data.frame(deg)) stop("deg must be a data.frame created by Differential analysis")
   if(pvalue_cutoff>0.1)warning("Your pvalue_cutoff seems too large")
   if(pvalue_cutoff>=1)stop("pvalue_cutoff will never larger than 1")
@@ -257,7 +255,7 @@ utils::globalVariables(c("logFC","P.value","change"))
 ##' @seealso
 ##' \code{\link{draw_pca}};\code{\link{draw_volcano}};\code{\link{draw_heatmap}}
 
-draw_venn <- function(x,name,color = c("#66C2A5","#FC8D62","#8DA0CB","#E78AC3","#A6D854","#FFD92F","#E5C494","#B3B3B3")){
+draw_venn <- function(x,name,color = c("#2874C5","#f87669","#e6b707","#868686","#66C2A5","#FC8D62","#8DA0CB","#E78AC3","#A6D854","#FFD92F","#E5C494","#B3B3B3")){
   if(as.numeric(grDevices::dev.cur())!=1) grDevices::graphics.off()
   if(!requireNamespace("VennDiagram",quietly = TRUE)) {
     stop("Package \"VennDiagram\" needed for this function to work. Please install it byby install.packages('VennDiagram')",call. = FALSE)
@@ -344,7 +342,7 @@ draw_boxplot = function(exp,group_list,
                         grouplab = "Group",
                         p.label = FALSE,
                         add_error_bar = FALSE,
-                        color = c("#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854",
+                        color = c("#2874C5","#f87669","#e6b707","#868686","#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854",
                                  "#FFD92F", "#E5C494", "#B3B3B3")){
   if(!requireNamespace("ggpubr",quietly = TRUE)) {
     stop("Package \"ggpubr\" needed for this function to work.
@@ -471,8 +469,8 @@ utils::globalVariables(c(".","rows","group","..p.signif..","..p.format.."))
 
 
 ggheat = function(dat,group,cluster = FALSE,
-                  color = c("#66C2A5", "white","#FC8D62"),
-                  legend_color = c("#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F",
+                  color = c("#2874C5", "white","#f87669"),
+                  legend_color = c("#2874C5","#f87669","#e6b707","#868686","#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F",
                                    "#E5C494", "#B3B3B3"),
                   show_rownames = TRUE,show_colnames = TRUE,
                   groupname = "group",expname = "exp",
@@ -561,7 +559,7 @@ utils::globalVariables(c("gene","samples"))
 ##'draw_tsne(exp,group_list)
 
 draw_tsne = function(exp,group_list,perplexity=30,
-                     color = c("#92C5DE", "#F4A582", "#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3",
+                     color = c("#2874C5","#f87669","#e6b707","#868686","#92C5DE", "#F4A582", "#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3",
                                "#A6D854", "#FFD92F", "#E5C494", "#B3B3B3"),
                      color.label = "group"){
   if(!requireNamespace("Rtsne",quietly = TRUE))
@@ -621,7 +619,7 @@ draw_KM = function(meta,
                    time_col = "time",event_col = "event",
                    legend.title = "Group",
                    legend.labs = levels(group_list),
-                   color = c("#92C5DE", "#F4A582", "#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3",
+                   color = c("#2874C5","#f87669","#e6b707","#868686","#92C5DE", "#F4A582", "#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3",
                              "#A6D854", "#FFD92F", "#E5C494", "#B3B3B3")){
   p1 <-  (time_col %in% colnames(meta)) & (event_col %in% colnames(meta))
   if(!p1){

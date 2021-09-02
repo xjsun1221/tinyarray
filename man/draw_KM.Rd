@@ -11,8 +11,9 @@ draw_KM(
   event_col = "event",
   legend.title = "Group",
   legend.labs = levels(group_list),
-  color = c("#92C5DE", "#F4A582", "#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3",
-    "#A6D854", "#FFD92F", "#E5C494", "#B3B3B3")
+  color = c("#2874C5", "#f87669", "#e6b707", "#868686", "#92C5DE", "#F4A582",
+    "#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F", "#E5C494",
+    "#B3B3B3")
 )
 }
 \arguments{
