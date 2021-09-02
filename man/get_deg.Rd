@@ -37,7 +37,7 @@ do diffiencial analysis according to exprission set and group information
 }
 \examples{
 gse = "GSE42872"
-geo = geo_download(gse)
+geo = geo_download(gse,destdir=tempdir())
 Group = rep(c("control","treat"),each = 3)
 Group = factor(Group)
 find_anno(geo$gpl)

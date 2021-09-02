@@ -176,8 +176,12 @@ sam_filter = function(exp){
 ##' @author Xiaojie Sun
 ##' @export
 ##' @examples
-##' match_exp_cl(exp_hub1,meta1[,2:4],"X_PATIENT")
-##' match_exp_cl(exp_hub1,meta1[,2:4],"X_PATIENT",sample_centric = FALSE)
+##' a = match_exp_cl(exp_hub1,meta1[,2:4],"X_PATIENT")
+##' exp_matched = a[[1]]
+##' cl_matched = a[[2]]
+##' b = match_exp_cl(exp_hub1,meta1[,2:4],"X_PATIENT",sample_centric = FALSE)
+##' exp_matched = b[[1]]
+##' cl_matched = b[[2]]
 ##' @seealso
 ##' \code{\link{make_tcga_group}};\code{\link{sam_filter}}
 
@@ -201,10 +205,12 @@ match_exp_cl = function(exp,cl,id_column = "id",sample_centric = TRUE){
     cl = cl[!duplicated(cl$id),]
   }
   k = identical(colnames(exp),cl$sample_id)
-  if(k)message("match successfully.")
+  if(k)message("match successfully")
   rownames(cl) = cl$sample_id
   compiler::setCompilerOptions(suppressAll = TRUE)
-  exp_matched <<- exp
-  cl_matched <<-cl
+  return(list(exp_matched = exp,
+              cl_matched = cl))
+  print("New version of tinyarray canceled global assigning inside the package,
+          please obtain exp_matched and cl_matched by split this list result.")
 }
 

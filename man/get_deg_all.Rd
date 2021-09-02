@@ -70,7 +70,7 @@ do diffiencial analysis according to exprission set and group information
 }
 \examples{
 gse = "GSE42872"
-geo = geo_download(gse)
+geo = geo_download(gse,destdir=tempdir())
 group_list = rep(c("A","B"),each = 3)
 group_list = factor(group_list)
 library(hugene10sttranscriptcluster.db)

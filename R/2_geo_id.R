@@ -15,8 +15,8 @@
 ##' @export
 ##' @examples
 ##' gse = "GSE42872"
-##' a = geo_download(gse)
-##' b = geo_download(gse,by_annopbrobe = FALSE)
+##' a = geo_download(gse,destdir=tempdir())
+##' b = geo_download(gse,by_annopbrobe = FALSE,destdir=tempdir())
 ##' @seealso
 ##' \code{\link{find_anno}}
 
@@ -31,13 +31,13 @@ geo_download <-  function(gse,by_annopbrobe = TRUE,simpd = TRUE,colon_remove = F
     stop("you must install AnnoProbe first by install.packages('AnnoProbe')",call. = FALSE)
   }
   if(by_annopbrobe){
-    if((!file.exists(paste0(gse,"_eSet.Rdata")))) AnnoProbe::geoChina(gse, destdir = getwd())
-    load(paste0(gse,"_eSet.Rdata"))
+    if((!file.exists(paste0(destdir,"/",gse,"_eSet.Rdata")))) AnnoProbe::geoChina(gse, destdir = destdir)
+    load(paste0(destdir,"/",gse,"_eSet.Rdata"))
     eSet <- gset
     rm(gset)
   }else{
     eSet <- GEOquery::getGEO(gse,
-                   destdir = '.',
+                   destdir = destdir,
                    getGPL = FALSE)
   }
   exp <- Biobase::exprs(eSet[[1]])
@@ -53,7 +53,7 @@ geo_download <-  function(gse,by_annopbrobe = TRUE,simpd = TRUE,colon_remove = F
     pd <-  pd[,df$colname]
     pd <- pd[,!(colnames(pd) %in% c("geo_accession", "supplementary_file"))]
     if(colon_remove){
-      pd = pd[,!apply(pd, 2, function(x){all(str_detect(x,": "))})]
+      pd = pd[,!apply(pd, 2, function(x){all(str_detect(x,": |https|www")|is.na(x)|x=="")})]
       colnames(pd) = str_remove(colnames(pd),":ch1")
     }
   }

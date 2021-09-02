@@ -31,8 +31,8 @@ download gse data and get informations
 }
 \examples{
 gse = "GSE42872"
-a = geo_download(gse)
-b = geo_download(gse,by_annopbrobe = FALSE)
+a = geo_download(gse,destdir=tempdir())
+b = geo_download(gse,by_annopbrobe = FALSE,destdir=tempdir())
 }
 \seealso{
 \code{\link{find_anno}}

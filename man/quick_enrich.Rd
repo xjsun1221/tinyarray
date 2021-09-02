@@ -4,12 +4,14 @@
 \alias{quick_enrich}
 \title{quick_enrich}
 \usage{
-quick_enrich(genes, kkgo_file = "kkgo_file.Rdata")
+quick_enrich(genes, kkgo_file = "kkgo_file.Rdata", destdir = getwd())
 }
 \arguments{
 \item{genes}{a gene symbol or entrizid vector}
 
 \item{kkgo_file}{Rdata filename for kegg and go result}
+
+\item{destdir}{destdir to save kkgofile}
 }
 \value{
 enrichment reslut and dotplots
@@ -19,7 +21,7 @@ do diffiencial analysis according to exprission set and group information
 }
 \examples{
 head(genes)
-g = quick_enrich(genes)
+g = quick_enrich(genes,destdir = tempdir())
 names(g)
 g[[1]][1:4,1:4]
 g[[3]]

@@ -59,7 +59,7 @@ print heatmap plots for expression matrix and group by group_list paramter
 }
 \examples{
 gse = "GSE474"
-geo = geo_download(gse)
+geo = geo_download(gse,destdir=tempdir())
 geo$exp[1:4,1:4]
 geo$exp=log2(geo$exp+1)
 library(stringr)

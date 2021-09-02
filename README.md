@@ -170,5 +170,14 @@ surv_cox 输出结果小数点位数不限制（因为有些p值太小，会变�
 
 data用use_data生成，不自己保存，避免错误的编码方式
 
+#### 2.2.2 
 
+geo_download支持指定下载读取的目录，支持去除重复的ch1列
 
+添加draw_tsne、draw_KM。ggsurvplot传参问题在：https://github.com/kassambara/survminer/issues/342
+
+删掉了split_list函数，cran不让使用全局变量
+
+match_exp_cl以列表形式输出，也取消了全局变量。需要赋值然后取子集。
+
+帮助文档的文件输出路径改为临时路径

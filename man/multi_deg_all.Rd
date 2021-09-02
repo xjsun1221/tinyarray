@@ -76,7 +76,7 @@ do diffiencial analysis according to exprission set and group information
 }
 \examples{
 gse = "GSE474"
-geo = geo_download(gse)
+geo = geo_download(gse,destdir=tempdir())
 geo$exp[1:4,1:4]
 geo$exp=log2(geo$exp+1)
 library(stringr)

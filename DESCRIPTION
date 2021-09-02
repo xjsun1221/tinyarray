@@ -1,7 +1,7 @@
 Package: tinyarray
 Type: Package
 Title: simplify geo and tcga analysis and plots
-Version: 2.2.1
+Version: 2.2.2
 Author: Xiaojie Sun
 Maintainer: Xiaojie Sun <18763899370@163.com>
 Description: Simplify geo and tcga analysis and plots.
@@ -37,7 +37,8 @@ Suggests:
     ggpubr,
     ggplotify,
     tidyr,
-    labeling
+    labeling,
+    Rtsne
 Depends:R (>= 3.5.0)
 RoxygenNote: 7.1.1
 VignetteBuilder: knitr

@@ -41,14 +41,14 @@ print one or more volcano plot for Differential analysis result in data.frame fo
 \examples{
 #two group
 gse = "GSE42872"
-geo = geo_download(gse)
+geo = geo_download(gse,destdir=tempdir())
 group_list = rep(c("A","B"),each = 3)
-ids = AnnoProbe::idmap('GPL6244')
+ids = AnnoProbe::idmap('GPL6244',destdir = tempdir())
 deg = get_deg(geo$exp,group_list,ids)
 draw_volcano2(deg)
 #multigroup
 gse = "GSE474"
-geo = geo_download(gse)
+geo = geo_download(gse,destdir=tempdir())
 geo$exp[1:4,1:4]
 geo$exp=log2(geo$exp+1)
 library(stringr)

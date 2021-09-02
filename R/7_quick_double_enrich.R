@@ -4,6 +4,7 @@
 ##'
 ##' @param genes a gene symbol or entrizid vector
 ##' @param kkgo_file Rdata filename for kegg and go result
+##' @param destdir destdir to save kkgofile
 ##' @return enrichment reslut and dotplots
 ##' @author Xiaojie Sun
 ##' @importFrom clusterProfiler bitr
@@ -17,7 +18,7 @@
 ##' @export
 ##' @examples
 ##' head(genes)
-##' g = quick_enrich(genes)
+##' g = quick_enrich(genes,destdir = tempdir())
 ##' names(g)
 ##' g[[1]][1:4,1:4]
 ##' g[[3]]
@@ -25,7 +26,9 @@
 ##' @seealso
 ##' \code{\link{double_enrich}}
 
-quick_enrich <- function(genes,kkgo_file = "kkgo_file.Rdata"){
+quick_enrich <- function(genes,
+                         kkgo_file = "kkgo_file.Rdata",
+                         destdir = getwd()){
   if(any(is.na(suppressWarnings(as.numeric(genes))))){
     s2e <- bitr(genes, fromType = "SYMBOL",
                 toType = c( "ENTREZID"),
@@ -33,8 +36,8 @@ quick_enrich <- function(genes,kkgo_file = "kkgo_file.Rdata"){
     s2e <- s2e[!duplicated(s2e$SYMBOL),]
     genes = s2e$ENTREZID
   }
-  kkgo_file = kkgo_file
-  if(!file.exists(kkgo_file)){
+  f = paste0(destdir,"/",kkgo_file)
+  if(!file.exists(f)){
     kk <- enrichKEGG(gene         = genes,
                      organism     = 'hsa',
                      pvalueCutoff = 0.05)
@@ -43,9 +46,9 @@ quick_enrich <- function(genes,kkgo_file = "kkgo_file.Rdata"){
                    OrgDb = "org.Hs.eg.db",
                    ont="all",
                    readable = T)
-    save(kk,go,file = paste(getwd(),kkgo_file,sep = "/"))
+    save(kk,go,file = f)
   }
-  load(kkgo_file)
+  load(f)
   k1 = sum(kk@result$p.adjust <0.05)
   k2 = sum(go@result$p.adjust <0.05)
   if (k1 == 0|is.null(k1)) {

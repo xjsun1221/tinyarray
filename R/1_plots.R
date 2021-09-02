@@ -535,6 +535,117 @@ ggheat = function(dat,group,cluster = FALSE,
 
 utils::globalVariables(c("gene","samples"))
 
+##' draw_tsne
+##'
+##' draw tsne plot with annotation by ggplot2
+##'
+##' @inheritParams draw_pca
+##' @param perplexity numeric; perplexity parameter for Rtsne
+##' @param color.label color legend label
+##' @return a ggplot object
+##' @author Xiaojie Sun
+##' @importFrom ggplot2 ggplot
+##' @importFrom ggplot2 geom_point
+##' @importFrom ggplot2 stat_ellipse
+##' @importFrom ggplot2 theme_classic
+##' @importFrom ggplot2 theme
+##' @importFrom ggplot2 aes
+##' @export
+##' @examples
+##'exp <-  matrix(rnorm(10000),nrow = 50)
+##'colnames(exp) <- paste0("sample",1:200)
+##'rownames(exp) <- paste0("gene",1:50)
+##'exp[1:4,1:4]
+##'exp[,1:100] = exp[,1:100]+10
+##'group_list <- factor(rep(c("A","B"),each = 100))
+##'draw_tsne(exp,group_list)
 
+draw_tsne = function(exp,group_list,perplexity=30,
+                     color = c("#92C5DE", "#F4A582", "#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3",
+                               "#A6D854", "#FFD92F", "#E5C494", "#B3B3B3"),
+                     color.label = "group"){
+  if(!requireNamespace("Rtsne",quietly = TRUE))
+  stop("Package \"Rtsne\" needed for this function to work.
+         Please install it by install.packages('Rtsne')",call. = FALSE)
+  p1 <-  all(apply(exp,2,is.numeric))
+  if(!p1) stop("exp must be a numeric matrix")
+  p2  <-  (sum(!duplicated(group_list)) > 1)
+  if(!p2) stop("group_list must more than 1")
+  p3 <- is.factor(group_list)
+  if(!p3) {
+    group_list = factor(group_list)
+    warning("group_list was covert to factor")
+  }
+  tsne_out = Rtsne::Rtsne(t(exp),perplexity = perplexity)
+  pdat = data.frame(tsne_out$Y,group_list)
+  colnames(pdat) = c("Y1","Y2","group")
+  ggplot(pdat,aes(Y1,Y2))+
+    geom_point(aes(Y1,Y2,fill = group),shape = 21,color = "black")+
+    stat_ellipse(aes(color = group,fill = group),
+                 geom = "polygon",
+                 alpha = 0.3,
+                 linetype = 2)+
+    scale_color_manual(values = color[1:nlevels(group_list)])+
+    scale_fill_manual(values = color[1:nlevels(group_list)])+
+    theme_classic()+
+    theme(legend.position = "top")+
+    labs(color = color.label,fill = color.label)
+}
 
+utils::globalVariables(c("Y1","Y2","group"))
+
+##' draw_KM
+##'
+##' draw KM-plot with two or more group
+##'
+##' @inheritParams draw_pca
+##' @param meta survival data with time and event column
+##' @param time_col colname of time
+##' @param event_col colname of event
+##' @param legend.title legend title
+##' @param legend.labs character vector specifying legend labels
+##' @return a KM-plot
+##' @author Xiaojie Sun
+##' @importFrom survival survfit
+##' @importFrom survival Surv
+##' @importFrom survminer ggsurvplot
+##' @export
+##' @examples
+##'require("survival")
+##'x = survival::lung
+##'draw_KM(meta = x,
+##'        group_list = x$sex,event_col = "status")
+
+draw_KM = function(meta,
+                   group_list,
+                   time_col = "time",event_col = "event",
+                   legend.title = "Group",
+                   legend.labs = levels(group_list),
+                   color = c("#92C5DE", "#F4A582", "#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3",
+                             "#A6D854", "#FFD92F", "#E5C494", "#B3B3B3")){
+  p1 <-  (time_col %in% colnames(meta)) & (event_col %in% colnames(meta))
+  if(!p1){
+    stop("meta data must involved time and event columns")
+  }else{
+    z1 = which(colnames(meta)==time_col)
+    z2 = which(colnames(meta)==event_col)
+    colnames(meta)[z1] = "time"
+    colnames(meta)[z2] = "event"
+  }
+  p2  <-  (sum(!duplicated(group_list)) > 1)
+  if(!p2) stop("group_list must more than 1")
+  p3 <- is.factor(group_list)
+  if(!p3) {
+    group_list = factor(group_list)
+    warning("group_list was covert to factor")
+  }
+  meta$Group = group_list
+  sfit <- survival::survfit(Surv(time, event) ~ Group,
+                  data = meta)
+  p = survminer::ggsurvplot(sfit,pval = T,data = meta,
+                 palette = color[1:nlevels(group_list)],
+                 legend.title = legend.title,
+                 legend.labs = legend.labs)
+  return(p$plot)
+}
 
