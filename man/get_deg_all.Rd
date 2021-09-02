@@ -21,8 +21,10 @@ get_deg_all(
   lab = NA,
   pkg = 4,
   symmetry = FALSE,
+  heat_union = TRUE,
   heat_id = 1,
-  gene_number = 200
+  gene_number = 200,
+  color_volcano = c("#2874C5", "grey", "#f87669")
 )
 }
 \arguments{
@@ -58,12 +60,16 @@ get_deg_all(
 
 \item{symmetry}{a logical value ,would you like to get your plot symmetrical}
 
+\item{heat_union}{logical ,use union or intersect DEGs for heatmap}
+
 \item{heat_id}{id of heatmap,1 for all DEGs,2 for head and tail,3 for top n DEGs}
 
 \item{gene_number}{how many DEGs will heatmap show .}
+
+\item{color_volcano}{color for volcano plot}
 }
 \value{
-a list with deg data.frame, volcano plot and a list with DEGs.
+a list with deg data.frame, volcano plot ,pca plot ,heatmap and a list with DEGs.
 }
 \description{
 do diffiencial analysis according to exprission set and group information

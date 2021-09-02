@@ -12,7 +12,7 @@ draw_volcano2(
   logFC_cutoff = 1,
   adjust = F,
   symmetry = T,
-  color = c("blue", "grey", "red")
+  color = c("#2874C5", "grey", "#f87669")
 )
 }
 \arguments{

@@ -4,12 +4,14 @@
 \alias{double_enrich}
 \title{draw enrichment bar plots for both up and down genes}
 \usage{
-double_enrich(deg, n = 10)
+double_enrich(deg, n = 10, color = c("#2874C5", "#f87669"))
 }
 \arguments{
 \item{deg}{a data.frame contains at least two columns:"ENTREZID" and "change"}
 
 \item{n}{how many terms will you perform for up and down genes respectively}
+
+\item{color}{color for bar plot}
 }
 \value{
 a list with kegg and go bar plot according to up and down genes enrichment result.

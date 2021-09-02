@@ -74,6 +74,7 @@ quick_enrich <- function(genes,
 ##'
 ##' @param deg a data.frame contains at least two columns:"ENTREZID" and "change"
 ##' @param n how many terms will you perform for up and down genes respectively
+##' @param color color for bar plot
 ##' @return a list with kegg and go bar plot according to up and down genes enrichment result.
 ##' @author Xiaojie Sun
 ##' @importFrom stringr str_to_lower
@@ -94,7 +95,7 @@ quick_enrich <- function(genes,
 ##' @seealso
 ##' \code{\link{quick_enrich}}
 
-double_enrich <- function(deg,n = 10){
+double_enrich <- function(deg,n = 10,color = c("#2874C5", "#f87669")){
 
   if(!requireNamespace("labeling",quietly = TRUE)) {
     stop("Package \"labeling\" needed for this function to work. Please install it byby install.packages('labeling')",call. = FALSE)
@@ -118,6 +119,7 @@ double_enrich <- function(deg,n = 10){
     lm = c(floor(min(df$pl)),ceiling(max(df$pl)))
     ggplot(df, aes(x=Description, y= pl)) +
       geom_bar(stat='identity', aes(fill=change), width=.7)+
+      scale_fill_manual(values = color)+
       coord_flip()+
       theme_light() +
       ylim(lm)+

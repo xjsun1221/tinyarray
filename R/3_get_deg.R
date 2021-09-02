@@ -40,45 +40,55 @@ get_deg <- function(exp,
     group_list = factor(group_list)
     warning("group_list was covert to factor")
   }
-  if(ncol(exp)!=length(group_list))stop("wrong group_list or exp")
-  if(ncol(ids)!=2)stop("wrong ids pramater,it should be a data.frame with probe_id and symbol")
-  colnames(ids) = c("probe_id","symbol")
+  if(nlevels(group_list)==2){
+    if(ncol(exp)!=length(group_list))stop("wrong group_list or exp")
+    if(ncol(ids)!=2)stop("wrong ids pramater,it should be a data.frame with probe_id and symbol")
+    colnames(ids) = c("probe_id","symbol")
 
-  design=stats::model.matrix(~group_list)
-  fit=lmFit(exp,design)
-  fit=eBayes(fit)
-  deg=topTable(fit,coef=2,number = Inf)
+    design=stats::model.matrix(~group_list)
+    fit=lmFit(exp,design)
+    fit=eBayes(fit)
+    deg=topTable(fit,coef=2,number = Inf)
 
-  if("ID" %in% colnames(deg)){
-  deg <- mutate(deg,probe_id=deg$ID)
-}else{
-  deg <- mutate(deg,probe_id=rownames(deg))
-}
-  ids = ids[!duplicated(ids$symbol),]
-  deg <- inner_join(deg,ids,by="probe_id")
-  if(adjust){
-    k1 = (deg$adj.P.Val < pvalue_cutoff)&(deg$logFC < -logFC_cutoff)
-    k2 = (deg$adj.P.Val < pvalue_cutoff)&(deg$logFC > logFC_cutoff)
+    if("ID" %in% colnames(deg)){
+      deg <- mutate(deg,probe_id=deg$ID)
+    }else{
+      deg <- mutate(deg,probe_id=rownames(deg))
+    }
+    ids = ids[!duplicated(ids$symbol),]
+    deg <- inner_join(deg,ids,by="probe_id")
+    if(adjust){
+      k1 = (deg$adj.P.Val < pvalue_cutoff)&(deg$logFC < -logFC_cutoff)
+      k2 = (deg$adj.P.Val < pvalue_cutoff)&(deg$logFC > logFC_cutoff)
+    }else{
+      k1 = (deg$P.Value < pvalue_cutoff)&(deg$logFC < -logFC_cutoff)
+      k2 = (deg$P.Value < pvalue_cutoff)&(deg$logFC > logFC_cutoff)
+    }
+
+    change = ifelse(k1,
+                    "down",
+                    ifelse(k2,
+                           "up",
+                           "stable"))
+    deg <- mutate(deg,change)
+
+    if(entriz){
+      s2e <- bitr(deg$symbol,
+                  fromType = "SYMBOL",
+                  toType = "ENTREZID",
+                  OrgDb = org.Hs.eg.db::org.Hs.eg.db)
+
+      deg <- inner_join(deg,s2e,by=c("symbol"="SYMBOL"))
+      deg <- deg[!duplicated(deg$symbol),]
+    }
   }else{
-    k1 = (deg$P.Value < pvalue_cutoff)&(deg$logFC < -logFC_cutoff)
-    k2 = (deg$P.Value < pvalue_cutoff)&(deg$logFC > logFC_cutoff)
-  }
-
-  change = ifelse(k1,
-                  "down",
-                  ifelse(k2,
-                         "up",
-                         "stable"))
-  deg <- mutate(deg,change)
-
-  if(entriz){
-    s2e <- bitr(deg$symbol,
-                fromType = "SYMBOL",
-                toType = "ENTREZID",
-                OrgDb = org.Hs.eg.db::org.Hs.eg.db)
-
-    deg <- inner_join(deg,s2e,by=c("symbol"="SYMBOL"))
-    deg <- deg[!duplicated(deg$symbol),]
+    deg <-multi_deg(exp = exp,
+                    group_list = group_list,
+                    ids = ids,
+                    logFC_cutoff = logFC_cutoff,
+                    pvalue_cutoff = pvalue_cutoff,
+                    adjust = adjust,
+                    entriz = entriz)
   }
   return(deg)
 }

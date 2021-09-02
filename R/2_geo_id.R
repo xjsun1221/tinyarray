@@ -20,7 +20,9 @@
 ##' @seealso
 ##' \code{\link{find_anno}}
 
-geo_download <-  function(gse,by_annopbrobe = TRUE,simpd = TRUE,colon_remove = FALSE,destdir = getwd()){
+geo_download <-  function(gse,by_annopbrobe = TRUE,
+                          simpd = TRUE,colon_remove = FALSE,
+                          destdir = getwd()){
   if(!requireNamespace("Biobase",quietly = TRUE)) {
     stop("you must install Biobase first by BiocManger::install('Biobase')",call. = FALSE)
   }
@@ -31,10 +33,14 @@ geo_download <-  function(gse,by_annopbrobe = TRUE,simpd = TRUE,colon_remove = F
     stop("you must install AnnoProbe first by install.packages('AnnoProbe')",call. = FALSE)
   }
   if(by_annopbrobe){
-    if((!file.exists(paste0(destdir,"/",gse,"_eSet.Rdata")))) AnnoProbe::geoChina(gse, destdir = destdir)
-    load(paste0(destdir,"/",gse,"_eSet.Rdata"))
-    eSet <- gset
-    rm(gset)
+    if(!file.exists(paste0(destdir,"/",gse,"_eSet.Rdata"))){
+      eSet <- AnnoProbe::geoChina(gse, destdir = destdir)
+    }else{
+      suppressWarnings(load(paste0(destdir,"\\",gse,"_eSet.Rdata")))
+      eSet = gset
+      rm(gset)
+    }
+
   }else{
     eSet <- GEOquery::getGEO(gse,
                    destdir = destdir,
@@ -81,7 +87,6 @@ geo_download <-  function(gse,by_annopbrobe = TRUE,simpd = TRUE,colon_remove = F
                   "to",max(exp)))}
   return(re)
 }
-utils::globalVariables("gset")
 
 ##' find annotation package or files
 ##'
@@ -116,10 +121,12 @@ find_anno <-function(gpl,install = FALSE,update = FALSE){
   }else {
     qz = pkg_all$bioc_package[pkg_all$gpl== gpl]
     ml1 = str_remove_all(paste0("`ids <- AnnoProbe::idmap\\(","\\'",gpl,"\\'","\\)`"),"\\\\")
-    ml2 = str_remove_all(paste0("`ids <- toTable\\(",qz,"SYMBOL\\)`"),"\\\\")
+    ml2 = str_remove_all(paste0("`library\\(",qz,".db","\\)",";","ids <- toTable\\(",qz,"SYMBOL\\)`"),"\\\\")
     if(install){
-      if(!suppressMessages(requireNamespace(paste0(qz,".db"),character.only = TRUE)))BiocManager::install(paste0(qz,".db"),update = update)
-      suppressMessages(requireNamespace(paste0(qz,".db"),character.only = TRUE))
+      if(!suppressMessages(requireNamespace(paste0(qz,".db")))){
+        BiocManager::install(paste0(qz,".db"),update = update)
+        suppressMessages(requireNamespace(paste0(qz,".db")))
+      }
     }
     if(!(gpl %in% exists_anno_list)) {
       #仅有R包可用
@@ -130,4 +137,4 @@ find_anno <-function(gpl,install = FALSE,update = FALSE){
     }
   }
 }
-utils::globalVariables(c("pkg_all","exists_anno_list"))
+utils::globalVariables(c("pkg_all","exists_anno_list","gset"))

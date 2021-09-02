@@ -96,7 +96,7 @@ draw_volcano2 = function(deg,
                          logFC_cutoff=1,
                          adjust=F,
                          symmetry=T,
-                         color = c("blue", "grey", "red")
+                         color = c("#2874C5", "grey", "#f87669")
 ){
   if(!is.list(deg) & is.data.frame(deg))stop("deg is a data.frame or list returned by limma")
   if(is.data.frame(deg)) deg = list(deg = deg)
@@ -166,9 +166,10 @@ draw_heatmap2 <- function(exp,
                           cluster_cols = TRUE,
                           annotation_legend=F,
                           legend = FALSE,
-                          color = grDevices::colorRampPalette(c("#2166AC", "white", "#B2182B"))(100),
-                          color_an = c("#92C5DE", "#F4A582", "#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3",
-                                       "#A6D854", "#FFD92F", "#E5C494", "#B3B3B3")
+                          color = (grDevices::colorRampPalette(c("#2fa1dd", "white", "#f87669")))(100),
+                          color_an = c("#2fa1dd", "#f87669", "#e6b707", "#868686", "#92C5DE", "#F4A582",
+                                       "#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F", "#E5C494",
+                                       "#B3B3B3")
 ){
   cgs = get_cgs(deg)
   if(length(cgs)==1){
@@ -264,7 +265,7 @@ multi_deg_all <- function(exp,
                           heat_union = TRUE,
                           heat_id = 1,
                           gene_number = 200,
-                          color_volcano = c("blue","grey","red")) {
+                          color_volcano = c("#2874C5", "grey", "#f87669")) {
   deg = multi_deg(
     exp,
     group_list,

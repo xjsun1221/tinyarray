@@ -24,7 +24,7 @@ multi_deg_all(
   heat_union = TRUE,
   heat_id = 1,
   gene_number = 200,
-  color_volcano = c("blue", "grey", "red")
+  color_volcano = c("#2874C5", "grey", "#f87669")
 )
 }
 \arguments{
