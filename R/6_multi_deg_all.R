@@ -19,13 +19,11 @@
 ##' geo = geo_download(gse,destdir=tempdir())
 ##' geo$exp[1:4,1:4]
 ##' geo$exp=log2(geo$exp+1)
-##' library(stringr)
-##' group_list=ifelse(str_detect(geo$pd$title,"MObese"),"MObese",
-##' ifelse(str_detect(geo$pd$title,"NonObese"),"NonObese","Obese"))
+##' group_list=ifelse(stringr::str_detect(geo$pd$title,"MObese"),"MObese",
+##' ifelse(stringr::str_detect(geo$pd$title,"NonObese"),"NonObese","Obese"))
 ##' group_list=factor(group_list,levels = c("NonObese","Obese","MObese"))
 ##' find_anno(geo$gpl)
-##' library(hgu133a.db)
-##' ids <- toTable(hgu133aSYMBOL)
+##' ids = AnnoProbe::idmap(geo$gpl,destdir = tempdir())
 ##' deg = multi_deg(geo$exp,group_list,ids,adjust = FALSE)
 ##' cgs = get_cgs(deg)
 ##' @seealso
@@ -76,13 +74,11 @@ get_cgs <- function(deg){
 ##' geo = geo_download(gse,destdir=tempdir())
 ##' geo$exp[1:4,1:4]
 ##' geo$exp=log2(geo$exp+1)
-##' library(stringr)
-##' group_list=ifelse(str_detect(geo$pd$title,"MObese"),"MObese",
-##' ifelse(str_detect(geo$pd$title,"NonObese"),"NonObese","Obese"))
+##' group_list=ifelse(stringr::str_detect(geo$pd$title,"MObese"),"MObese",
+##' ifelse(stringr::str_detect(geo$pd$title,"NonObese"),"NonObese","Obese"))
 ##' group_list=factor(group_list,levels = c("NonObese","Obese","MObese"))
 ##' find_anno(geo$gpl)
-##' library(hgu133a.db)
-##' ids <- toTable(hgu133aSYMBOL)
+##' ids <- AnnoProbe::idmap(geo$gpl,destdir = tempdir())
 ##' deg = multi_deg(geo$exp,group_list,ids,adjust = FALSE)
 ##' draw_volcano2(deg)
 ##' draw_volcano2(deg,color = c("darkgreen","grey","darkred"))
@@ -142,13 +138,11 @@ draw_volcano2 = function(deg,
 ##' geo = geo_download(gse,destdir=tempdir())
 ##' geo$exp[1:4,1:4]
 ##' geo$exp=log2(geo$exp+1)
-##' library(stringr)
-##' group_list=ifelse(str_detect(geo$pd$title,"MObese"),"MObese",
-##' ifelse(str_detect(geo$pd$title,"NonObese"),"NonObese","Obese"))
+##' group_list=ifelse(stringr::str_detect(geo$pd$title,"MObese"),"MObese",
+##' ifelse(stringr::str_detect(geo$pd$title,"NonObese"),"NonObese","Obese"))
 ##' group_list=factor(group_list,levels = c("NonObese","Obese","MObese"))
 ##' find_anno(geo$gpl)
-##' library(hgu133a.db)
-##' ids <- toTable(hgu133aSYMBOL)
+##' ids <- AnnoProbe::idmap(geo$gpl,destdir = tempdir())
 ##' deg = multi_deg(geo$exp,group_list,ids,adjust = FALSE)
 ##' draw_heatmap2(geo$exp,group_list,deg)
 ##' @seealso
@@ -233,13 +227,11 @@ draw_heatmap2 <- function(exp,
 ##' geo = geo_download(gse,destdir=tempdir())
 ##' geo$exp[1:4,1:4]
 ##' geo$exp=log2(geo$exp+1)
-##' library(stringr)
-##' group_list=ifelse(str_detect(geo$pd$title,"MObese"),"MObese",
-##' ifelse(str_detect(geo$pd$title,"NonObese"),"NonObese","Obese"))
+##' group_list=ifelse(stringr::str_detect(geo$pd$title,"MObese"),"MObese",
+##' ifelse(stringr::str_detect(geo$pd$title,"NonObese"),"NonObese","Obese"))
 ##' group_list=factor(group_list,levels = c("NonObese","Obese","MObese"))
 ##' find_anno(geo$gpl)
-##' library(hgu133a.db)
-##' ids <- toTable(hgu133aSYMBOL)
+##' ids = AnnoProbe::idmap(geo$gpl,destdir = tempdir())
 ##' dcp = multi_deg_all(geo$exp,
 ##' group_list,ids,adjust = FALSE)
 ##' dcp[[3]]

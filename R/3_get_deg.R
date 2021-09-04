@@ -1,6 +1,6 @@
 ##' get_deg
 ##'
-##' do diffiencial analysis according to exprission set and group information
+##' do differential analysis according to expression set and group information
 ##'
 ##' @inheritParams draw_pca
 ##' @inheritParams draw_volcano
@@ -21,8 +21,7 @@
 ##' Group = rep(c("control","treat"),each = 3)
 ##' Group = factor(Group)
 ##' find_anno(geo$gpl)
-##' library(hugene10sttranscriptcluster.db)
-##' ids <- toTable(hugene10sttranscriptclusterSYMBOL)
+##' ids <- AnnoProbe::idmap(geo$gpl,destdir = tempdir())
 ##' deg = get_deg(geo$exp,Group,ids)
 ##' head(deg)
 ##' @seealso

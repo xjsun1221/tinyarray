@@ -1,6 +1,6 @@
 ##' point_cut
 ##'
-##' caculate cut point for mutiple genes
+##' calculate cut point for multiple genes
 ##'
 ##' @param exprSet_hub a tumor expression set for hubgenes
 ##' @param meta meta data corresponds to expression set
@@ -32,7 +32,7 @@ point_cut <- function(exprSet_hub,meta){
 
 ##' surv_KM
 ##'
-##' caculate log_rank test p values for genes
+##' calculate log_rank test p values for genes
 ##'
 ##' @inheritParams point_cut
 ##' @inheritParams t_choose
@@ -75,7 +75,7 @@ surv_KM <- function(exprSet_hub,meta,cut.point = FALSE,pvalue_cutoff = 0.05,min_
 
 ##' surv_cox
 ##'
-##' caculate cox p values and HR for genes
+##' calculate cox p values and HR for genes
 ##'
 ##' @inheritParams surv_KM
 ##' @param HRkeep one of "all","protect"or"risk"

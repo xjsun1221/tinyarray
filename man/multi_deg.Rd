@@ -21,11 +21,11 @@ multi_deg(
 
 \item{ids}{a data.frame with 2 columns,including probe_id and symbol}
 
-\item{logFC_cutoff}{Cutoff value of logFC,1 by defult.}
+\item{logFC_cutoff}{Cutoff value of logFC,1 by default.}
 
-\item{pvalue_cutoff}{Cutoff value of pvalue,0.05 by defult.}
+\item{pvalue_cutoff}{Cutoff value of pvalue,0.05 by default.}
 
-\item{adjust}{a logical value, would you like to use adjusted pvalue to draw this plot,FAlSE by defult.}
+\item{adjust}{a logical value, would you like to use adjusted pvalue to draw this plot,FAlSE by default.}
 
 \item{entriz}{whether convert symbols to entriz ids}
 }
@@ -33,21 +33,19 @@ multi_deg(
 a deg data.frame with 10 columns
 }
 \description{
-do diffiencial analysis according to exprission set and group information
+do diffiential analysis according to expression set and group information
 }
 \examples{
 gse = "GSE474"
 geo = geo_download(gse,destdir=tempdir())
 geo$exp[1:4,1:4]
 geo$exp=log2(geo$exp+1)
-library(stringr)
-group_list=ifelse(str_detect(geo$pd$title,"MObese"),
-"MObese",ifelse(str_detect(geo$pd$title,"NonObese"),
+group_list=ifelse(stringr::str_detect(geo$pd$title,"MObese"),
+"MObese",ifelse(stringr::str_detect(geo$pd$title,"NonObese"),
 "NonObese","Obese"))
 group_list=factor(group_list,levels = c("NonObese","Obese","MObese"))
 find_anno(geo$gpl)
-library(hgu133a.db)
-ids <- toTable(hgu133aSYMBOL)
+ids <- AnnoProbe::idmap(geo$gpl,destdir = tempdir())
 deg = multi_deg(geo$exp,group_list,ids,adjust = FALSE)
 names(deg)
 head(deg[[1]])

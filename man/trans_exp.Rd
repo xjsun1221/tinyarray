@@ -19,7 +19,7 @@ trans_exp(exp, mrna_only = FALSE, lncrna_only = FALSE, gtex = FALSE)
 a transformed expression set with symbol
 }
 \description{
-transform rownames of tcga or tcga_gtex expression set from gdc or xena,from ensamble id to gene symbol
+transform rownames of tcga or tcga_gtex expression set from gdc or xena,from ensembl id to gene symbol
 }
 \examples{
 exp = matrix(rnorm(1000),ncol = 10)

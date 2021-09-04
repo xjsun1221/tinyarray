@@ -20,13 +20,13 @@ draw_volcano(
 
 \item{lab}{label for  x axis in volcano plot}
 
-\item{pvalue_cutoff}{Cutoff value of pvalue,0.05 by defult.}
+\item{pvalue_cutoff}{Cutoff value of pvalue,0.05 by default.}
 
-\item{logFC_cutoff}{Cutoff value of logFC,1 by defult.}
+\item{logFC_cutoff}{Cutoff value of logFC,1 by default.}
 
 \item{pkg}{a integer ,means which Differential analysis packages you used,we support three packages by now, 1,2,3,4 respectively means "DESeq2","edgeR","limma(voom)","limma"}
 
-\item{adjust}{a logical value, would you like to use adjusted pvalue to draw this plot,FAlSE by defult.}
+\item{adjust}{a logical value, would you like to use adjusted pvalue to draw this plot,FAlSE by default.}
 
 \item{symmetry}{a logical value ,would you like to get your plot symmetrical}
 
@@ -36,7 +36,7 @@ draw_volcano(
 a volcano plot according to logFC and P.value(or adjust P.value)
 }
 \description{
-print a volcano plot for Differential analysis result in data.frame fomat.
+print a volcano plot for Differential analysis result in data.frame format.
 }
 \examples{
 head(deseq_data)

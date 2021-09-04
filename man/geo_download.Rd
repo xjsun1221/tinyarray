@@ -19,7 +19,7 @@ geo_download(
 
 \item{simpd}{get simplified pdata,drop out columns with all same values}
 
-\item{colon_remove}{wether to remove duplicated columns with colons}
+\item{colon_remove}{whether to remove duplicated columns with colons}
 
 \item{destdir}{The destination directory for data downloads.}
 }

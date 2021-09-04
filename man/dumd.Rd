@@ -2,7 +2,7 @@
 % Please edit documentation in R/14_dumd_all.R
 \name{dumd}
 \alias{dumd}
-\title{count unique values in every colunms for data.frame}
+\title{count unique values in every columns for data.frame}
 \usage{
 dumd(x)
 }

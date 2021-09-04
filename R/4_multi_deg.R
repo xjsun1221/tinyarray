@@ -1,6 +1,6 @@
 ##' multi_deg
 ##'
-##' do diffiencial analysis according to exprission set and group information
+##' do diffiential analysis according to expression set and group information
 ##'
 ##' @inheritParams get_deg
 ##' @param ids a data.frame with 2 columns,including probe_id and symbol
@@ -20,14 +20,12 @@
 ##' geo = geo_download(gse,destdir=tempdir())
 ##' geo$exp[1:4,1:4]
 ##' geo$exp=log2(geo$exp+1)
-##' library(stringr)
-##' group_list=ifelse(str_detect(geo$pd$title,"MObese"),
-##' "MObese",ifelse(str_detect(geo$pd$title,"NonObese"),
+##' group_list=ifelse(stringr::str_detect(geo$pd$title,"MObese"),
+##' "MObese",ifelse(stringr::str_detect(geo$pd$title,"NonObese"),
 ##' "NonObese","Obese"))
 ##' group_list=factor(group_list,levels = c("NonObese","Obese","MObese"))
 ##' find_anno(geo$gpl)
-##' library(hgu133a.db)
-##' ids <- toTable(hgu133aSYMBOL)
+##' ids <- AnnoProbe::idmap(geo$gpl,destdir = tempdir())
 ##' deg = multi_deg(geo$exp,group_list,ids,adjust = FALSE)
 ##' names(deg)
 ##' head(deg[[1]])

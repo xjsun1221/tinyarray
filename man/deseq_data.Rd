@@ -11,7 +11,7 @@ An object of class \code{data.frame} with 552 rows and 6 columns.
 deseq_data
 }
 \description{
-DEseq2 differencial analysis result
+DEseq2 differential analysis result
 }
 \examples{
   head(deseq_data)

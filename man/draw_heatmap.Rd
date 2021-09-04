@@ -36,7 +36,7 @@ draw_heatmap(
 
 \item{show_rownames}{logical,show rownames or not}
 
-\item{annotation_legend}{logical，show annotation legend or not}
+\item{annotation_legend}{logical,show annotation legend or not}
 
 \item{color}{color for heatmap}
 
@@ -50,7 +50,7 @@ draw_heatmap(
 a heatmap plot according to \code{exp} and grouped by \code{group}.
 }
 \description{
-print a heatmap plot for expression matrix and group by group_list paramter, exp will be scaled.
+print a heatmap plot for expression matrix and group by group_list praramter, exp will be scaled.
 }
 \examples{
 #example data

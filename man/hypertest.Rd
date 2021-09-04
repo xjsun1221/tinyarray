@@ -11,7 +11,7 @@ hypertest(lnc, pc, deMIR = NULL, lnctarget, pctarget)
 
 \item{pc}{mRNA names}
 
-\item{deMIR}{miRNA names , defult NULL}
+\item{deMIR}{miRNA names , default NULL}
 
 \item{lnctarget}{a data.frame with two column,lncRNA in the first column ,miRNA in the second column}
 

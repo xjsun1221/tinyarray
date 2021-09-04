@@ -27,7 +27,7 @@ surv_KM(
 a vector with gene names and log_rank p value
 }
 \description{
-caculate log_rank test p values for genes
+calculate log_rank test p values for genes
 }
 \examples{
 surv_KM(exprSet_hub1,meta1)

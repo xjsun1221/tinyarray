@@ -22,8 +22,8 @@
 ##' geo = geo_download(gse,destdir=tempdir())
 ##' group_list = rep(c("A","B"),each = 3)
 ##' group_list = factor(group_list)
-##' library(hugene10sttranscriptcluster.db)
-##' ids <- toTable(hugene10sttranscriptclusterSYMBOL)
+##' find_anno(geo$gpl)
+##' ids <- AnnoProbe::idmap(geo$gpl,destdir = tempdir())
 ##' dcp = get_deg_all(geo$exp,group_list,ids)
 ##' head(dcp$deg)
 ##' dcp$plots

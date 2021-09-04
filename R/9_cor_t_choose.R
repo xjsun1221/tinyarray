@@ -1,6 +1,6 @@
 ##' t_choose
 ##'
-##' choose diffrencial expressed genes by simple t.test
+##' choose differential expressed genes by simple t.test
 ##'
 ##' @inheritParams get_deg
 ##' @param genes a vector with some genes
@@ -8,7 +8,7 @@
 ##' @param down_only keep down genes in the result only
 ##' @param pvalue_cutoff p value cut off ,0.05 by defult
 ##' @export
-##' @return a vector with diffrencial expressed genes
+##' @return a vector with differential expressed genes
 ##' @author Xiaojie Sun
 ##' @examples
 ##' exp = matrix(rnorm(1000),ncol = 10)
@@ -55,9 +55,9 @@ t_choose <- function(genes,exp,group_list,up_only = FALSE,down_only = FALSE,pval
 }
 
 
-##' cor.test for all varibles
+##' cor.test for all variables
 ##'
-##' cor.test for all varibles(each two columns)
+##' cor.test for all variables(each two columns)
 ##'
 ##' @param x A numeric matrix or data.frame
 ##' @return a data.frame with cor.test p.value and estimate
@@ -89,12 +89,12 @@ cor.full <- function(x){
 
 
 
-##' cor.test for one varible with all varibles
+##' cor.test for one variable with all variables
 ##'
-##' cor.test for all varibles(each two columns)
+##' cor.test for all variables(each two columns)
 ##'
 ##' @param x A numeric matrix or data.frame
-##' @param var your choosed varible,only one.
+##' @param var your chosen variable,only one.
 ##' @return A data.frame with cor.test p.value and estimate
 ##' @author Xiaojie Sun
 ##' @export

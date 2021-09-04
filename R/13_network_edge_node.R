@@ -9,7 +9,7 @@
 ##' @importFrom stringr str_split
 ##' @importFrom dplyr distinct
 ##' @export
-##' @return a new df with two column ,one interaction by one rows
+##' @return a new data.frame with two column ,one interaction by one rows
 ##' @author Xiaojie Sun
 ##' @examples
 ##' df = data.frame(a = c("gene1","gene2","gene3"),

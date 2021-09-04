@@ -2,20 +2,20 @@
 % Please edit documentation in R/9_cor_t_choose.R
 \name{cor.one}
 \alias{cor.one}
-\title{cor.test for one varible with all varibles}
+\title{cor.test for one variable with all variables}
 \usage{
 cor.one(x, var)
 }
 \arguments{
 \item{x}{A numeric matrix or data.frame}
 
-\item{var}{your choosed varible,only one.}
+\item{var}{your chosen variable,only one.}
 }
 \value{
 A data.frame with cor.test p.value and estimate
 }
 \description{
-cor.test for all varibles(each two columns)
+cor.test for all variables(each two columns)
 }
 \examples{
 x = iris[,-5]

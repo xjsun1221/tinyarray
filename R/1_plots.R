@@ -58,13 +58,13 @@ if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
 
 ##' draw a heatmap plot
 ##'
-##' print a heatmap plot for expression matrix and group by group_list paramter, exp will be scaled.
+##' print a heatmap plot for expression matrix and group by group_list praramter, exp will be scaled.
 ##'
 ##' @inheritParams draw_pca
 ##' @param n  A numeric matrix
 ##' @param scale_before deprecated parameter
 ##' @param n_cutoff 3 by defalut , scale before plot and set a cutoff,usually 2 or 1.6
-##' @param annotation_legend logical，show annotation legend or not
+##' @param annotation_legend logical,show annotation legend or not
 ##' @param cluster_cols if F,heatmap will nor cluster in column
 ##' @param color color for heatmap
 ##' @param color_an color for column annotation
@@ -158,13 +158,13 @@ draw_heatmap <-  function(n,
 
 ##' draw a volcano plot
 ##'
-##' print a volcano plot for Differential analysis result in data.frame fomat.
+##' print a volcano plot for Differential analysis result in data.frame format.
 ##'
 ##' @param deg a data.frame created by Differential analysis
-##' @param pvalue_cutoff Cutoff value of pvalue,0.05 by defult.
-##' @param logFC_cutoff Cutoff value of logFC,1 by defult.
+##' @param pvalue_cutoff Cutoff value of pvalue,0.05 by default.
+##' @param logFC_cutoff Cutoff value of logFC,1 by default.
 ##' @param pkg a integer ,means which Differential analysis packages you used,we support three packages by now, 1,2,3,4 respectively means "DESeq2","edgeR","limma(voom)","limma"
-##' @param adjust a logical value, would you like to use adjusted pvalue to draw this plot,FAlSE by defult.
+##' @param adjust a logical value, would you like to use adjusted pvalue to draw this plot,FAlSE by default.
 ##' @param symmetry a logical value ,would you like to get your plot symmetrical
 ##' @param color color vector
 ##' @param lab label for  x axis in volcano plot
@@ -300,11 +300,11 @@ draw_venn <- function(x,name,color = c("#2874C5","#f87669","#e6b707","#868686","
 ##' @param width wdith of boxplot and error bar
 ##' @param sort whether the boxplot will be sorted
 ##' @param drop whether to discard insignificant values
-##' @param pvalue_cutoff if drop = TRUE，genes with p-values below the threshold will be drawn
+##' @param pvalue_cutoff if drop = TRUE,genes with p-values below the threshold will be drawn
 ##' @param xlab title of the x axis
 ##' @param ylab title of the y axis
 ##' @param grouplab title of group legend
-##' @param p.label whether to show p vlaue in the plot
+##' @param p.label whether to show p value in the plot
 ##' @param add_error_bar whether to add error bar
 ##' @return a boxplot according to \code{exp} and grouped by \code{group}.
 ##' @author Xiaojie Sun
@@ -431,7 +431,7 @@ utils::globalVariables(c(".","rows","group","..p.signif..","..p.format.."))
 ##' @param show_rownames logical,show rownames in plot or not,default T
 ##' @param show_colnames logical,show colnames in plot or not,default T
 ##' @param groupname name of group legend
-##' @param expname name of exp legene
+##' @param expname name of exp legend
 ##' @param fill_mid use median value as geom_tile fill midpoint
 ##' @param color color for heatmap
 ##' @param legend_color color for legend

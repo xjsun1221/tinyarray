@@ -6,7 +6,7 @@
 ##' @importFrom stringr str_starts
 ##' @importFrom stringr str_sub
 ##' @export
-##' @return a group factor with normal and tumor ,conresponse to colnames for expression matrtix
+##' @return a group factor with normal and tumor ,correspond to colnames for expression matrix
 ##' @author Xiaojie Sun
 ##' @examples
 ##' k = make_tcga_group(exp_hub1);table(k)
@@ -24,7 +24,7 @@ make_tcga_group <- function(exp){
 
 ##' trans_exp
 ##'
-##' transform rownames of tcga or tcga_gtex expression set from gdc or xena,from ensamble id to gene symbol
+##' transform rownames of tcga or tcga_gtex expression set from gdc or xena,from ensembl id to gene symbol
 ##'
 ##' @param exp tcga or tcga_gtex expression set from gdc or xena
 ##' @param mrna_only only keep mrna rows in result
@@ -170,7 +170,7 @@ sam_filter = function(exp){
 ##'
 ##' @param exp tcga  expression set
 ##' @param cl tcga clinical data.frame
-##' @param id_column which column containes patient ids, column number or colnmn name.
+##' @param id_column which column contains patient ids, column number or colnmn name.
 ##' @param sample_centric logical,deault T,keep all samples from the same patients.if FALSE,keep only one tumor sample for one patient.
 ##' @return a transformed clinical data.frame with sample ids.
 ##' @author Xiaojie Sun

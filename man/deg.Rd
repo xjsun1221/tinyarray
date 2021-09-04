@@ -11,7 +11,7 @@ An object of class \code{data.frame} with 18591 rows and 10 columns.
 deg
 }
 \description{
-limma differencial analysis result for GSE42872
+limma differential analysis result for GSE42872
 }
 \examples{
   head(deg)

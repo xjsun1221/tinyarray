@@ -1,10 +1,10 @@
 Package: tinyarray
 Type: Package
-Title: simplify geo and tcga analysis and plots
+Title: An R Package for Simplifying GEO and TCGA Analysis and Plots
 Version: 2.2.3
-Author: Xiaojie Sun
+Authors@R: person("Xiaojie","Sun",email = "18763899370@163.com",role = c("aut","cre"))
 Maintainer: Xiaojie Sun <18763899370@163.com>
-Description: Simplify geo and tcga analysis and plots.
+Description: Simplify GEO microarray data and TCGA RNA-seq data analysis and plots.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -31,8 +31,6 @@ Suggests:
     factoextra,
     knitr,
     rmarkdown,
-    hgu133a.db,
-    hugene10sttranscriptcluster.db,
     cowplot,
     ggpubr,
     ggplotify,
@@ -41,4 +39,4 @@ Suggests:
     Rtsne
 Depends:R (>= 3.5.0)
 RoxygenNote: 7.1.1
-VignetteBuilder: knitr
+Language: 1en-US

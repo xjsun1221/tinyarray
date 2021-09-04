@@ -27,10 +27,10 @@ t_choose(
 \item{pvalue_cutoff}{p value cut off ,0.05 by defult}
 }
 \value{
-a vector with diffrencial expressed genes
+a vector with differential expressed genes
 }
 \description{
-choose diffrencial expressed genes by simple t.test
+choose differential expressed genes by simple t.test
 }
 \examples{
 exp = matrix(rnorm(1000),ncol = 10)

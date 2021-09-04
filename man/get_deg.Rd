@@ -21,11 +21,11 @@ get_deg(
 
 \item{ids}{a data.frame with 2 columns,including probe_id and symbol}
 
-\item{logFC_cutoff}{Cutoff value of logFC,1 by defult.}
+\item{logFC_cutoff}{Cutoff value of logFC,1 by default.}
 
-\item{pvalue_cutoff}{Cutoff value of pvalue,0.05 by defult.}
+\item{pvalue_cutoff}{Cutoff value of pvalue,0.05 by default.}
 
-\item{adjust}{a logical value, would you like to use adjusted pvalue to draw this plot,FAlSE by defult.}
+\item{adjust}{a logical value, would you like to use adjusted pvalue to draw this plot,FAlSE by default.}
 
 \item{entriz}{whether convert symbols to entriz ids}
 }
@@ -33,7 +33,7 @@ get_deg(
 a deg data.frame with 10 columns
 }
 \description{
-do diffiencial analysis according to exprission set and group information
+do differential analysis according to expression set and group information
 }
 \examples{
 gse = "GSE42872"
@@ -41,8 +41,7 @@ geo = geo_download(gse,destdir=tempdir())
 Group = rep(c("control","treat"),each = 3)
 Group = factor(Group)
 find_anno(geo$gpl)
-library(hugene10sttranscriptcluster.db)
-ids <- toTable(hugene10sttranscriptclusterSYMBOL)
+ids <- AnnoProbe::idmap(geo$gpl,destdir = tempdir())
 deg = get_deg(geo$exp,Group,ids)
 head(deg)
 }

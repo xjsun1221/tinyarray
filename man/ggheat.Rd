@@ -35,7 +35,7 @@ ggheat(
 
 \item{groupname}{name of group legend}
 
-\item{expname}{name of exp legene}
+\item{expname}{name of exp legend}
 
 \item{fill_mid}{use median value as geom_tile fill midpoint}
 }

@@ -34,11 +34,11 @@ get_deg_all(
 
 \item{ids}{a data.frame with 2 columns,including probe_id and symbol}
 
-\item{logFC_cutoff}{Cutoff value of logFC,1 by defult.}
+\item{logFC_cutoff}{Cutoff value of logFC,1 by default.}
 
-\item{pvalue_cutoff}{Cutoff value of pvalue,0.05 by defult.}
+\item{pvalue_cutoff}{Cutoff value of pvalue,0.05 by default.}
 
-\item{adjust}{a logical value, would you like to use adjusted pvalue to draw this plot,FAlSE by defult.}
+\item{adjust}{a logical value, would you like to use adjusted pvalue to draw this plot,FAlSE by default.}
 
 \item{entriz}{logical , if TRUE ,convert symbol to entriz id.}
 
@@ -48,7 +48,7 @@ get_deg_all(
 
 \item{cluster_cols}{if F,heatmap will nor cluster in column}
 
-\item{annotation_legend}{logical，show annotation legend or not}
+\item{annotation_legend}{logical,show annotation legend or not}
 
 \item{show_rownames}{logical,show rownames or not}
 
@@ -79,8 +79,8 @@ gse = "GSE42872"
 geo = geo_download(gse,destdir=tempdir())
 group_list = rep(c("A","B"),each = 3)
 group_list = factor(group_list)
-library(hugene10sttranscriptcluster.db)
-ids <- toTable(hugene10sttranscriptclusterSYMBOL)
+find_anno(geo$gpl)
+ids <- AnnoProbe::idmap(geo$gpl,destdir = tempdir())
 dcp = get_deg_all(geo$exp,group_list,ids)
 head(dcp$deg)
 dcp$plots

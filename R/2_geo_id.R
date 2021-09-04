@@ -5,7 +5,7 @@
 ##' @param gse gse assession number
 ##' @param by_annopbrobe getGEO or geoChina
 ##' @param simpd get simplified pdata,drop out columns with all same values
-##' @param colon_remove wether to remove duplicated columns with colons
+##' @param colon_remove whether to remove duplicated columns with colons
 ##' @param destdir	 The destination directory for data downloads.
 ##' @return a list with exp,pd and gpl
 ##' @author Xiaojie Sun

@@ -11,10 +11,10 @@ plcortest(lnc_exp, mRNA_exp, cor_cutoff = 0)
 
 \item{mRNA_exp}{mRNA expression set which nrow equal to lncRNA_exp}
 
-\item{cor_cutoff}{cor estimate cut_off, defult 0}
+\item{cor_cutoff}{cor estimate cut_off, default 0}
 }
 \value{
-a list with cortest result,names are lncRNAs, element are mRNAs
+a list with cor.test result,names are lncRNAs, element are mRNAs
 }
 \description{
 make cor.test for given lncRNA and mRNA

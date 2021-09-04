@@ -34,7 +34,7 @@ draw_boxplot(
 
 \item{width}{wdith of boxplot and error bar}
 
-\item{pvalue_cutoff}{if drop = TRUE，genes with p-values below the threshold will be drawn}
+\item{pvalue_cutoff}{if drop = TRUE,genes with p-values below the threshold will be drawn}
 
 \item{xlab}{title of the x axis}
 
@@ -42,7 +42,7 @@ draw_boxplot(
 
 \item{grouplab}{title of group legend}
 
-\item{p.label}{whether to show p vlaue in the plot}
+\item{p.label}{whether to show p value in the plot}
 
 \item{add_error_bar}{whether to add error bar}
 

@@ -8,7 +8,7 @@
 
 #' deg
 #'
-#' limma differencial analysis result for GSE42872
+#' limma differential analysis result for GSE42872
 #'
 #' @examples
 #'   head(deg)
@@ -16,7 +16,7 @@
 
 #' deseq_data
 #'
-#' DEseq2 differencial analysis result
+#' DEseq2 differential analysis result
 #'
 #' @examples
 #'   head(deseq_data)

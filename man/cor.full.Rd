@@ -2,7 +2,7 @@
 % Please edit documentation in R/9_cor_t_choose.R
 \name{cor.full}
 \alias{cor.full}
-\title{cor.test for all varibles}
+\title{cor.test for all variables}
 \usage{
 cor.full(x)
 }
@@ -13,7 +13,7 @@ cor.full(x)
 a data.frame with cor.test p.value and estimate
 }
 \description{
-cor.test for all varibles(each two columns)
+cor.test for all variables(each two columns)
 }
 \examples{
 x = iris[,-5]

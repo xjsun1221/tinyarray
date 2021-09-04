@@ -15,7 +15,7 @@ point_cut(exprSet_hub, meta)
 a vector with cutpoint for genes
 }
 \description{
-caculate cut point for mutiple genes
+calculate cut point for multiple genes
 }
 \examples{
 point_cut(exprSet_hub1,meta1)

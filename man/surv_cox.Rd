@@ -33,7 +33,7 @@ surv_cox(
 a matrix with gene names ,cox p value and HR
 }
 \description{
-caculate cox p values and HR for genes
+calculate cox p values and HR for genes
 }
 \examples{
 surv_cox(exprSet_hub1,meta1,cut.point = TRUE,HRkeep = "all")

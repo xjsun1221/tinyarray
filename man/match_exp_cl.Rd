@@ -11,7 +11,7 @@ match_exp_cl(exp, cl, id_column = "id", sample_centric = TRUE)
 
 \item{cl}{tcga clinical data.frame}
 
-\item{id_column}{which column containes patient ids, column number or colnmn name.}
+\item{id_column}{which column contains patient ids, column number or colnmn name.}
 
 \item{sample_centric}{logical,deault T,keep all samples from the same patients.if FALSE,keep only one tumor sample for one patient.}
 }

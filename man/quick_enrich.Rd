@@ -14,7 +14,7 @@ quick_enrich(genes, kkgo_file = "kkgo_file.Rdata", destdir = getwd())
 \item{destdir}{destdir to save kkgofile}
 }
 \value{
-enrichment reslut and dotplots
+enrichment results and dotplots
 }
 \description{
 do diffiencial analysis according to exprission set and group information

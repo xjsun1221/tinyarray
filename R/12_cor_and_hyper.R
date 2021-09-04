@@ -3,9 +3,9 @@
 ##' make cor.test for given lncRNA and mRNA
 ##' @param lnc_exp lncRNA expression set
 ##' @param mRNA_exp mRNA expression set which nrow equal to lncRNA_exp
-##' @param cor_cutoff cor estimate cut_off, defult 0
+##' @param cor_cutoff cor estimate cut_off, default 0
 ##' @export
-##' @return a list with cortest result,names are lncRNAs, element are mRNAs
+##' @return a list with cor.test result,names are lncRNAs, element are mRNAs
 ##' @author Xiaojie Sun
 ##' @examples
 ##' # to update
@@ -33,7 +33,7 @@ plcortest <- function(lnc_exp, mRNA_exp,cor_cutoff=0) {
 ##' make hypertest for given lncRNA and mRNA common miRNAs
 ##' @param lnc lncRNA names
 ##' @param pc mRNA names
-##' @param deMIR miRNA names , defult NULL
+##' @param deMIR miRNA names , default NULL
 ##' @param lnctarget a data.frame with two column,lncRNA in the first column ,miRNA in the second column
 ##' @param pctarget a data.frame with two column,mRNA in the first column ,miRNA in the second column
 ##' @export

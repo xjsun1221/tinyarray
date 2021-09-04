@@ -5,7 +5,7 @@
 ##' @param genes a gene symbol or entrizid vector
 ##' @param kkgo_file Rdata filename for kegg and go result
 ##' @param destdir destdir to save kkgofile
-##' @return enrichment reslut and dotplots
+##' @return enrichment results and dotplots
 ##' @author Xiaojie Sun
 ##' @importFrom clusterProfiler bitr
 ##' @importFrom clusterProfiler enrichKEGG

@@ -1,4 +1,4 @@
-##' count unique values in every colunms for data.frame
+##' count unique values in every columns for data.frame
 ##'
 ##' in geo analysis,this function can help you simplify pdata, delete columns with unique values,which can't be used as group vector
 ##' @param x A data.frame.

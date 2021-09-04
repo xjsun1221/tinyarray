@@ -16,7 +16,7 @@ interaction_to_edges(df, a = 1, b = 2, sep = ",")
 \item{sep}{a character string to separate b column}
 }
 \value{
-a new df with two column ,one interaction by one rows
+a new data.frame with two column ,one interaction by one rows
 }
 \description{
 split interactions by sep paramter,return edges data.frame
