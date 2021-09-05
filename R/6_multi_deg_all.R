@@ -7,6 +7,7 @@
 ##' @author Xiaojie Sun
 ##' @export
 ##' @examples
+##' \dontrun{
 ##' #two group
 ##' gse = "GSE42872"
 ##' geo = geo_download(gse,destdir=tempdir())
@@ -26,6 +27,7 @@
 ##' ids = AnnoProbe::idmap(geo$gpl,destdir = tempdir())
 ##' deg = multi_deg(geo$exp,group_list,ids,adjust = FALSE)
 ##' cgs = get_cgs(deg)
+##' }
 ##' @seealso
 ##' \code{\link{geo_download}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
 
@@ -62,6 +64,7 @@ get_cgs <- function(deg){
 ##' @importFrom patchwork plot_layout
 ##' @export
 ##' @examples
+##' \dontrun{
 ##' #two group
 ##' gse = "GSE42872"
 ##' geo = geo_download(gse,destdir=tempdir())
@@ -82,6 +85,7 @@ get_cgs <- function(deg){
 ##' deg = multi_deg(geo$exp,group_list,ids,adjust = FALSE)
 ##' draw_volcano2(deg)
 ##' draw_volcano2(deg,color = c("darkgreen","grey","darkred"))
+##' }
 ##' @seealso
 ##' \code{\link{geo_download}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
 
@@ -134,6 +138,7 @@ draw_volcano2 = function(deg,
 ##' @importFrom pheatmap pheatmap
 ##' @export
 ##' @examples
+##' \dontrun{
 ##' gse = "GSE474"
 ##' geo = geo_download(gse,destdir=tempdir())
 ##' geo$exp[1:4,1:4]
@@ -145,6 +150,7 @@ draw_volcano2 = function(deg,
 ##' ids <- AnnoProbe::idmap(geo$gpl,destdir = tempdir())
 ##' deg = multi_deg(geo$exp,group_list,ids,adjust = FALSE)
 ##' draw_heatmap2(geo$exp,group_list,deg)
+##' }
 ##' @seealso
 ##' \code{\link{draw_pca}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
 

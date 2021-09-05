@@ -39,6 +39,7 @@ one or more volcano plot
 print one or more volcano plot for Differential analysis result in data.frame fomat.
 }
 \examples{
+\dontrun{
 #two group
 gse = "GSE42872"
 geo = geo_download(gse,destdir=tempdir())
@@ -59,6 +60,7 @@ ids <- AnnoProbe::idmap(geo$gpl,destdir = tempdir())
 deg = multi_deg(geo$exp,group_list,ids,adjust = FALSE)
 draw_volcano2(deg)
 draw_volcano2(deg,color = c("darkgreen","grey","darkred"))
+}
 }
 \seealso{
 \code{\link{geo_download}};\code{\link{draw_volcano}};\code{\link{draw_venn}}

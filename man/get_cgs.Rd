@@ -16,6 +16,7 @@ a list with upgenes,downgenes,diffgenes.
 extract DEGs from deg data.frame
 }
 \examples{
+\dontrun{
 #two group
 gse = "GSE42872"
 geo = geo_download(gse,destdir=tempdir())
@@ -35,6 +36,7 @@ find_anno(geo$gpl)
 ids = AnnoProbe::idmap(geo$gpl,destdir = tempdir())
 deg = multi_deg(geo$exp,group_list,ids,adjust = FALSE)
 cgs = get_cgs(deg)
+}
 }
 \seealso{
 \code{\link{geo_download}};\code{\link{draw_volcano}};\code{\link{draw_venn}}

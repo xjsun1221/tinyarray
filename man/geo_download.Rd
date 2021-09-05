@@ -30,9 +30,11 @@ a list with exp,pd and gpl
 download gse data and get informations
 }
 \examples{
+\dontrun{
 gse = "GSE42872"
 a = geo_download(gse,destdir=tempdir())
 b = geo_download(gse,by_annopbrobe = FALSE,destdir=tempdir())
+}
 }
 \seealso{
 \code{\link{find_anno}}

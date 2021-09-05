@@ -17,12 +17,14 @@
 ##' @importFrom ggplot2 scale_x_discrete
 ##' @export
 ##' @examples
+##' \dontrun{
 ##' head(genes)
 ##' g = quick_enrich(genes,destdir = tempdir())
 ##' names(g)
 ##' g[[1]][1:4,1:4]
 ##' g[[3]]
 ##' g[[4]]
+##' }
 ##' @seealso
 ##' \code{\link{double_enrich}}
 
@@ -91,7 +93,9 @@ quick_enrich <- function(genes,
 ##' @importFrom ggplot2 theme
 ##' @export
 ##' @examples
-##' # double_enrich(deg)
+##' \dontrun{
+##' double_enrich(deg)
+##' }
 ##' @seealso
 ##' \code{\link{quick_enrich}}
 

@@ -15,7 +15,7 @@
 
 make_tcga_group <- function(exp){
   k1 = stringr::str_starts(colnames(exp),"TCGA")
-  if(!any(k1))stop("no tcga samples detected,please check it")
+  if(!any(k1))stop("no TCGA samples detected,please check it")
   k2 = suppressWarnings(as.numeric(stringr::str_sub(colnames(exp),14,15))<10)
   group_list = ifelse(k1&k2,"tumor","normal")
   group_list = factor(group_list,levels = c("normal","tumor"))
@@ -24,12 +24,12 @@ make_tcga_group <- function(exp){
 
 ##' trans_exp
 ##'
-##' transform rownames of tcga or tcga_gtex expression set from gdc or xena,from ensembl id to gene symbol
+##' transform rownames of TCGA or TCGA_Gtex expression set from gdc or xena,from ensembl id to gene symbol
 ##'
-##' @param exp tcga or tcga_gtex expression set from gdc or xena
+##' @param exp TCGA or TCGA_Gtex expression set from gdc or xena
 ##' @param mrna_only only keep mrna rows in result
 ##' @param lncrna_only only keep lncrna rows in result
-##' @param gtex logical,whether including gtex data
+##' @param gtex logical,whether including Gtex data
 ##' @return a transformed expression set with symbol
 ##' @author Xiaojie Sun
 ##' @importFrom stringr str_detect
@@ -99,7 +99,7 @@ utils::globalVariables(c("lnc_anno","mRNA_anno","lnc_annov23","mRNA_annov23"))
 ##'
 ##' transform rownames for microarray expression matrix
 ##'
-##' @param exp tcga or tcga_gtex expression set from gdc or xena
+##' @param exp TCGA or TCGA_Gtex expression set from gdc or xena
 ##' @param ids data.frame  with original rownames and new rownames
 ##' @param from colname for original rownames
 ##' @param to colname for new rownames
@@ -133,7 +133,7 @@ trans_array = function(exp,ids,from = "probe_id",
 ##'
 ##' drop duplicated samples from the same patients
 ##'
-##' @param exp tcga or tcga_gtex expression set from gdc or xena
+##' @param exp TCGA or TCGA_Gtex expression set from gdc or xena
 ##' @return a transformed expression set without duplicated samples
 ##' @author Xiaojie Sun
 ##' @export
@@ -166,10 +166,10 @@ sam_filter = function(exp){
 
 ##' match_exp_cl
 ##'
-##' match exp and clinical data from tcga
+##' match exp and clinical data from TCGA
 ##'
-##' @param exp tcga  expression set
-##' @param cl tcga clinical data.frame
+##' @param exp TCGA  expression set
+##' @param cl TCGA clinical data.frame
 ##' @param id_column which column contains patient ids, column number or colnmn name.
 ##' @param sample_centric logical,deault T,keep all samples from the same patients.if FALSE,keep only one tumor sample for one patient.
 ##' @return a transformed clinical data.frame with sample ids.

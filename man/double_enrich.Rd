@@ -20,7 +20,9 @@ a list with kegg and go bar plot according to up and down genes enrichment resul
 draw enrichment bar plots for both up and down genes
 }
 \examples{
-# double_enrich(deg)
+\dontrun{
+double_enrich(deg)
+}
 }
 \seealso{
 \code{\link{quick_enrich}}

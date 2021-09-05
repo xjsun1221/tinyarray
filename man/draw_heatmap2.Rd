@@ -59,6 +59,7 @@ a heatmap plot according to \code{exp} and grouped by \code{group}.
 print heatmap plots for expression matrix and group by group_list paramter
 }
 \examples{
+\dontrun{
 gse = "GSE474"
 geo = geo_download(gse,destdir=tempdir())
 geo$exp[1:4,1:4]
@@ -70,6 +71,7 @@ find_anno(geo$gpl)
 ids <- AnnoProbe::idmap(geo$gpl,destdir = tempdir())
 deg = multi_deg(geo$exp,group_list,ids,adjust = FALSE)
 draw_heatmap2(geo$exp,group_list,deg)
+}
 }
 \seealso{
 \code{\link{draw_pca}};\code{\link{draw_volcano}};\code{\link{draw_venn}}

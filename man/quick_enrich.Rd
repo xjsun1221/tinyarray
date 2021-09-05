@@ -20,12 +20,14 @@ enrichment results and dotplots
 do diffiencial analysis according to exprission set and group information
 }
 \examples{
+\dontrun{
 head(genes)
 g = quick_enrich(genes,destdir = tempdir())
 names(g)
 g[[1]][1:4,1:4]
 g[[3]]
 g[[4]]
+}
 }
 \seealso{
 \code{\link{double_enrich}}

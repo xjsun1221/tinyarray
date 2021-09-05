@@ -297,7 +297,7 @@ draw_venn <- function(x,name,color = c("#2874C5","#f87669","#e6b707","#868686","
 ##'
 ##' @inheritParams draw_pca
 ##' @param method one of kruskal.test,aov,t.test and wilcox.test
-##' @param width wdith of boxplot and error bar
+##' @param width width of boxplot and error bar
 ##' @param sort whether the boxplot will be sorted
 ##' @param drop whether to discard insignificant values
 ##' @param pvalue_cutoff if drop = TRUE,genes with p-values below the threshold will be drawn
