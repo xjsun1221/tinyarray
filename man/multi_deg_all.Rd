@@ -75,8 +75,9 @@ a list with deg data.frame, volcano plot and a list with DEGs.
 do diffiencial analysis according to exprission set and group information
 }
 \examples{
+\donttest{
 gse = "GSE474"
-geo = geo_download(gse,destdir=tempdir())
+geo = geo_download(gse,destdir=tempdir(),by_annopbrobe = FALSE)
 geo$exp[1:4,1:4]
 geo$exp=log2(geo$exp+1)
 group_list=ifelse(stringr::str_detect(geo$pd$title,"MObese"),"MObese",
@@ -87,6 +88,7 @@ ids = AnnoProbe::idmap(geo$gpl,destdir = tempdir())
 dcp = multi_deg_all(geo$exp,
 group_list,ids,adjust = FALSE)
 dcp[[3]]
+}
 }
 \seealso{
 \code{\link{geo_download}};\code{\link{draw_volcano}};\code{\link{draw_venn}}

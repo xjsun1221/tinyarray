@@ -17,10 +17,10 @@ double_enrich(deg, n = 10, color = c("#2874C5", "#f87669"))
 a list with kegg and go bar plot according to up and down genes enrichment result.
 }
 \description{
-draw enrichment bar plots for both up and down genes
+draw enrichment bar plots for both up and down genes,for human only.
 }
 \examples{
-\dontrun{
+\donttest{
 double_enrich(deg)
 }
 }

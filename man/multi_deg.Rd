@@ -11,7 +11,7 @@ multi_deg(
   logFC_cutoff = 1,
   pvalue_cutoff = 0.05,
   adjust = FALSE,
-  entriz = T
+  entriz = TRUE
 )
 }
 \arguments{
@@ -36,8 +36,9 @@ a deg data.frame with 10 columns
 do diffiential analysis according to expression set and group information
 }
 \examples{
+\donttest{
 gse = "GSE474"
-geo = geo_download(gse,destdir=tempdir())
+geo = geo_download(gse,destdir=tempdir(),by_annopbrobe = FALSE)
 geo$exp[1:4,1:4]
 geo$exp=log2(geo$exp+1)
 group_list=ifelse(stringr::str_detect(geo$pd$title,"MObese"),
@@ -51,6 +52,7 @@ names(deg)
 head(deg[[1]])
 head(deg[[2]])
 head(deg[[3]])
+}
 }
 \seealso{
 \code{\link{get_deg}};\code{\link{multi_deg_all}}

@@ -18,8 +18,9 @@
 ##' @importFrom stringr str_split
 ##' @export
 ##' @examples
+##' \donttest{
 ##' gse = "GSE42872"
-##' geo = geo_download(gse,destdir=tempdir())
+##' geo = geo_download(gse,destdir=tempdir(),by_annopbrobe = FALSE)
 ##' group_list = rep(c("A","B"),each = 3)
 ##' group_list = factor(group_list)
 ##' find_anno(geo$gpl)
@@ -27,6 +28,7 @@
 ##' dcp = get_deg_all(geo$exp,group_list,ids)
 ##' head(dcp$deg)
 ##' dcp$plots
+##' }
 ##' @seealso
 ##' \code{\link{get_deg}};\code{\link{multi_deg_all}}
 
@@ -80,7 +82,7 @@ get_deg_all <- function(exp,
       cgs = cgs,
       plots = wrap_plots(heatmap,pca_plot,volcano_plot)+plot_layout(guides = 'collect')
     )
-    print(paste0(nrow(cgs$down)," down genes,",nrow(cgs$up)," up genes"))
+    message(paste0(nrow(cgs$down)," down genes,",nrow(cgs$up)," up genes"))
   }else{
     result <- multi_deg_all(exp,
                             group_list,

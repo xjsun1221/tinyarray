@@ -75,8 +75,9 @@ a list with deg data.frame, volcano plot ,pca plot ,heatmap and a list with DEGs
 do diffiencial analysis according to exprission set and group information
 }
 \examples{
+\donttest{
 gse = "GSE42872"
-geo = geo_download(gse,destdir=tempdir())
+geo = geo_download(gse,destdir=tempdir(),by_annopbrobe = FALSE)
 group_list = rep(c("A","B"),each = 3)
 group_list = factor(group_list)
 find_anno(geo$gpl)
@@ -84,6 +85,7 @@ ids <- AnnoProbe::idmap(geo$gpl,destdir = tempdir())
 dcp = get_deg_all(geo$exp,group_list,ids)
 head(dcp$deg)
 dcp$plots
+}
 }
 \seealso{
 \code{\link{get_deg}};\code{\link{multi_deg_all}}

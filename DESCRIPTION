@@ -1,10 +1,10 @@
 Package: tinyarray
 Type: Package
-Title: An R Package for Simplifying GEO and TCGA Analysis and Plots
-Version: 2.2.3
+Title: Gene Expression Omnibus(GEO) and The Cancer Genome Atlas(TCGA) Expression Data Analysis and Visualization
+Version: 2.2.6
 Authors@R: person("Xiaojie","Sun",email = "18763899370@163.com",role = c("aut","cre"))
 Maintainer: Xiaojie Sun <18763899370@163.com>
-Description: Simplify GEO microarray data and TCGA RNA-seq data analysis and plots.
+Description: Gene Expression Omnibus(GEO) and The Cancer Genome Atlas(TCGA) are common bioinformatics public databases. We integrate the regular analysis and charts for expression data, to analyze and display the data concisely and intuitively.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -36,6 +36,9 @@ Suggests:
     ggplotify,
     tidyr,
     labeling,
-    Rtsne
+    Rtsne,
+    scatterplot3d
+URL: https://github.com/xjsun1221/tinyarray
+BugReports: https://github.com/xjsun1221/tinyarray/issues
 Depends:R (>= 3.5.0)
 RoxygenNote: 7.1.1

@@ -7,7 +7,7 @@
 trans_array(exp, ids, from = "probe_id", to = "symbol")
 }
 \arguments{
-\item{exp}{tcga or tcga_gtex expression set from gdc or xena}
+\item{exp}{TCGA or TCGA_Gtex expression set from gdc or xena}
 
 \item{ids}{data.frame  with original rownames and new rownames}
 

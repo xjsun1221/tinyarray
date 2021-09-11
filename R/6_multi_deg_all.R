@@ -7,17 +7,17 @@
 ##' @author Xiaojie Sun
 ##' @export
 ##' @examples
-##' \dontrun{
+##' \donttest{
 ##' #two group
 ##' gse = "GSE42872"
-##' geo = geo_download(gse,destdir=tempdir())
+##' geo = geo_download(gse,destdir=tempdir(),by_annopbrobe = FALSE)
 ##' group_list = rep(c("A","B"),each = 3)
 ##' ids = AnnoProbe::idmap('GPL6244',destdir=tempdir())
 ##' deg = get_deg(geo$exp,group_list,ids)
 ##' cgs = get_cgs(deg)
 ##' #mutigroup
 ##' gse = "GSE474"
-##' geo = geo_download(gse,destdir=tempdir())
+##' geo = geo_download(gse,destdir=tempdir(),by_annopbrobe = FALSE)
 ##' geo$exp[1:4,1:4]
 ##' geo$exp=log2(geo$exp+1)
 ##' group_list=ifelse(stringr::str_detect(geo$pd$title,"MObese"),"MObese",
@@ -39,13 +39,13 @@ get_cgs <- function(deg){
   for(i in 1:length(deg)){
     cgs[[i]] = list(up = data.frame(upgenes =deg[[i]]$symbol[deg[[i]]$change=="up"],
                                     upprobes = deg[[i]]$probe_id[deg[[i]]$change=="up"],
-                                    stringsAsFactors = F),
+                                    stringsAsFactors = FALSE),
                     down = data.frame(downgenes = deg[[i]]$symbol[deg[[i]]$change=="down"],
                                       downprobes = deg[[i]]$probe_id[deg[[i]]$change=="down"],
-                                      stringsAsFactors = F),
+                                      stringsAsFactors = FALSE),
                     diff = data.frame(diffgenes = deg[[i]]$symbol[deg[[i]]$change!="stable"],
                                       diffprobes = deg[[i]]$probe_id[deg[[i]]$change!="stable"],
-                                      stringsAsFactors = F)
+                                      stringsAsFactors = FALSE)
     )
   }
   if(!is.data.frame(deg)) names(cgs) = names(deg)
@@ -64,17 +64,17 @@ get_cgs <- function(deg){
 ##' @importFrom patchwork plot_layout
 ##' @export
 ##' @examples
-##' \dontrun{
+##' \donttest{
 ##' #two group
 ##' gse = "GSE42872"
-##' geo = geo_download(gse,destdir=tempdir())
+##' geo = geo_download(gse,destdir=tempdir(),by_annopbrobe = FALSE)
 ##' group_list = rep(c("A","B"),each = 3)
 ##' ids = AnnoProbe::idmap('GPL6244',destdir = tempdir())
 ##' deg = get_deg(geo$exp,group_list,ids)
 ##' draw_volcano2(deg)
 ##' #multigroup
 ##' gse = "GSE474"
-##' geo = geo_download(gse,destdir=tempdir())
+##' geo = geo_download(gse,destdir=tempdir(),by_annopbrobe = FALSE)
 ##' geo$exp[1:4,1:4]
 ##' geo$exp=log2(geo$exp+1)
 ##' group_list=ifelse(stringr::str_detect(geo$pd$title,"MObese"),"MObese",
@@ -94,8 +94,8 @@ draw_volcano2 = function(deg,
                          lab,
                          pvalue_cutoff=0.05,
                          logFC_cutoff=1,
-                         adjust=F,
-                         symmetry=T,
+                         adjust=FALSE,
+                         symmetry=TRUE,
                          color = c("#2874C5", "grey", "#f87669")
 ){
   if(!is.list(deg) & is.data.frame(deg))stop("deg is a data.frame or list returned by limma")
@@ -138,9 +138,9 @@ draw_volcano2 = function(deg,
 ##' @importFrom pheatmap pheatmap
 ##' @export
 ##' @examples
-##' \dontrun{
+##' \donttest{
 ##' gse = "GSE474"
-##' geo = geo_download(gse,destdir=tempdir())
+##' geo = geo_download(gse,destdir=tempdir(),by_annopbrobe = FALSE)
 ##' geo$exp[1:4,1:4]
 ##' geo$exp=log2(geo$exp+1)
 ##' group_list=ifelse(stringr::str_detect(geo$pd$title,"MObese"),"MObese",
@@ -164,7 +164,7 @@ draw_heatmap2 <- function(exp,
                           scale_before = FALSE,
                           n_cutoff = 3,
                           cluster_cols = TRUE,
-                          annotation_legend=F,
+                          annotation_legend=FALSE,
                           legend = FALSE,
                           color = (grDevices::colorRampPalette(c("#2fa1dd", "white", "#f87669")))(100),
                           color_an = c("#2fa1dd", "#f87669", "#e6b707", "#868686", "#92C5DE", "#F4A582",
@@ -192,7 +192,7 @@ draw_heatmap2 <- function(exp,
   if(heat_id==2 & cd) stop(er)
   if(heat_id==3 & gene_number> length(cg))stop(paste0("gene_number must less than ",length(cg)))
   np = exp[cg,]
-  np2 = np[order(apply(np, 1, stats::mad),decreasing = T),]
+  np2 = np[order(apply(np, 1, stats::mad),decreasing = TRUE),]
   n = switch(heat_id,
              all = np,
              ht  = rbind(utils::head(np2,gene_number),
@@ -229,8 +229,9 @@ draw_heatmap2 <- function(exp,
 ##' @importFrom patchwork plot_layout
 ##' @export
 ##' @examples
+##' \donttest{
 ##' gse = "GSE474"
-##' geo = geo_download(gse,destdir=tempdir())
+##' geo = geo_download(gse,destdir=tempdir(),by_annopbrobe = FALSE)
 ##' geo$exp[1:4,1:4]
 ##' geo$exp=log2(geo$exp+1)
 ##' group_list=ifelse(stringr::str_detect(geo$pd$title,"MObese"),"MObese",
@@ -241,6 +242,7 @@ draw_heatmap2 <- function(exp,
 ##' dcp = multi_deg_all(geo$exp,
 ##' group_list,ids,adjust = FALSE)
 ##' dcp[[3]]
+##' }
 ##' @seealso
 ##' \code{\link{geo_download}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
 
@@ -312,6 +314,6 @@ multi_deg_all <- function(exp,
       plot_layout(guides = 'collect')
   )
   diffprobes = lapply(cgs,function(x)x$diff$diffprobes)
-  print(paste0(length(union_all(diffprobes))," DEGs in all,",length(intersect_all(diffprobes))," DEGs in common."))
+  message(paste0(length(union_all(diffprobes))," DEGs in all,",length(intersect_all(diffprobes))," DEGs in common."))
   return(result)
   }

@@ -7,7 +7,7 @@
 make_tcga_group(exp)
 }
 \arguments{
-\item{exp}{tcga or tcga_gtex expression set from gdc or xena}
+\item{exp}{TCGA or TCGA_Gtex expression set from gdc or xena}
 }
 \value{
 a group factor with normal and tumor ,correspond to colnames for expression matrix

@@ -10,7 +10,9 @@ draw_pca(
   color = c("#2874C5", "#f87669", "#e6b707", "#868686", "#92C5DE", "#F4A582",
     "#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F", "#E5C494",
     "#B3B3B3"),
-  addEllipses = TRUE
+  addEllipses = TRUE,
+  style = "default",
+  color.label = "Group"
 )
 }
 \arguments{
@@ -21,6 +23,10 @@ draw_pca(
 \item{color}{color vector}
 
 \item{addEllipses}{logical,add ellipses or not}
+
+\item{style}{plot style,"default","ggplot2"and "3D"}
+
+\item{color.label}{color legend label}
 }
 \value{
 a pca plot according to \code{exp} and grouped by \code{group}.

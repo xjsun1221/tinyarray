@@ -12,7 +12,7 @@ draw_heatmap(
   cluster_cols = TRUE,
   legend = FALSE,
   show_rownames = FALSE,
-  annotation_legend = F,
+  annotation_legend = FALSE,
   color = (grDevices::colorRampPalette(c("#2fa1dd", "white", "#f87669")))(100),
   color_an = c("#2fa1dd", "#f87669", "#e6b707", "#868686", "#92C5DE", "#F4A582",
     "#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F", "#E5C494",

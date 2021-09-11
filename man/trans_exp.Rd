@@ -7,19 +7,19 @@
 trans_exp(exp, mrna_only = FALSE, lncrna_only = FALSE, gtex = FALSE)
 }
 \arguments{
-\item{exp}{tcga or tcga_gtex expression set from gdc or xena}
+\item{exp}{TCGA or TCGA_Gtex expression set from gdc or xena}
 
 \item{mrna_only}{only keep mrna rows in result}
 
 \item{lncrna_only}{only keep lncrna rows in result}
 
-\item{gtex}{logical,whether including gtex data}
+\item{gtex}{logical,whether including Gtex data}
 }
 \value{
 a transformed expression set with symbol
 }
 \description{
-transform rownames of tcga or tcga_gtex expression set from gdc or xena,from ensembl id to gene symbol
+transform rownames of TCGA or TCGA_Gtex expression set from gdc or xena,from ensembl id to gene symbol
 }
 \examples{
 exp = matrix(rnorm(1000),ncol = 10)

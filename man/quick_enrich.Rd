@@ -17,10 +17,10 @@ quick_enrich(genes, kkgo_file = "kkgo_file.Rdata", destdir = getwd())
 enrichment results and dotplots
 }
 \description{
-do diffiencial analysis according to exprission set and group information
+do diffiencial analysis according to exprission set and group information,for human only
 }
 \examples{
-\dontrun{
+\donttest{
 head(genes)
 g = quick_enrich(genes,destdir = tempdir())
 names(g)

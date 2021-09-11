@@ -6,6 +6,16 @@
 ##' @param group_list A factor with duplicated character or factor
 ##' @param color color vector
 ##' @param addEllipses logical,add ellipses or not
+##' @param style plot style,"default","ggplot2"and "3D"
+##' @param color.label color legend label
+##' @importFrom ggplot2 ggplot
+##' @importFrom ggplot2 scale_color_manual
+##' @importFrom ggplot2 scale_fill_manual
+##' @importFrom ggplot2 theme_classic
+##' @importFrom ggplot2 theme
+##' @importFrom ggplot2 labs
+##' @importFrom ggplot2 aes
+##' @importFrom ggplot2 stat_ellipse
 ##' @return a pca plot according to \code{exp} and grouped by \code{group}.
 ##' @author Xiaojie Sun
 ##' @export
@@ -23,7 +33,9 @@
 
 draw_pca <-  function(exp,group_list,
                       color = c("#2874C5","#f87669","#e6b707","#868686","#92C5DE","#F4A582","#66C2A5","#FC8D62","#8DA0CB","#E78AC3","#A6D854","#FFD92F","#E5C494","#B3B3B3"),
-                      addEllipses = TRUE){
+                      addEllipses = TRUE,
+                      style = "default",
+                      color.label = "Group"){
   if(!requireNamespace("FactoMineR",quietly = TRUE)) {
     stop("Package \"FactoMineR\" needed for this function to work.
          Please install it by install.packages('FactoMineR')",call. = FALSE)
@@ -44,15 +56,48 @@ draw_pca <-  function(exp,group_list,
   dat <- as.data.frame(t(exp))
   dat.pca <- FactoMineR::PCA(dat, graph = FALSE)
   col = color[1:length(levels(group_list))]
-  factoextra::fviz_pca_ind(dat.pca,
-               geom.ind = "point",
-               col.ind = group_list,
-               palette = col,
-               addEllipses = addEllipses,
-               legend.title = "Groups")
+  if(style == "default"){
+    factoextra::fviz_pca_ind(dat.pca,
+                             geom.ind = "point",
+                             col.ind = group_list,
+                             palette = col,
+                             addEllipses = addEllipses,
+                             legend.title = "Groups")
+  }else if(style == "ggplot2"){
+    pdat = data.frame(dat.pca[["ind"]][["coord"]],
+                      Group = group_list)
+    p = ggplot(pdat,aes(Dim.1,Dim.2))+
+      geom_point(aes(Dim.1,Dim.2,fill = Group),
+                 shape = 21,color = "black")+
+      scale_color_manual(values = color[1:nlevels(group_list)])+
+      scale_fill_manual(values = color[1:nlevels(group_list)])+
+      theme_classic()+
+      theme(legend.position = "top")+
+      labs(color = color.label,fill = color.label)
+    if(addEllipses) p = p +
+      stat_ellipse(aes(color = Group,fill = Group),
+                   geom = "polygon",
+                   alpha = 0.3,
+                   linetype = 2)
+    return(p)
+  }else if(style == "3D"){
+    colors = color[as.numeric(group_list)]
+    pdat = data.frame(dat.pca[["ind"]][["coord"]],
+                      Group = group_list)
+    scatterplot3d::scatterplot3d(pdat[,1:3],
+                                 color = "black",
+                                 main="PCA",
+                                 pch = 21,
+                                 bg = colors)
+    graphics::legend("bottom",col = "black",
+           legend = levels(group_list),
+           pt.bg =  color[1:nlevels(group_list)], pch = 21,
+           inset = -0.2, xpd = TRUE,
+           horiz = TRUE)
+  }
 }
 
-if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
+if(getRversion() >= "2.15.1")  utils::globalVariables(c(".","Dim.1","Dim.2","Group","pdat"))
 
 
 
@@ -101,7 +146,7 @@ draw_heatmap <-  function(n,
                           cluster_cols = TRUE,
                           legend = FALSE,
                           show_rownames = FALSE,
-                          annotation_legend=F,
+                          annotation_legend=FALSE,
                           color = grDevices::colorRampPalette(c("#2fa1dd", "white", "#f87669"))(100),
                           color_an = c("#2fa1dd","#f87669","#e6b707","#868686","#92C5DE","#F4A582","#66C2A5","#FC8D62","#8DA0CB","#E78AC3","#A6D854","#FFD92F","#E5C494","#B3B3B3"),
                           scale = TRUE,
@@ -453,7 +498,6 @@ utils::globalVariables(c(".","rows","group","..p.signif..","..p.format.."))
 ##' @importFrom patchwork wrap_plots
 ##' @export
 ##' @examples
-##' rm(list = ls())
 ##' exp_dat = matrix(sample(100:1000,40),ncol = 4)
 ##' exp_dat[1:(nrow(exp_dat)/2),] =  exp_dat[1:(nrow(exp_dat)/2),]-1000
 ##' rownames(exp_dat) = paste0("sample",1:nrow(exp_dat))
@@ -561,7 +605,8 @@ utils::globalVariables(c("gene","samples"))
 draw_tsne = function(exp,group_list,perplexity=30,
                      color = c("#2874C5","#f87669","#e6b707","#868686","#92C5DE", "#F4A582", "#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3",
                                "#A6D854", "#FFD92F", "#E5C494", "#B3B3B3"),
-                     color.label = "group"){
+                     color.label = "group",
+                     addEllipses = TRUE){
   if(!requireNamespace("Rtsne",quietly = TRUE))
   stop("Package \"Rtsne\" needed for this function to work.
          Please install it by install.packages('Rtsne')",call. = FALSE)
@@ -577,17 +622,20 @@ draw_tsne = function(exp,group_list,perplexity=30,
   tsne_out = Rtsne::Rtsne(t(exp),perplexity = perplexity)
   pdat = data.frame(tsne_out$Y,group_list)
   colnames(pdat) = c("Y1","Y2","group")
-  ggplot(pdat,aes(Y1,Y2))+
-    geom_point(aes(Y1,Y2,fill = group),shape = 21,color = "black")+
-    stat_ellipse(aes(color = group,fill = group),
-                 geom = "polygon",
-                 alpha = 0.3,
-                 linetype = 2)+
+  p = ggplot(pdat,aes(Y1,Y2))+
+    geom_point(aes(Y1,Y2,fill = group),
+               shape = 21,color = "black")+
     scale_color_manual(values = color[1:nlevels(group_list)])+
     scale_fill_manual(values = color[1:nlevels(group_list)])+
     theme_classic()+
     theme(legend.position = "top")+
     labs(color = color.label,fill = color.label)
+  if(addEllipses) p = p +
+    stat_ellipse(aes(color = group,fill = group),
+                 geom = "polygon",
+                 alpha = 0.3,
+                 linetype = 2)
+  return(p)
 }
 
 utils::globalVariables(c("Y1","Y2","group"))

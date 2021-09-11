@@ -10,8 +10,8 @@ draw_volcano2(
   lab,
   pvalue_cutoff = 0.05,
   logFC_cutoff = 1,
-  adjust = F,
-  symmetry = T,
+  adjust = FALSE,
+  symmetry = TRUE,
   color = c("#2874C5", "grey", "#f87669")
 )
 }
@@ -39,17 +39,17 @@ one or more volcano plot
 print one or more volcano plot for Differential analysis result in data.frame fomat.
 }
 \examples{
-\dontrun{
+\donttest{
 #two group
 gse = "GSE42872"
-geo = geo_download(gse,destdir=tempdir())
+geo = geo_download(gse,destdir=tempdir(),by_annopbrobe = FALSE)
 group_list = rep(c("A","B"),each = 3)
 ids = AnnoProbe::idmap('GPL6244',destdir = tempdir())
 deg = get_deg(geo$exp,group_list,ids)
 draw_volcano2(deg)
 #multigroup
 gse = "GSE474"
-geo = geo_download(gse,destdir=tempdir())
+geo = geo_download(gse,destdir=tempdir(),by_annopbrobe = FALSE)
 geo$exp[1:4,1:4]
 geo$exp=log2(geo$exp+1)
 group_list=ifelse(stringr::str_detect(geo$pd$title,"MObese"),"MObese",

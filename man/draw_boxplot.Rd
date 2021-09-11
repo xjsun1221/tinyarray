@@ -32,7 +32,7 @@ draw_boxplot(
 
 \item{drop}{whether to discard insignificant values}
 
-\item{width}{wdith of boxplot and error bar}
+\item{width}{width of boxplot and error bar}
 
 \item{pvalue_cutoff}{if drop = TRUE,genes with p-values below the threshold will be drawn}
 

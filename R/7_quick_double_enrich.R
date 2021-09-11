@@ -1,6 +1,6 @@
 ##' quick_enrich
 ##'
-##' do diffiencial analysis according to exprission set and group information
+##' do diffiencial analysis according to exprission set and group information,for human only
 ##'
 ##' @param genes a gene symbol or entrizid vector
 ##' @param kkgo_file Rdata filename for kegg and go result
@@ -17,7 +17,7 @@
 ##' @importFrom ggplot2 scale_x_discrete
 ##' @export
 ##' @examples
-##' \dontrun{
+##' \donttest{
 ##' head(genes)
 ##' g = quick_enrich(genes,destdir = tempdir())
 ##' names(g)
@@ -47,7 +47,7 @@ quick_enrich <- function(genes,
     go <- enrichGO(genes,
                    OrgDb = "org.Hs.eg.db",
                    ont="all",
-                   readable = T)
+                   readable = TRUE)
     save(kk,go,file = f)
   }
   load(f)
@@ -72,7 +72,7 @@ quick_enrich <- function(genes,
 
 ##' draw enrichment bar plots for both up and down genes
 ##'
-##' draw enrichment bar plots for both up and down genes
+##' draw enrichment bar plots for both up and down genes,for human only.
 ##'
 ##' @param deg a data.frame contains at least two columns:"ENTREZID" and "change"
 ##' @param n how many terms will you perform for up and down genes respectively
@@ -93,7 +93,7 @@ quick_enrich <- function(genes,
 ##' @importFrom ggplot2 theme
 ##' @export
 ##' @examples
-##' \dontrun{
+##' \donttest{
 ##' double_enrich(deg)
 ##' }
 ##' @seealso
@@ -105,8 +105,8 @@ double_enrich <- function(deg,n = 10,color = c("#2874C5", "#f87669")){
     stop("Package \"labeling\" needed for this function to work. Please install it byby install.packages('labeling')",call. = FALSE)
   }
   deg$change = str_to_lower(deg$change)
-  up = quick_enrich(deg$ENTREZID[deg$change=="up"],"up.rdata")
-  down = quick_enrich(deg$ENTREZID[deg$change=="down"],"down.rdata")
+  up = quick_enrich(deg$ENTREZID[deg$change=="up"],"up.rdata",destdir = tempdir())
+  down = quick_enrich(deg$ENTREZID[deg$change=="down"],"down.rdata",destdir = tempdir())
   up$kk@result = mutate(up$kk@result,change = "up")
   down$kk@result = mutate(down$kk@result,change = "down")
   kk = rbind(up$kk@result[1:n,],down$kk@result[1:n,])
@@ -117,7 +117,7 @@ double_enrich <- function(deg,n = 10,color = c("#2874C5", "#f87669")){
   ud_enrich = function(df){
     df$pl = ifelse(df$change == "up",-log10(df$p.adjust),log10(df$p.adjust))
     df = arrange(df,change,pl)
-    df$Description = factor(df$Description,levels = unique(df$Description),ordered = T)
+    df$Description = factor(df$Description,levels = unique(df$Description),ordered = TRUE)
     tmp = with(df, labeling::extended(range(pl)[1], range(pl)[2], m = 5))
     lm = tmp[c(1,length(tmp))]
     lm = c(floor(min(df$pl)),ceiling(max(df$pl)))

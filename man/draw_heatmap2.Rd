@@ -15,7 +15,7 @@ draw_heatmap2(
   scale_before = FALSE,
   n_cutoff = 3,
   cluster_cols = TRUE,
-  annotation_legend = F,
+  annotation_legend = FALSE,
   legend = FALSE,
   color = (grDevices::colorRampPalette(c("#2fa1dd", "white", "#f87669")))(100),
   color_an = c("#2fa1dd", "#f87669", "#e6b707", "#868686", "#92C5DE", "#F4A582",
@@ -59,9 +59,9 @@ a heatmap plot according to \code{exp} and grouped by \code{group}.
 print heatmap plots for expression matrix and group by group_list paramter
 }
 \examples{
-\dontrun{
+\donttest{
 gse = "GSE474"
-geo = geo_download(gse,destdir=tempdir())
+geo = geo_download(gse,destdir=tempdir(),by_annopbrobe = FALSE)
 geo$exp[1:4,1:4]
 geo$exp=log2(geo$exp+1)
 group_list=ifelse(stringr::str_detect(geo$pd$title,"MObese"),"MObese",

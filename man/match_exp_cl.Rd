@@ -7,9 +7,9 @@
 match_exp_cl(exp, cl, id_column = "id", sample_centric = TRUE)
 }
 \arguments{
-\item{exp}{tcga  expression set}
+\item{exp}{TCGA  expression set}
 
-\item{cl}{tcga clinical data.frame}
+\item{cl}{TCGA clinical data.frame}
 
 \item{id_column}{which column contains patient ids, column number or colnmn name.}
 
@@ -19,7 +19,7 @@ match_exp_cl(exp, cl, id_column = "id", sample_centric = TRUE)
 a transformed clinical data.frame with sample ids.
 }
 \description{
-match exp and clinical data from tcga
+match exp and clinical data from TCGA
 }
 \examples{
 a = match_exp_cl(exp_hub1,meta1[,2:4],"X_PATIENT")

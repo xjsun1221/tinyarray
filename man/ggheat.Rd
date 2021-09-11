@@ -46,7 +46,6 @@ a ggplot object
 draw heatmap plot with annotation by ggplot2
 }
 \examples{
-rm(list = ls())
 exp_dat = matrix(sample(100:1000,40),ncol = 4)
 exp_dat[1:(nrow(exp_dat)/2),] =  exp_dat[1:(nrow(exp_dat)/2),]-1000
 rownames(exp_dat) = paste0("sample",1:nrow(exp_dat))

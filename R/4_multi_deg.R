@@ -16,8 +16,9 @@
 ##' @importFrom dplyr inner_join
 ##' @export
 ##' @examples
+##' \donttest{
 ##' gse = "GSE474"
-##' geo = geo_download(gse,destdir=tempdir())
+##' geo = geo_download(gse,destdir=tempdir(),by_annopbrobe = FALSE)
 ##' geo$exp[1:4,1:4]
 ##' geo$exp=log2(geo$exp+1)
 ##' group_list=ifelse(stringr::str_detect(geo$pd$title,"MObese"),
@@ -31,6 +32,7 @@
 ##' head(deg[[1]])
 ##' head(deg[[2]])
 ##' head(deg[[3]])
+##' }
 ##' @seealso
 ##' \code{\link{get_deg}};\code{\link{multi_deg_all}}
 
@@ -40,7 +42,7 @@ multi_deg <- function(exp,
                       logFC_cutoff = 1,
                       pvalue_cutoff = 0.05,
                       adjust = FALSE,
-                      entriz = T) {
+                      entriz = TRUE) {
   p1 <-  all(apply(exp,2,is.numeric))
   if(!p1) stop("exp must be a numeric matrix")
   p2  <-  (sum(!duplicated(group_list)) > 1)

@@ -36,14 +36,15 @@ a deg data.frame with 10 columns
 do differential analysis according to expression set and group information
 }
 \examples{
-gse = "GSE42872"
-geo = geo_download(gse,destdir=tempdir())
+\donttest{gse = "GSE42872"
+geo = geo_download(gse,destdir=tempdir(),by_annopbrobe = FALSE)
 Group = rep(c("control","treat"),each = 3)
 Group = factor(Group)
 find_anno(geo$gpl)
 ids <- AnnoProbe::idmap(geo$gpl,destdir = tempdir())
 deg = get_deg(geo$exp,Group,ids)
 head(deg)
+}
 }
 \seealso{
 \code{\link{multi_deg}};\code{\link{get_deg_all}}
