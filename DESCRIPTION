@@ -1,6 +1,6 @@
 Package: tinyarray
 Type: Package
-Title: Gene Expression Omnibus(GEO) and The Cancer Genome Atlas(TCGA) Expression Data Analysis and Visualization
+Title: Expression Data Analysis and Visualization
 Version: 2.2.6
 Authors@R: person("Xiaojie","Sun",email = "18763899370@163.com",role = c("aut","cre"))
 Maintainer: Xiaojie Sun <18763899370@163.com>
