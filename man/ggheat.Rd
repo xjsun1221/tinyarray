@@ -13,6 +13,8 @@ ggheat(
     "#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F", "#E5C494", "#B3B3B3"),
   show_rownames = TRUE,
   show_colnames = TRUE,
+  cluster_rows = FALSE,
+  cluster_cols = FALSE,
   groupname = "group",
   expname = "exp",
   fill_mid = TRUE
@@ -23,15 +25,19 @@ ggheat(
 
 \item{group}{group for expression colnames}
 
-\item{cluster}{logical,cluster or not, default F}
+\item{cluster}{logical,cluster in both rows and column or not, default F,now replaced by cluster_rows and cluster_cols.}
 
 \item{color}{color for heatmap}
 
 \item{legend_color}{color for legend}
 
-\item{show_rownames}{logical,show rownames in plot or not,default T}
+\item{show_rownames}{logical,show rownames in plot or not, default T}
 
-\item{show_colnames}{logical,show colnames in plot or not,default T}
+\item{show_colnames}{logical,show colnames in plot or not, default T}
+
+\item{cluster_rows}{logical, if rows (on the plot) should be clustered, default F}
+
+\item{cluster_cols}{logical, if column (on the plot) should be clustered, default F}
 
 \item{groupname}{name of group legend}
 
@@ -53,8 +59,8 @@ colnames(exp_dat) = paste0("gene",1:ncol(exp_dat))
 group = rep(c("A","B"),each = nrow(exp_dat)/2)
 group = factor(group,levels = c("A","B"))
 ggheat(exp_dat,group)
-ggheat(exp_dat,group,cluster = TRUE)
-ggheat(exp_dat,group,cluster = TRUE,show_rownames = FALSE,
+ggheat(exp_dat,group,cluster_rows = TRUE)
+ggheat(exp_dat,group,cluster_rows = TRUE,show_rownames = FALSE,
        show_colnames = FALSE,groupname = "risk",expname = "expression")
 }
 \author{

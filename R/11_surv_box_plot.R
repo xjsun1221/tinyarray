@@ -18,11 +18,17 @@
 ##' @seealso
 ##' \code{\link{exp_boxplot}};\code{\link{box_surv}};\code{\link{draw_venn}}
 
-exp_surv <- function(exprSet_hub,meta,color = c("grey", "red")){
-  cut.point = point_cut(exprSet_hub,meta)
+
+exp_surv <- function(exprSet_hub,meta,cut.point = FALSE,color = c("#2874C5", "#f87669")){
+  if(cut.point)cut_point = point_cut(exprSet_hub,meta)
+
   splots <- lapply(rownames(exprSet_hub), function(g){
     i = which(rownames(exprSet_hub)== g)
-    meta$gene=ifelse(as.numeric(exprSet_hub[g,]) > cut.point[[i]],'high','low')
+    if(cut.point){
+      meta$gene=ifelse(as.numeric(exprSet_hub[g,]) > cut_point[[i]],'high','low')
+    }else{
+      meta$gene=ifelse(as.numeric(exprSet_hub[g,]) > stats::median(as.numeric(exprSet_hub[g,])),'high','low')
+    }
     if(length(unique(meta$gene))==1) stop(paste0("gene",g,"with too low expression"))
     sfit1=survival::survfit(survival::Surv(time, event)~gene, data=meta)
     p = survminer::ggsurvplot(sfit1,pval =TRUE,
@@ -111,3 +117,108 @@ box_surv <-function(exp_hub,exprSet_hub,meta){
   })
   return(wp)
 }
+
+
+
+##' risk_plot
+##'
+##' draw risk plot
+##'
+##' @inheritParams exp_surv
+##' @param riskscore a numeric vector of riskscore
+##' @importFrom ggplot2 ggplot
+##' @importFrom ggplot2 aes
+##' @importFrom ggplot2 geom_point
+##' @importFrom ggplot2 scale_color_manual
+##' @importFrom ggplot2 geom_vline
+##' @importFrom ggplot2 scale_x_continuous
+##' @importFrom ggplot2 theme_bw
+##' @importFrom ggplot2 theme
+##' @importFrom ggplot2 element_blank
+##' @importFrom ggplot2 labs
+##' @importFrom ggplot2 scale_color_manual
+##' @importFrom ggplot2 scale_y_continuous
+##' @importFrom ggplot2 element_line
+##' @importFrom patchwork wrap_plots
+##' @export
+##' @return risk plot
+##' @author Xiaojie Sun
+##' @examples
+##' risk_plot(log2(exprSet_hub1+1),meta1,riskscore = rnorm(nrow(meta1)))
+##' @seealso
+##' \code{\link{exp_boxplot}};\code{\link{box_surv}};\code{\link{draw_venn}}
+
+risk_plot = function(exprSet_hub,meta,riskscore,
+                     cut.point = FALSE,color = c("#2fa1dd","#f87669")){
+  if(ncol(exprSet_hub) != nrow(meta))stop("your exprSet_hub is not corresponds to meta")
+  if(length(riskscore) != nrow(meta))stop("riskscore is not corresponds to meta")
+  if (nrow(exprSet_hub)>30) {
+    warning("seems too many of genes in heatmap")
+  }
+  if (nrow(exprSet_hub)>100) {
+    stop("too many of genes in heatmap")
+  }
+  meta$riskscorefp = riskscore
+  if(cut.point){
+    cut = survminer::surv_cutpoint(
+      meta,
+      time = "time",
+      event = "event",
+      variables = "riskscorefp")[["cutpoint"]][1,1]
+  }else{
+    cut = stats::median(riskscore)
+  }
+  meta$Risk = ifelse(riskscore>cut,'high','low')
+  meta$Risk = factor(meta$Risk,levels = c("low","high"))
+  fp_dat=data.frame(patientid=1:length(riskscore),
+                    riskscore=as.numeric(sort(riskscore)),
+                    ri = meta$Risk[order(riskscore)])
+  sur_dat=data.frame(patientid=1:length(riskscore),
+                     time=meta[order(riskscore),'time'] ,
+                     event=meta[order(riskscore),'event'])
+  sur_dat$event=ifelse(sur_dat$event==0,'alive','death')
+
+  # exp
+
+  exp_dat=scale(t(exprSet_hub[,order(riskscore)]))
+
+  ###第一个图----
+  p1=ggplot(fp_dat,aes(x=patientid,y=riskscore,color = ri))+
+    geom_point()+
+    scale_color_manual(values = color)+
+    geom_vline(xintercept = sum(riskscore<cut),lty = 2)+
+    scale_x_continuous(expand=c(0,0))+
+    theme_bw()+
+    theme(legend.position = "none",
+          axis.line = element_line(color='black'),
+          plot.background = element_blank(),
+          panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank())+
+    labs(x = "",y = "Riskscore")
+  p1
+  #第二个图
+  p2=ggplot(sur_dat,aes(x=patientid,y=time))+
+    geom_point(aes(col=event))+
+    geom_vline(xintercept = sum(riskscore<cut),lty = 2)+
+    scale_color_manual(values = color)+
+    scale_x_continuous(expand=c(0,0))+
+    scale_y_continuous(expand=c(0,0))+
+    theme_bw()+
+    labs(color = "Event",y = "Time",x = "")+
+    theme(axis.line = element_line(color='black'),
+          plot.background = element_blank(),
+          panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank())
+  p2
+  #第三个图
+  p3 = ggheat(exp_dat,
+              meta$Risk[order(riskscore)],
+              show_rownames = F,
+              color = c(color[[1]],"white",color[[2]]),
+              legend_color = color,groupname = "Risk",expname = "Expression")
+
+  n = ifelse(nrow(exprSet_hub)<15,3,
+             ifelse(nrow(exprSet_hub)<20,4,5))
+  wrap_plots(p1,p2,p3,heights = c(1,1,n))
+}
+utils::globalVariables(c("patientid","genekitr"))

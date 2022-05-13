@@ -44,7 +44,8 @@ make_tcga_group <- function(exp){
 ##' @seealso
 ##' \code{\link{trans_array}}
 
-trans_exp = function(exp,mrna_only = FALSE,lncrna_only = FALSE,gtex = FALSE){
+trans_exp = function(exp,mrna_only = FALSE,
+                     lncrna_only = FALSE,gtex = FALSE){
   k00 = any(str_detect(colnames(exp),"TCGA"))
   if(!k00)warning("this expression set probably not from TCGA,please ensure it")
   k0 = any(str_detect(colnames(exp),"GTEX"))
@@ -99,7 +100,7 @@ utils::globalVariables(c("lnc_anno","mRNA_anno","lnc_annov23","mRNA_annov23"))
 ##'
 ##' transform rownames for microarray expression matrix
 ##'
-##' @param exp TCGA or TCGA_Gtex expression set from gdc or xena
+##' @param exp  microarray expression matrix with probe_id as rownames
 ##' @param ids data.frame  with original rownames and new rownames
 ##' @param from colname for original rownames
 ##' @param to colname for new rownames
@@ -117,8 +118,8 @@ utils::globalVariables(c("lnc_anno","mRNA_anno","lnc_annov23","mRNA_annov23"))
 
 trans_array = function(exp,ids,from = "probe_id",
                        to = "symbol"){
+  if(!is.character(ids[,from])) ids[,from] = as.character(ids[,from])
   a = intersect(rownames(exp),ids[,from])
-  message(paste0(length(a) ," of ",nrow(exp)," rownames matched"))
   ids = ids[!duplicated(ids[,to]),]
   exp = exp[rownames(exp) %in% ids[,from],]
   ids = ids[ids[,from]%in% rownames(exp),]
@@ -127,7 +128,6 @@ trans_array = function(exp,ids,from = "probe_id",
   message(paste0(nrow(exp)," rownames transformed after duplicate rows removed"))
   return(exp)
 }
-
 
 ##' sam_filter
 ##'

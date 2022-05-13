@@ -15,6 +15,9 @@
 
 point_cut <- function(exprSet_hub,meta){
   if(ncol(exprSet_hub)!=nrow(meta))stop("your exprSet_hub is not corresponds to meta")
+  kp = apply(exprSet_hub, 1, function(x)length(unique(unique(x))) > 4)
+  message(paste0(sum(kp)," rows with less than 5 values were ignored in cut.point calculations"))
+  exprSet_hub = exprSet_hub[kp,]
   dat = cbind(t(exprSet_hub),meta)
   cut.point = c()
   for(i in 1:nrow(exprSet_hub)){
@@ -51,7 +54,7 @@ point_cut <- function(exprSet_hub,meta){
 
 
 surv_KM <- function(exprSet_hub,meta,cut.point = FALSE,pvalue_cutoff = 0.05,min_gn = 0.1){
-  cut_point = point_cut(exprSet_hub,meta)
+  if(cut.point)cut_point = point_cut(exprSet_hub,meta)
   log_rank_p = c()
   for(i in 1:nrow(exprSet_hub)){
     gene = as.numeric(exprSet_hub[i,])
@@ -94,7 +97,7 @@ surv_KM <- function(exprSet_hub,meta,cut.point = FALSE,pvalue_cutoff = 0.05,min_
 surv_cox <-function(exprSet_hub,meta,cut.point = FALSE,
                     pvalue_cutoff = 0.05,HRkeep = "all",
                     continuous = FALSE,min_gn = 0.1){
-  cut_point = point_cut(exprSet_hub,meta)
+  if(cut.point) cut_point = point_cut(exprSet_hub,meta)
   cox_results <-list()
   for(i in 1:nrow(exprSet_hub)){
     if(continuous) {
@@ -136,7 +139,7 @@ surv_cox <-function(exprSet_hub,meta,cut.point = FALSE,
   cox_results = cox_results[!nn2,]
   k = cox_results[,4]<pvalue_cutoff;table(k)
 
-  if(sum(k)==1){
+  if(sum(stats::na.omit(k))==1){
     tmp = matrix(cox_results[k,],nrow = 1)
     colnames(tmp) = colnames(cox_results)
     rownames(tmp) = rownames(cox_results)[k]

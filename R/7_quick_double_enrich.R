@@ -14,7 +14,6 @@
 ##' @importFrom clusterProfiler setReadable
 ##' @importFrom org.Hs.eg.db org.Hs.eg.db
 ##' @importFrom ggplot2 facet_grid
-##' @importFrom ggplot2 scale_x_discrete
 ##' @export
 ##' @examples
 ##' \donttest{
@@ -63,8 +62,7 @@ quick_enrich <- function(genes,
     go.dot = "no terms enriched"
   } else{
     go.dot = dotplot(go, split="ONTOLOGY",font.size =10,showCategory = 5)+
-      facet_grid(ONTOLOGY~., scales="free") +
-      scale_x_discrete(labels=function(x) str_wrap(x, width=45))
+      facet_grid(ONTOLOGY~., scales="free")
   }
   result = list(kk = kk,go = go,kk.dot = kk.dot,go.dot = go.dot)
   return(result)

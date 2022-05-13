@@ -1,44 +1,32 @@
 Package: tinyarray
 Type: Package
 Title: Expression Data Analysis and Visualization
-Version: 2.2.6
+Version: 2.2.8
 Authors@R: person("Xiaojie","Sun",email = "18763899370@163.com",role = c("aut","cre"))
 Maintainer: Xiaojie Sun <18763899370@163.com>
 Description: Gene Expression Omnibus(GEO) and The Cancer Genome Atlas(TCGA) are common bioinformatics public databases. We integrate the regular analysis and charts for expression data, to analyze and display the data concisely and intuitively.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-Imports:
-    BiocManager, 
+Imports: 
+    BiocManager,
     clusterProfiler,
-    dplyr, 
-    limma, 
-    org.Hs.eg.db, 
-    stringr, 
-    tibble, 
+    dplyr,
+    limma,
+    org.Hs.eg.db,
+    stringr,
+    tibble,
     pheatmap,
     ggplot2,
     survival,
     survminer,
-    patchwork
-Suggests: 
-    testthat,
-    AnnoProbe,
-    GEOquery,
-    Biobase,
-    VennDiagram,
-    FactoMineR,
-    factoextra,
-    knitr,
-    rmarkdown,
-    cowplot,
-    ggpubr,
-    ggplotify,
-    tidyr,
-    labeling,
-    Rtsne,
-    scatterplot3d
+    patchwork,
+    magrittr
+Suggests: testthat, AnnoProbe, GEOquery, Biobase, VennDiagram,
+        FactoMineR, factoextra, knitr, rmarkdown, cowplot, ggpubr,
+        ggplotify, tidyr, labeling, Rtsne, scatterplot3d,
+        ComplexHeatmap, circlize
 URL: https://github.com/xjsun1221/tinyarray
 BugReports: https://github.com/xjsun1221/tinyarray/issues
-Depends:R (>= 3.5.0)
-RoxygenNote: 7.1.1
+Depends: R (>= 3.5.0)
+RoxygenNote: 7.1.2

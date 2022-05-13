@@ -13,6 +13,8 @@ draw_heatmap(
   legend = FALSE,
   show_rownames = FALSE,
   annotation_legend = FALSE,
+  split_column = FALSE,
+  show_column_title = FALSE,
   color = (grDevices::colorRampPalette(c("#2fa1dd", "white", "#f87669")))(100),
   color_an = c("#2fa1dd", "#f87669", "#e6b707", "#868686", "#92C5DE", "#F4A582",
     "#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F", "#E5C494",
@@ -37,6 +39,10 @@ draw_heatmap(
 \item{show_rownames}{logical,show rownames or not}
 
 \item{annotation_legend}{logical,show annotation legend or not}
+
+\item{split_column}{split column by group_list}
+
+\item{show_column_title}{show column title or not}
 
 \item{color}{color for heatmap}
 

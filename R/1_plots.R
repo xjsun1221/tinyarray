@@ -117,6 +117,8 @@ if(getRversion() >= "2.15.1")  utils::globalVariables(c(".","Dim.1","Dim.2","Gro
 ##' @param show_rownames logical,show rownames or not
 ##' @param scale logical,scale the matrix or not
 ##' @param main the title of the plot
+##' @param split_column split column by group_list
+##' @param show_column_title show column title or not
 ##' @return a heatmap plot according to \code{exp} and grouped by \code{group}.
 ##' @author Xiaojie Sun
 ##' @importFrom pheatmap pheatmap
@@ -147,6 +149,8 @@ draw_heatmap <-  function(n,
                           legend = FALSE,
                           show_rownames = FALSE,
                           annotation_legend=FALSE,
+                          split_column = FALSE,
+                          show_column_title = FALSE,
                           color = grDevices::colorRampPalette(c("#2fa1dd", "white", "#f87669"))(100),
                           color_an = c("#2fa1dd","#f87669","#e6b707","#868686","#92C5DE","#F4A582","#66C2A5","#FC8D62","#8DA0CB","#E78AC3","#A6D854","#FFD92F","#E5C494","#B3B3B3"),
                           scale = TRUE,
@@ -160,7 +164,7 @@ draw_heatmap <-  function(n,
     scale_before = FALSE
   }
   p1 <-  all(apply(n,2,is.numeric))
-  if(!p1) stop("n must be a numeric matrix")
+  if(!p1) stop("non-numeric matrix detected")
   p2  <-  (sum(!duplicated(group_list)) > 1)
   if(!p2) stop("group_list must more than 1")
   p3 <- is.factor(group_list)
@@ -168,34 +172,78 @@ draw_heatmap <-  function(n,
     group_list = factor(group_list)
     warning("group_list was covert to factor")
   }
-  annotation_col=data.frame(group=group_list)
-  rownames(annotation_col)=colnames(n)
-  col = color_an[1:length(levels(group_list))]
-  ann_colors = list(group = col)
-  if(is.null(names(ann_colors$group)))names(ann_colors$group)=levels(group_list)
-  if(scale) {
-    scale_row = "row"
-    breaks = seq(-n_cutoff,n_cutoff,length.out = length(color))
-  } else {
-    scale_row = "none"
-    breaks = NA
-  }
-  if(!scale_before){
-    p = pheatmap(n,
-             show_colnames =F,
-             show_rownames = show_rownames,
-             scale = scale_row,
-             color = color,
-             annotation_col=annotation_col,
-             annotation_colors = ann_colors,
-             cluster_cols = cluster_cols,
-             breaks = breaks,
-             legend = legend,
-             silent = TRUE,
-             annotation_legend = annotation_legend,
-             main = main,
-             annotation_names_col = FALSE)
-    p = ggplotify::as.ggplot(p)
+  if(split_column){
+    if(!requireNamespace("circlize",quietly = TRUE)) {
+      stop("Package \"circlize\" needed for this function to work. Please install it by install.packages('circlize')",call. = FALSE)
+    }
+    if(!requireNamespace("ComplexHeatmap",quietly = TRUE)) {
+      stop("Package \"ComplexHeatmap\" needed for this function to work. Please install it by BiocManager::install('ComplexHeatmap')",call. = FALSE)
+    }
+    col_fun = circlize::colorRamp2(c(-n_cutoff, 0, n_cutoff), c(color[1], "white", color[100]))
+    if(scale){
+      n = t(scale(t(n)))
+      n[n > n_cutoff] = n_cutoff
+      n[n < - n_cutoff] = -n_cutoff
+    }
+    m0 = ComplexHeatmap::Heatmap(n,
+                    column_split = group_list)
+    column_title = suppressWarnings(names(ComplexHeatmap::column_order(m0)))
+    top_annotation = ComplexHeatmap::HeatmapAnnotation(
+      cluster = ComplexHeatmap::anno_block(gp = grid::gpar(fill = (color_an[1:nlevels(group_list)])[match(column_title,levels(group_list))]),
+                           labels = column_title,
+                           labels_gp = grid::gpar(col = "white", fontsize = 12)))
+    if(show_column_title){
+      p = ComplexHeatmap::Heatmap(n,name = " ",
+                                  col = col_fun,
+                                  top_annotation = top_annotation,
+                                  column_split = group_list,
+                                  show_heatmap_legend = legend ,
+                                  border = sum(dim(n))< 150,
+                                  rect_gp = grid::gpar(col = "grey", lwd = 1),
+                                  show_column_names = FALSE,
+                                  show_row_names = show_rownames)
+    }else{
+      p = ComplexHeatmap::Heatmap(n,name = " ",
+                                  col = col_fun,
+                                  top_annotation = top_annotation,
+                                  column_split = group_list,
+                                  show_heatmap_legend = legend ,
+                                  border = sum(dim(n))< 150,
+                                  rect_gp = grid::gpar(col = "grey", lwd = 1),
+                                  show_column_names = FALSE,
+                                  show_row_names = show_rownames ,
+                                  column_title = NULL)
+    }
+  }else{
+    annotation_col=data.frame(group=group_list)
+    rownames(annotation_col)=colnames(n)
+    col = color_an[1:length(levels(group_list))]
+    ann_colors = list(group = col)
+    if(is.null(names(ann_colors$group)))names(ann_colors$group)=levels(group_list)
+    if(scale) {
+      scale_row = "row"
+      breaks = seq(-n_cutoff,n_cutoff,length.out = length(color))
+    } else {
+      scale_row = "none"
+      breaks = NA
+    }
+    if(!scale_before){
+      p = pheatmap(n,
+                   show_colnames =F,
+                   show_rownames = show_rownames,
+                   scale = scale_row,
+                   color = color,
+                   annotation_col=annotation_col,
+                   annotation_colors = ann_colors,
+                   cluster_cols = cluster_cols,
+                   breaks = breaks,
+                   legend = legend,
+                   silent = TRUE,
+                   annotation_legend = annotation_legend,
+                   main = main,
+                   annotation_names_col = FALSE)
+      p = ggplotify::as.ggplot(p)
+    }
   }
   return(p)
 }
@@ -472,9 +520,11 @@ utils::globalVariables(c(".","rows","group","..p.signif..","..p.format.."))
 ##'
 ##' @param dat expression matrix for plot
 ##' @param group group for expression colnames
-##' @param cluster logical,cluster or not, default F
-##' @param show_rownames logical,show rownames in plot or not,default T
-##' @param show_colnames logical,show colnames in plot or not,default T
+##' @param cluster logical,cluster in both rows and column or not, default F,now replaced by cluster_rows and cluster_cols.
+##' @param cluster_rows logical, if rows (on the plot) should be clustered, default F
+##' @param cluster_cols logical, if column (on the plot) should be clustered, default F
+##' @param show_rownames logical,show rownames in plot or not, default T
+##' @param show_colnames logical,show colnames in plot or not, default T
 ##' @param groupname name of group legend
 ##' @param expname name of exp legend
 ##' @param fill_mid use median value as geom_tile fill midpoint
@@ -506,8 +556,8 @@ utils::globalVariables(c(".","rows","group","..p.signif..","..p.format.."))
 ##' group = rep(c("A","B"),each = nrow(exp_dat)/2)
 ##' group = factor(group,levels = c("A","B"))
 ##' ggheat(exp_dat,group)
-##' ggheat(exp_dat,group,cluster = TRUE)
-##' ggheat(exp_dat,group,cluster = TRUE,show_rownames = FALSE,
+##' ggheat(exp_dat,group,cluster_rows = TRUE)
+##' ggheat(exp_dat,group,cluster_rows = TRUE,show_rownames = FALSE,
 ##'        show_colnames = FALSE,groupname = "risk",expname = "expression")
 
 
@@ -517,13 +567,20 @@ ggheat = function(dat,group,cluster = FALSE,
                   legend_color = c("#2874C5","#f87669","#e6b707","#868686","#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F",
                                    "#E5C494", "#B3B3B3"),
                   show_rownames = TRUE,show_colnames = TRUE,
+                  cluster_rows = FALSE,cluster_cols = FALSE,
                   groupname = "group",expname = "exp",
                   fill_mid = TRUE){
   dat = data.frame(dat)
-
+  ph = pheatmap::pheatmap(t(dat),silent = TRUE)
   if(cluster){
-    ph = pheatmap::pheatmap(t(dat),silent = TRUE)
-    dat = dat[ph$tree_col$order,ph$tree_row$order]
+    cluster_rows = TRUE
+    cluster_cols = TRUE
+  }
+  if(cluster_rows){
+    dat = dat[,ph$tree_row$order]
+  }
+  if(cluster_cols){
+    dat = dat[ph$tree_col$order,]
     group = group[ph$tree_col$order]
   }
 
@@ -638,7 +695,7 @@ draw_tsne = function(exp,group_list,perplexity=30,
   return(p)
 }
 
-utils::globalVariables(c("Y1","Y2","group"))
+utils::globalVariables(c("Y1","Y2","group","patient","ri","time","event"))
 
 ##' draw_KM
 ##'

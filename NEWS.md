@@ -93,3 +93,17 @@ cran 人工返回修改意见：
 5.message代替print
 
 6.示例里面删掉rm(list= ls())
+
+### 2.2.8
+
+1.exp_surv添加了cut.point参数，默认值false，即以中位数为截断值画图。修改了配色。
+
+2.解决了sur_cox的NA报错问题
+
+3.解决了quick_enrich画图横坐标消失的问题。
+
+4.新增函数risk_plot，画风险因子三图联动
+
+5.修改了suggest的包安装提示
+
+
