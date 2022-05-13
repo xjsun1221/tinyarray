@@ -48,6 +48,7 @@ point_cut <- function(exprSet_hub,meta){
 ##' @author Xiaojie Sun
 ##' @examples
 ##' surv_KM(exprSet_hub1,meta1)
+##' surv_KM(exprSet_hub1,meta1,pvalue_cutoff = 1)
 ##' surv_KM(exprSet_hub1,meta1,cut.point = TRUE)
 ##' @seealso
 ##' \code{\link{point_cut}};\code{\link{surv_cox}}
@@ -89,7 +90,9 @@ surv_KM <- function(exprSet_hub,meta,cut.point = FALSE,pvalue_cutoff = 0.05,min_
 ##' @return a matrix with gene names ,cox p value and HR
 ##' @author Xiaojie Sun
 ##' @examples
-##' surv_cox(exprSet_hub1,meta1,cut.point = TRUE,HRkeep = "all")
+##' surv_cox(exprSet_hub1,meta1)
+##' surv_cox(exprSet_hub1,meta1,cut.point = TRUE,continuous = T)
+##' surv_cox(exprSet_hub1,meta1,cut.point = TRUE,continuous = T,pvalue_cutoff = 1)
 ##' @seealso
 ##' \code{\link{point_cut}};\code{\link{surv_KM}}
 
@@ -137,7 +140,7 @@ surv_cox <-function(exprSet_hub,meta,cut.point = FALSE,
   rownames(cox_results)= rownames(exprSet_hub)
   nn2 = apply(cox_results,1,function(x){all(is.na(x))})
   cox_results = cox_results[!nn2,]
-  k = cox_results[,4]<pvalue_cutoff;table(k)
+  k = cox_results[,4]<pvalue_cutoff
 
   if(sum(stats::na.omit(k))==1){
     tmp = matrix(cox_results[k,],nrow = 1)

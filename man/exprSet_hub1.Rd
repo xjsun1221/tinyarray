@@ -5,13 +5,13 @@
 \alias{exprSet_hub1}
 \title{exprSet_hub1}
 \format{
-An object of class \code{data.frame} with 8 rows and 177 columns.
+An object of class \code{matrix} (inherits from \code{array}) with 8 rows and 177 columns.
 }
 \usage{
 exprSet_hub1
 }
 \description{
-An expression matrix from TCGA,tumor samples only
+An cpm expression matrix from TCGA,tumor samples only
 }
 \examples{
   exprSet_hub1[1:4,1:4]

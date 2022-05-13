@@ -98,7 +98,7 @@ utils::globalVariables(c("lnc_anno","mRNA_anno","lnc_annov23","mRNA_annov23"))
 
 ##' trans_array
 ##'
-##' transform rownames for microarray expression matrix
+##' transform rownames for microarray or rnaseq expression matrix
 ##'
 ##' @param exp  microarray expression matrix with probe_id as rownames
 ##' @param ids data.frame  with original rownames and new rownames

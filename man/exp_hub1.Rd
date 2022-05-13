@@ -11,7 +11,7 @@ An object of class \code{matrix} (inherits from \code{array}) with 8 rows and 35
 exp_hub1
 }
 \description{
-An expression matrix from TCGA
+An expression matrix from TCGA and Gtex
 }
 \examples{
   exp_hub1[1:4,1:4]

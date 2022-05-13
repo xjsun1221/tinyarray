@@ -32,7 +32,7 @@
 
 #' exp_hub1
 #'
-#' An expression matrix from TCGA
+#' An expression matrix from TCGA and Gtex
 #'
 #' @examples
 #'   exp_hub1[1:4,1:4]
@@ -41,7 +41,7 @@
 
 #' exprSet_hub1
 #'
-#' An expression matrix from TCGA,tumor samples only
+#' An cpm expression matrix from TCGA,tumor samples only
 #'
 #' @examples
 #'   exprSet_hub1[1:4,1:4]

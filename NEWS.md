@@ -106,4 +106,6 @@ cran 人工返回修改意见：
 
 5.修改了suggest的包安装提示
 
+6.内置数据exprSet_hub1改为了logcpm，不再是原来的count
+
 

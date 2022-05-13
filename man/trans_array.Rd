@@ -19,7 +19,7 @@ trans_array(exp, ids, from = "probe_id", to = "symbol")
 a transformed expression set with new rownames
 }
 \description{
-transform rownames for microarray expression matrix
+transform rownames for microarray or rnaseq expression matrix
 }
 \examples{
 exp = matrix(1:50,nrow = 10)

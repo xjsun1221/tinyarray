@@ -30,7 +30,7 @@ risk plot
 draw risk plot
 }
 \examples{
-risk_plot(log2(exprSet_hub1+1),meta1,riskscore = rnorm(nrow(meta1)))
+risk_plot(exprSet_hub1,meta1,riskscore = rnorm(nrow(meta1)))
 }
 \seealso{
 \code{\link{exp_boxplot}};\code{\link{box_surv}};\code{\link{draw_venn}}

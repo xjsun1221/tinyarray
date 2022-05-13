@@ -36,7 +36,9 @@ a matrix with gene names ,cox p value and HR
 calculate cox p values and HR for genes
 }
 \examples{
-surv_cox(exprSet_hub1,meta1,cut.point = TRUE,HRkeep = "all")
+surv_cox(exprSet_hub1,meta1)
+surv_cox(exprSet_hub1,meta1,cut.point = TRUE,continuous = T)
+surv_cox(exprSet_hub1,meta1,cut.point = TRUE,continuous = T,pvalue_cutoff = 1)
 }
 \seealso{
 \code{\link{point_cut}};\code{\link{surv_KM}}

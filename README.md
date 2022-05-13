@@ -8,7 +8,12 @@ hi，我是小洁。这是我基于自己的数据分析需求写的R包，很�
 
 #### 1.在线安装
 
+目前已经上传到了cran，但cran只允许1~2月提交一次更新，所以github的版本经常会比cran的高一点。
+
+目前在cran的版本是2.2.7，github是2.2.8。
+
 ```
+if(!require(tinyarray))install.packages("tinyarray")
 if(!require(devtools))install.packages("devtools")
 if(!require(tinyarray))devtools::install_github("xjsun1221/tinyarray",upgrade = F)
 ```

@@ -14,7 +14,9 @@
 ##' @author Xiaojie Sun
 ##' @examples
 ##' tmp = exp_surv(exprSet_hub1,meta1)
-##' patchwork::wrap_plots(tmp)
+##' patchwork::wrap_plots(tmp)+plot_layout(guides = "collect")
+##' tmp2 = exp_surv(exprSet_hub1,meta1,cut.point = TRUE)
+##' patchwork::wrap_plots(tmp2)+plot_layout(guides = "collect")
 ##' @seealso
 ##' \code{\link{exp_boxplot}};\code{\link{box_surv}};\code{\link{draw_venn}}
 
@@ -144,7 +146,7 @@ box_surv <-function(exp_hub,exprSet_hub,meta){
 ##' @return risk plot
 ##' @author Xiaojie Sun
 ##' @examples
-##' risk_plot(log2(exprSet_hub1+1),meta1,riskscore = rnorm(nrow(meta1)))
+##' risk_plot(exprSet_hub1,meta1,riskscore = rnorm(nrow(meta1)))
 ##' @seealso
 ##' \code{\link{exp_boxplot}};\code{\link{box_surv}};\code{\link{draw_venn}}
 

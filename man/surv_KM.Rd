@@ -31,6 +31,7 @@ calculate log_rank test p values for genes
 }
 \examples{
 surv_KM(exprSet_hub1,meta1)
+surv_KM(exprSet_hub1,meta1,pvalue_cutoff = 1)
 surv_KM(exprSet_hub1,meta1,cut.point = TRUE)
 }
 \seealso{
