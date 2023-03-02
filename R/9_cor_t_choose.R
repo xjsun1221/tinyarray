@@ -99,7 +99,7 @@ cor.full <- function(x,drop = 0){
 ##' @param x A numeric matrix or data.frame
 ##' @param var your chosen variable,only one.
 ##' @param drop.var drop values in var
-##' @param drop.othor drop values in othor columns
+##' @param drop.other drop values in other columns
 ##' @return A data.frame with cor.test p.value and estimate
 ##' @author Xiaojie Sun
 ##' @export
@@ -109,7 +109,7 @@ cor.full <- function(x,drop = 0){
 ##' @seealso
 ##' \code{\link{cor.full}}
 
-cor.one <- function(x,var,drop.var = 0,drop.othor = 0){
+cor.one <- function(x,var,drop.var = 0,drop.other = 0){
   if(!(var %in% colnames(x))) stop(paste0(var," is not a colname of ",x,",please check it."))
   if(!all(!duplicated(colnames(x)))) stop("unique colnames is required")
   p = list()
@@ -118,7 +118,7 @@ cor.one <- function(x,var,drop.var = 0,drop.othor = 0){
   k1 = bt != drop.var
   for(i in (1:length(ss))){
     kt = x[,ss[[i]]]
-    k2 = kt !=drop.othor
+    k2 = kt !=drop.other
     cot = stats::cor.test(bt[k1&k2],kt[k1&k2])
     p[[i]] = c(cot$p.value,cot$estimate)
     names(p[[i]]) = c("p.value","cor")
