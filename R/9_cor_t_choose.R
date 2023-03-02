@@ -61,6 +61,7 @@ t_choose <- function(genes,exp,group_list,up_only = FALSE,down_only = FALSE,pval
 ##'
 ##' @param x A numeric matrix or data.frame
 ##' @param drop drop values
+##' @inheritParams cor.one
 ##' @return a data.frame with cor.test p.value and estimate
 ##' @author Xiaojie Sun
 ##' @export
@@ -70,7 +71,7 @@ t_choose <- function(genes,exp,group_list,up_only = FALSE,down_only = FALSE,pval
 ##' @seealso
 ##' \code{\link{cor.one}}
 
-cor.full <- function(x,drop = 0){
+cor.full <- function(x,drop = 0,min.obs = 10){
   ss = list()
   p = list()
   ss1 = utils::combn(colnames(x),2)
@@ -81,8 +82,12 @@ cor.full <- function(x,drop = 0){
     kt = x[,ss1[2,i]]
     k1 = bt > drop
     k2 = kt > drop
+    if(sum(k1&k2) < min.obs){
+      p[[i]] = c(NA,NA)
+    }else{
     cot = stats::cor.test(bt[k1&k2],kt[k1&k2])
     p[[i]] = c(cot$p.value,cot$estimate)
+    }
     names(p[[i]]) = c("p.value","cor")
   }
   re = do.call(cbind,p)
@@ -100,6 +105,7 @@ cor.full <- function(x,drop = 0){
 ##' @param var your chosen variable,only one.
 ##' @param drop.var drop values in var
 ##' @param drop.other drop values in other columns
+##' @param min.obs minimum number of observations  after dropping
 ##' @return A data.frame with cor.test p.value and estimate
 ##' @author Xiaojie Sun
 ##' @export
@@ -109,7 +115,7 @@ cor.full <- function(x,drop = 0){
 ##' @seealso
 ##' \code{\link{cor.full}}
 
-cor.one <- function(x,var,drop.var = 0,drop.other = 0){
+cor.one <- function(x,var,drop.var = 0,drop.other = 0,min.obs = 10){
   if(!(var %in% colnames(x))) stop(paste0(var," is not a colname of ",x,",please check it."))
   if(!all(!duplicated(colnames(x)))) stop("unique colnames is required")
   p = list()
@@ -119,7 +125,7 @@ cor.one <- function(x,var,drop.var = 0,drop.other = 0){
   for(i in (1:length(ss))){
     kt = x[,ss[[i]]]
     k2 = kt > drop.other
-    if(sum(k1&k2)<3){
+    if(sum(k1&k2) < min.obs){
       p[[i]] = c(NA,NA)
     }else{
       cot = stats::cor.test(bt[k1&k2],kt[k1&k2])
