@@ -79,8 +79,8 @@ cor.full <- function(x,drop = 0){
   for(i in (1:ncol(ss1))){
     bt = x[,ss1[1,i]]
     kt = x[,ss1[2,i]]
-    k1 = bt != drop
-    k2 = kt != drop
+    k1 = bt > drop
+    k2 = kt > drop
     cot = stats::cor.test(bt[k1&k2],kt[k1&k2])
     p[[i]] = c(cot$p.value,cot$estimate)
     names(p[[i]]) = c("p.value","cor")
@@ -115,12 +115,16 @@ cor.one <- function(x,var,drop.var = 0,drop.other = 0){
   p = list()
   ss = setdiff(colnames(x),var)
   bt = x[,var]
-  k1 = bt != drop.var
+  k1 = bt > drop.var
   for(i in (1:length(ss))){
     kt = x[,ss[[i]]]
-    k2 = kt !=drop.other
-    cot = stats::cor.test(bt[k1&k2],kt[k1&k2])
-    p[[i]] = c(cot$p.value,cot$estimate)
+    k2 = kt > drop.other
+    if(sum(k1&k2)<3){
+      p[[i]] = c(NA,NA)
+    }else{
+      cot = stats::cor.test(bt[k1&k2],kt[k1&k2])
+      p[[i]] = c(cot$p.value,cot$estimate)
+    }
     names(p[[i]]) = c("p.value","cor")
   }
   re = do.call(cbind,p)
