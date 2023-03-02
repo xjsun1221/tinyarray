@@ -71,7 +71,7 @@ t_choose <- function(genes,exp,group_list,up_only = FALSE,down_only = FALSE,pval
 ##' @seealso
 ##' \code{\link{cor.one}}
 
-cor.full <- function(x,drop = 0,min.obs = 10){
+cor.full <- function(x,drop = min(x)-0.001,min.obs = 10){
   ss = list()
   p = list()
   ss1 = utils::combn(colnames(x),2)
@@ -115,7 +115,9 @@ cor.full <- function(x,drop = 0,min.obs = 10){
 ##' @seealso
 ##' \code{\link{cor.full}}
 
-cor.one <- function(x,var,drop.var = 0,drop.other = 0,min.obs = 10){
+cor.one <- function(x,var,drop.var = min(x[,var])-0.001,
+                    drop.other = min(x[,-which(colnames(x)==var)])-0.001,
+                    min.obs = 10){
   if(!(var %in% colnames(x))) stop(paste0(var," is not a colname of ",x,",please check it."))
   if(!all(!duplicated(colnames(x)))) stop("unique colnames is required")
   p = list()

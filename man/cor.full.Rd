@@ -4,7 +4,7 @@
 \alias{cor.full}
 \title{cor.test for all variables}
 \usage{
-cor.full(x, drop = 0, min.obs = 10)
+cor.full(x, drop = min(x) - 0.001, min.obs = 10)
 }
 \arguments{
 \item{x}{A numeric matrix or data.frame}

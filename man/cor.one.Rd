@@ -4,7 +4,13 @@
 \alias{cor.one}
 \title{cor.test for one variable with all variables}
 \usage{
-cor.one(x, var, drop.var = 0, drop.other = 0, min.obs = 10)
+cor.one(
+  x,
+  var,
+  drop.var = min(x[, var]) - 0.001,
+  drop.other = min(x[, -which(colnames(x) == var)]) - 0.001,
+  min.obs = 10
+)
 }
 \arguments{
 \item{x}{A numeric matrix or data.frame}
