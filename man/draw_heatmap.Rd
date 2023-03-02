@@ -9,7 +9,6 @@ draw_heatmap(
   group_list,
   scale_before = FALSE,
   n_cutoff = 3,
-  cluster_cols = TRUE,
   legend = FALSE,
   show_rownames = FALSE,
   annotation_legend = FALSE,
@@ -32,8 +31,6 @@ draw_heatmap(
 
 \item{n_cutoff}{3 by defalut , scale before plot and set a cutoff,usually 2 or 1.6}
 
-\item{cluster_cols}{if F,heatmap will nor cluster in column}
-
 \item{legend}{logical,show legend or not}
 
 \item{show_rownames}{logical,show rownames or not}
@@ -51,6 +48,8 @@ draw_heatmap(
 \item{scale}{logical,scale the matrix or not}
 
 \item{main}{the title of the plot}
+
+\item{cluster_cols}{if F,heatmap will nor cluster in column}
 }
 \value{
 a heatmap plot according to \code{exp} and grouped by \code{group}.

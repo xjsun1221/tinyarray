@@ -7,12 +7,13 @@
 draw_pca(
   exp,
   group_list,
-  color = c("#2874C5", "#f87669", "#e6b707", "#868686", "#92C5DE", "#F4A582",
-    "#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F", "#E5C494",
-    "#B3B3B3"),
+  color = c("#2874C5", "#f87669", "#e6b707", "#868686", "#92C5DE", "#F4A582", "#66C2A5",
+    "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F", "#E5C494", "#B3B3B3"),
   addEllipses = TRUE,
   style = "default",
-  color.label = "Group"
+  color.label = "Group",
+  title = "",
+  ...
 )
 }
 \arguments{
@@ -36,13 +37,10 @@ do PCA analysis and print a PCA plot
 }
 \examples{
 draw_pca(t(iris[,1:4]),iris$Species)
-exp <-  matrix(rnorm(60),nrow = 10)
-colnames(exp) <- paste0("sample",1:6)
-rownames(exp) <- paste0("gene",1:10)
-exp[1:4,1:4]
-group_list <- factor(rep(c("A","B"),each = 3))
-draw_pca(exp,group_list)
-draw_pca(exp,group_list,color = c("blue","red"))
+draw_pca(t(iris[,1:4]),iris$Species,style = "ggplot2")
+draw_pca(t(iris[,1:4]),iris$Species,style = "3D")
+#change color
+draw_pca(t(iris[,1:4]),iris$Species,color = c("#E78AC3", "#A6D854", "#FFD92F"))
 }
 \seealso{
 \code{\link{draw_heatmap}};\code{\link{draw_volcano}};\code{\link{draw_venn}}

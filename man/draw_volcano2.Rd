@@ -4,33 +4,14 @@
 \alias{draw_volcano2}
 \title{draw_volcano2}
 \usage{
-draw_volcano2(
-  deg,
-  pkg = 4,
-  lab,
-  pvalue_cutoff = 0.05,
-  logFC_cutoff = 1,
-  adjust = FALSE,
-  symmetry = TRUE,
-  color = c("#2874C5", "grey", "#f87669")
-)
+draw_volcano2(deg, pkg = 4, lab, ...)
 }
 \arguments{
 \item{deg}{a data.frame created by Differential analysis}
 
 \item{pkg}{a integer ,means which Differential analysis packages you used,we support three packages by now, 1,2,3,4 respectively means "DESeq2","edgeR","limma(voom)","limma"}
 
-\item{lab}{label for  x axis in volcano plot}
-
-\item{pvalue_cutoff}{Cutoff value of pvalue,0.05 by default.}
-
-\item{logFC_cutoff}{Cutoff value of logFC,1 by default.}
-
-\item{adjust}{a logical value, would you like to use adjusted pvalue to draw this plot,FAlSE by default.}
-
-\item{symmetry}{a logical value ,would you like to get your plot symmetrical}
-
-\item{color}{color vector}
+\item{lab}{label for  x axis in volcano plot, if NA , x axis names by package}
 }
 \value{
 one or more volcano plot

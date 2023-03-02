@@ -7,6 +7,7 @@
 draw_volcano(
   deg,
   lab = NA,
+  xlab.package = TRUE,
   pvalue_cutoff = 0.05,
   logFC_cutoff = 1,
   pkg = 1,
@@ -18,7 +19,7 @@ draw_volcano(
 \arguments{
 \item{deg}{a data.frame created by Differential analysis}
 
-\item{lab}{label for  x axis in volcano plot}
+\item{lab}{label for  x axis in volcano plot, if NA , x axis names by package}
 
 \item{pvalue_cutoff}{Cutoff value of pvalue,0.05 by default.}
 

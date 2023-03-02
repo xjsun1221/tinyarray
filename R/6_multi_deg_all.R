@@ -92,35 +92,31 @@ get_cgs <- function(deg){
 draw_volcano2 = function(deg,
                          pkg=4,
                          lab,
-                         pvalue_cutoff=0.05,
-                         logFC_cutoff=1,
-                         adjust=FALSE,
-                         symmetry=TRUE,
-                         color = c("#2874C5", "grey", "#f87669")
+                         ...
 ){
   if(!is.list(deg) & is.data.frame(deg))stop("deg is a data.frame or list returned by limma")
-  if(is.data.frame(deg)) deg = list(deg = deg)
-  volcano_plots <- lapply(1:length(deg),
-                          function(k) {
-                            draw_volcano(
-                              deg[[k]] ,
-                              pkg = pkg,
-                              lab = names(deg)[k],
-                              pvalue_cutoff = pvalue_cutoff,
-                              logFC_cutoff = logFC_cutoff,
-                              adjust = adjust,
-                              color = color,
-                              symmetry = symmetry
-                            )
-                          })
   if(is.data.frame(deg)) {
-    volcano_plots = volcano_plots[[1]]
+    volcano_plots = draw_volcano(
+      deg ,
+      pkg = pkg,
+      lab = "logFC",
+      ...
+    )
   }else{
+    volcano_plots <- lapply(1:length(deg),
+                            function(k) {
+                              draw_volcano(
+                                deg[[k]] ,
+                                pkg = pkg,
+                                lab = names(deg)[k],
+                                ...
+                              )
+                            })
     volcano_plots = wrap_plots(volcano_plots)+
       plot_layout(design = paste(rep(LETTERS[1:length(deg)]),collapse = "")) +
       plot_layout(guides = 'collect')
   }
-  return(wrap_plots(volcano_plots))
+  return(volcano_plots)
 }
 
 ##' draw heatmap plots
@@ -131,8 +127,7 @@ draw_volcano2 = function(deg,
 ##' @inheritParams draw_heatmap
 ##' @inheritParams draw_pca
 ##' @param heat_union logical ,use union or intersect DEGs for heatmap
-##' @param heat_id id of heatmap,1 for all DEGs,2 for head and tail,3 for top n DEGs
-##' @param gene_number how many DEGs will heatmap show .
+##' @param my_genes genes for pheatmap
 ##' @return a heatmap plot according to \code{exp} and grouped by \code{group}.
 ##' @author Xiaojie Sun
 ##' @importFrom pheatmap pheatmap
@@ -157,59 +152,40 @@ draw_volcano2 = function(deg,
 draw_heatmap2 <- function(exp,
                           group_list,
                           deg,
-                          heat_union = TRUE,
-                          heat_id=1,
-                          gene_number=200,
-                          show_rownames = FALSE,
-                          scale_before = FALSE,
-                          n_cutoff = 3,
-                          cluster_cols = TRUE,
-                          annotation_legend=FALSE,
-                          legend = FALSE,
-                          color = (grDevices::colorRampPalette(c("#2fa1dd", "white", "#f87669")))(100),
-                          color_an = c("#2fa1dd", "#f87669", "#e6b707", "#868686", "#92C5DE", "#F4A582",
-                                       "#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F", "#E5C494",
-                                       "#B3B3B3")
+                          my_genes = NULL,
+                          heat_union = TRUE,...
 ){
-  cgs = get_cgs(deg)
-  if(length(cgs)==1){
-    cg = cgs[[1]]$diff$diffprobes
-    cgup = cgs[[1]]$up$upprobes
-    cgdown = cgs[[1]]$down$downprobes
+  if(!is.data.frame(deg)){
+    m = deg[[1]]
   }else{
-    if(heat_union){
-      cg = union_all(lapply(cgs,function(x)x$diff$diffprobes))
-      cgup = union_all(lapply(cgs,function(x)x$up$upprobes))
-      cgdown = union_all(lapply(cgs,function(x)x$down$downprobes))
-    }else{
-      cg = intersect_all(lapply(cgs,function(x)x$diff$diffprobes))
-      cgup = intersect_all(lapply(cgs,function(x)x$up$upprobes))
-      cgdown = intersect_all(lapply(cgs,function(x)x$down$downprobes))
-    }
+    m = deg
   }
-  cd = gene_number > length(cgup) | gene_number > length(cgdown)
-  er = paste0("gene_number must less than ",min(c(length(cgup),length(cgdown))))
-  if(heat_id==2 & cd) stop(er)
-  if(heat_id==3 & gene_number> length(cg))stop(paste0("gene_number must less than ",length(cg)))
-  np = exp[cg,]
-  np2 = np[order(apply(np, 1, stats::mad),decreasing = TRUE),]
-  n = switch(heat_id,
-             all = np,
-             ht  = rbind(utils::head(np2,gene_number),
-                         utils::tail(np2,gene_number)),
-             top = utils::head(np,gene_number))
-  heatmap = draw_heatmap(n,
+  if(all(m$probe_id %in% rownames(exp))){
+    exp = exp[m$probe_id,]
+    rownames(exp) = m$symbol
+  }else if(all(m$symbol %in% rownames(exp))) {
+    exp = exp[m$symbol,]
+  }
+  if(is.null(my_genes)){
+    cgs = get_cgs(deg)
+    if(length(cgs)==1){
+      cg = cgs[[1]]$diff$diffgenes
+    }else{
+      if(heat_union){
+        cg = union_all(lapply(cgs,function(x)x$diff$diffgenes))
+      }else{
+        cg = intersect_all(lapply(cgs,function(x)x$diff$diffgenes))
+      }
+    }
+    }else{
+      cg = m$symbol[m$symbol %in% my_genes]
+    }
+  heatmap = draw_heatmap(exp[cg,],
                          group_list,
-                         legend = legend,
-                         show_rownames = show_rownames,
-                         scale_before = scale_before,
-                         n_cutoff = n_cutoff,
-                         cluster_cols = cluster_cols,
-                         annotation_legend = annotation_legend,
-                         color = color,
-                         color_an = color_an
-  )
+                         ...)
+  return(heatmap)
 }
+
 
 ##' multi_deg_all
 ##'
@@ -249,53 +225,27 @@ draw_heatmap2 <- function(exp,
 multi_deg_all <- function(exp,
                           group_list,
                           ids,
-                          logFC_cutoff=1,
-                          pvalue_cutoff=0.05,
-                          adjust = FALSE,
-                          entriz = TRUE,
-                          scale_before = FALSE,
-                          n_cutoff = 3,
-                          cluster_cols = TRUE,
-                          annotation_legend = FALSE,
-                          show_rownames = FALSE,
-                          legend = FALSE,
-                          lab = NA,
                           pkg = 4,
-                          symmetry = FALSE,
-                          heat_union = TRUE,
-                          heat_id = 1,
-                          gene_number = 200,
-                          color_volcano = c("#2874C5", "grey", "#f87669")) {
+                          symmetry = TRUE,
+                          my_genes = NULL,
+                          show_rownames = FALSE,
+                          cluster_cols = TRUE,
+                          ...
+                          ) {
   deg = multi_deg(
     exp,
     group_list,
     ids,
-    logFC_cutoff = logFC_cutoff,
-    pvalue_cutoff = pvalue_cutoff,
-    adjust = adjust,
-    entriz = entriz
+    ...
   )
   #exp = data.frame(exp)
   #exp = exp[match(deg[[1]]$probe_id,rownames(exp)),]
   cgs = get_cgs(deg)
   volcano_plot = draw_volcano2(deg,
                                pkg = pkg,
-                               pvalue_cutoff = pvalue_cutoff,
-                               logFC_cutoff = logFC_cutoff,
-                               adjust = adjust,
-                               symmetry = symmetry,
-                               color = color_volcano)
+                               symmetry = symmetry)
   pca_plot = draw_pca(exp,group_list)
-  heatmap = draw_heatmap2(exp,group_list,
-                          deg,
-                          show_rownames = show_rownames,
-                          heat_id=heat_id,
-                          gene_number=gene_number,
-                          scale_before = scale_before,
-                          n_cutoff = n_cutoff,
-                          cluster_cols = cluster_cols,
-                          annotation_legend=annotation_legend
-                          )
+  heatmap = draw_heatmap2(exp,group_list,deg,my_genes,show_rownames = show_rownames,cluster_cols = cluster_cols)
   x = lapply(cgs,function(x)x$diff$diffprobes)
   venn = draw_venn(x," ")
   if(as.numeric(grDevices::dev.cur())!=1) grDevices::graphics.off()

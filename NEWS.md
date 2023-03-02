@@ -108,4 +108,14 @@ cran 人工返回修改意见：
 
 6.内置数据exprSet_hub1改为了logcpm，不再是原来的count
 
+### 2.2.9
 
+1.删除heat_id 和gene_number两个参数，用my_genes代替
+
+2.随ggplot2更新了 linewidth参数和 after_stat(p.format)
+
+3.作图函数，加上...过渡参数
+
+4.cor.one 和cor.full添加过滤0值参数
+
+5.更新trans_exp函数

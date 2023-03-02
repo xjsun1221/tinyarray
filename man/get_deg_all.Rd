@@ -8,23 +8,11 @@ get_deg_all(
   exp,
   group_list,
   ids,
-  logFC_cutoff = 1,
-  pvalue_cutoff = 0.05,
-  adjust = FALSE,
-  entriz = TRUE,
-  scale_before = FALSE,
-  n_cutoff = 3,
-  cluster_cols = TRUE,
-  annotation_legend = FALSE,
-  show_rownames = FALSE,
-  legend = FALSE,
-  lab = NA,
   pkg = 4,
-  symmetry = FALSE,
-  heat_union = TRUE,
-  heat_id = 1,
-  gene_number = 200,
-  color_volcano = c("#2874C5", "grey", "#f87669")
+  color = c("#2874C5", "grey", "#f87669"),
+  my_genes = NULL,
+  show_rownames = FALSE,
+  ...
 )
 }
 \arguments{
@@ -34,37 +22,15 @@ get_deg_all(
 
 \item{ids}{a data.frame with 2 columns,including probe_id and symbol}
 
-\item{logFC_cutoff}{Cutoff value of logFC,1 by default.}
+\item{pkg}{a integer ,means which Differential analysis packages you used,we support three packages by now, 1,2,3,4 respectively means "DESeq2","edgeR","limma(voom)","limma"}
 
-\item{pvalue_cutoff}{Cutoff value of pvalue,0.05 by default.}
+\item{color}{color vector}
 
-\item{adjust}{a logical value, would you like to use adjusted pvalue to draw this plot,FAlSE by default.}
-
-\item{entriz}{logical , if TRUE ,convert symbol to entriz id.}
-
-\item{scale_before}{deprecated parameter}
-
-\item{n_cutoff}{3 by defalut , scale before plot and set a cutoff,usually 2 or 1.6}
-
-\item{cluster_cols}{if F,heatmap will nor cluster in column}
-
-\item{annotation_legend}{logical,show annotation legend or not}
+\item{my_genes}{genes for pheatmap}
 
 \item{show_rownames}{logical,show rownames or not}
 
-\item{legend}{logical,show legend or not}
-
-\item{lab}{label for  x axis in volcano plot}
-
-\item{pkg}{a integer ,means which Differential analysis packages you used,we support three packages by now, 1,2,3,4 respectively means "DESeq2","edgeR","limma(voom)","limma"}
-
-\item{symmetry}{a logical value ,would you like to get your plot symmetrical}
-
-\item{heat_union}{logical ,use union or intersect DEGs for heatmap}
-
-\item{heat_id}{id of heatmap,1 for all DEGs,2 for head and tail,3 for top n DEGs}
-
-\item{gene_number}{how many DEGs will heatmap show .}
+\item{entriz}{logical , if TRUE ,convert symbol to entriz id.}
 
 \item{color_volcano}{color for volcano plot}
 }

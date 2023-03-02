@@ -17,8 +17,9 @@ draw_boxplot(
   grouplab = "Group",
   p.label = FALSE,
   add_error_bar = FALSE,
-  color = c("#2874C5", "#f87669", "#e6b707", "#868686", "#66C2A5", "#FC8D62",
-    "#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F", "#E5C494", "#B3B3B3")
+  color = c("#2874C5", "#f87669", "#e6b707", "#868686", "#66C2A5", "#FC8D62", "#8DA0CB",
+    "#E78AC3", "#A6D854", "#FFD92F", "#E5C494", "#B3B3B3"),
+  ...
 )
 }
 \arguments{

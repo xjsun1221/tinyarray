@@ -4,12 +4,16 @@
 \alias{cor.one}
 \title{cor.test for one variable with all variables}
 \usage{
-cor.one(x, var)
+cor.one(x, var, drop.var = 0, drop.othor = 0)
 }
 \arguments{
 \item{x}{A numeric matrix or data.frame}
 
 \item{var}{your chosen variable,only one.}
+
+\item{drop.var}{drop values in var}
+
+\item{drop.othor}{drop values in othor columns}
 }
 \value{
 A data.frame with cor.test p.value and estimate

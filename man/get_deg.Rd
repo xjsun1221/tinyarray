@@ -11,7 +11,8 @@ get_deg(
   logFC_cutoff = 1,
   pvalue_cutoff = 0.05,
   adjust = FALSE,
-  entriz = TRUE
+  entriz = TRUE,
+  ...
 )
 }
 \arguments{

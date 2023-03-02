@@ -4,24 +4,7 @@
 \alias{draw_heatmap2}
 \title{draw heatmap plots}
 \usage{
-draw_heatmap2(
-  exp,
-  group_list,
-  deg,
-  heat_union = TRUE,
-  heat_id = 1,
-  gene_number = 200,
-  show_rownames = FALSE,
-  scale_before = FALSE,
-  n_cutoff = 3,
-  cluster_cols = TRUE,
-  annotation_legend = FALSE,
-  legend = FALSE,
-  color = (grDevices::colorRampPalette(c("#2fa1dd", "white", "#f87669")))(100),
-  color_an = c("#2fa1dd", "#f87669", "#e6b707", "#868686", "#92C5DE", "#F4A582",
-    "#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F", "#E5C494",
-    "#B3B3B3")
-)
+draw_heatmap2(exp, group_list, deg, my_genes = NULL, heat_union = TRUE, ...)
 }
 \arguments{
 \item{exp}{A numeric matrix}
@@ -30,27 +13,9 @@ draw_heatmap2(
 
 \item{deg}{a data.frame created by Differential analysis}
 
+\item{my_genes}{genes for pheatmap}
+
 \item{heat_union}{logical ,use union or intersect DEGs for heatmap}
-
-\item{heat_id}{id of heatmap,1 for all DEGs,2 for head and tail,3 for top n DEGs}
-
-\item{gene_number}{how many DEGs will heatmap show .}
-
-\item{show_rownames}{logical,show rownames or not}
-
-\item{scale_before}{deprecated parameter}
-
-\item{n_cutoff}{3 by defalut , scale before plot and set a cutoff,usually 2 or 1.6}
-
-\item{cluster_cols}{if F,heatmap will nor cluster in column}
-
-\item{annotation_legend}{logical,show annotation legend or not}
-
-\item{legend}{logical,show legend or not}
-
-\item{color}{color vector}
-
-\item{color_an}{color for column annotation}
 }
 \value{
 a heatmap plot according to \code{exp} and grouped by \code{group}.

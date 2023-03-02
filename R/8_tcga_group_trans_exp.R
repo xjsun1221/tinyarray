@@ -214,3 +214,38 @@ match_exp_cl = function(exp,cl,id_column = "id",sample_centric = TRUE){
           please obtain exp_matched and cl_matched by split this list result.")
 }
 
+##' trans_exp_new
+##'
+##' transform rownames of expression set from "ensembl" to"symbol",according to the new information from ensembl database.
+##'
+##' @param exp expression set with ensembl as rownames
+##' @param mrna_only only keep mrna rows in result
+##' @param lncrna_only only keep lncrna rows in result
+##' @param org short latin name from 'ensOrg_name_data'.
+##' @return a transformed expression set with symbol
+##' @author Xiaojie Sun
+##' @importFrom stringr str_split
+##' @export
+##' @examples
+##' exp = matrix(rnorm(1000),ncol = 10)
+##' rownames(exp) = sample(mRNA_annov23$gene_id,100)
+##' colnames(exp) = c(paste0("TCGA",1:5),paste0("GTEX",1:5))
+##' k  = trans_exp_new(exp)
+##' @seealso
+##' \code{\link{trans_exp}}
+trans_exp_new = function(exp,mrna_only = FALSE,
+                         lncrna_only = FALSE){
+  if(!requireNamespace("AnnoProbe"))stop("Package \"AnnoProbe\" needed for this function to work.
+         Please install it by install.packages('AnnoProbe')",call. = FALSE)
+  rownames(exp) = str_split(rownames(exp),"\\.",simplify = T)[,1]
+  re = AnnoProbe::annoGene(rownames(exp),ID_type = "ENSEMBL")
+  if(mrna_only){
+    re = re[re$biotypes=="protein_coding",]
+  }else if(lncrna_only){
+    re = re[re$biotypes=="lncRNA",]
+  }else{
+    re = re
+  }
+  exp = trans_array(exp,ids = re,from = "ENSEMBL",to = "SYMBOL")
+  return(exp)
+}

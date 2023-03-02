@@ -4,10 +4,12 @@
 \alias{cor.full}
 \title{cor.test for all variables}
 \usage{
-cor.full(x)
+cor.full(x, drop = 0)
 }
 \arguments{
 \item{x}{A numeric matrix or data.frame}
+
+\item{drop}{drop values}
 }
 \value{
 a data.frame with cor.test p.value and estimate

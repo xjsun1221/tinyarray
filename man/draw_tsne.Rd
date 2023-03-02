@@ -8,9 +8,8 @@ draw_tsne(
   exp,
   group_list,
   perplexity = 30,
-  color = c("#2874C5", "#f87669", "#e6b707", "#868686", "#92C5DE", "#F4A582",
-    "#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F", "#E5C494",
-    "#B3B3B3"),
+  color = c("#2874C5", "#f87669", "#e6b707", "#868686", "#92C5DE", "#F4A582", "#66C2A5",
+    "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F", "#E5C494", "#B3B3B3"),
   color.label = "group",
   addEllipses = TRUE
 )

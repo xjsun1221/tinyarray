@@ -60,6 +60,7 @@ t_choose <- function(genes,exp,group_list,up_only = FALSE,down_only = FALSE,pval
 ##' cor.test for all variables(each two columns)
 ##'
 ##' @param x A numeric matrix or data.frame
+##' @param drop drop values
 ##' @return a data.frame with cor.test p.value and estimate
 ##' @author Xiaojie Sun
 ##' @export
@@ -69,7 +70,7 @@ t_choose <- function(genes,exp,group_list,up_only = FALSE,down_only = FALSE,pval
 ##' @seealso
 ##' \code{\link{cor.one}}
 
-cor.full <- function(x){
+cor.full <- function(x,drop = 0){
   ss = list()
   p = list()
   ss1 = utils::combn(colnames(x),2)
@@ -78,7 +79,9 @@ cor.full <- function(x){
   for(i in (1:ncol(ss1))){
     bt = x[,ss1[1,i]]
     kt = x[,ss1[2,i]]
-    cot = stats::cor.test(bt,kt)
+    k1 = bt != drop
+    k2 = kt != drop
+    cot = stats::cor.test(bt[k1&k2],kt[k1&k2])
     p[[i]] = c(cot$p.value,cot$estimate)
     names(p[[i]]) = c("p.value","cor")
   }
@@ -95,6 +98,8 @@ cor.full <- function(x){
 ##'
 ##' @param x A numeric matrix or data.frame
 ##' @param var your chosen variable,only one.
+##' @param drop.var drop values in var
+##' @param drop.othor drop values in othor columns
 ##' @return A data.frame with cor.test p.value and estimate
 ##' @author Xiaojie Sun
 ##' @export
@@ -104,25 +109,22 @@ cor.full <- function(x){
 ##' @seealso
 ##' \code{\link{cor.full}}
 
-cor.one <- function(x,var){
+cor.one <- function(x,var,drop.var = 0,drop.othor = 0){
   if(!(var %in% colnames(x))) stop(paste0(var," is not a colname of ",x,",please check it."))
   if(!all(!duplicated(colnames(x)))) stop("unique colnames is required")
-  ss = list()
   p = list()
-  ss1 = matrix(c(rep(var,times = (ncol(x)-1)),
-                 setdiff(colnames(x),var)),
-               nrow = 2,byrow = TRUE)
-  ss2 = setdiff(colnames(x),var)
-
-  for(i in (1:ncol(ss1))){
-    bt = x[,ss1[1,i]]
-    kt = x[,ss1[2,i]]
-    cot = stats::cor.test(bt,kt)
+  ss = setdiff(colnames(x),var)
+  bt = x[,var]
+  k1 = bt != drop.var
+  for(i in (1:length(ss))){
+    kt = x[,ss[[i]]]
+    k2 = kt !=drop.othor
+    cot = stats::cor.test(bt[k1&k2],kt[k1&k2])
     p[[i]] = c(cot$p.value,cot$estimate)
     names(p[[i]]) = c("p.value","cor")
   }
   re = do.call(cbind,p)
-  colnames(re) = ss2
+  colnames(re) = ss
   return(as.data.frame(t(re)))
 }
 
