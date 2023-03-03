@@ -151,7 +151,7 @@ draw_heatmap <-  function(n,
                           color = grDevices::colorRampPalette(c("#2fa1dd", "white", "#f87669"))(100),
                           color_an = c("#2fa1dd","#f87669","#e6b707","#868686","#92C5DE","#F4A582","#66C2A5","#FC8D62","#8DA0CB","#E78AC3","#A6D854","#FFD92F","#E5C494","#B3B3B3"),
                           scale = TRUE,
-                          main = NA){
+                          main = NA,...){
   if(!requireNamespace("ggplotify",quietly = TRUE)) {
     stop("Package \"ggplotify\" needed for this function to work. Please install it by install.packages('ggplotify')",call. = FALSE)
   }
@@ -236,7 +236,7 @@ draw_heatmap <-  function(n,
                    legend = legend,
                    silent = TRUE,
                    annotation_legend = annotation_legend,
-                   main = main)
+                   main = main,...)
       p = ggplotify::as.ggplot(p)
     }
   }

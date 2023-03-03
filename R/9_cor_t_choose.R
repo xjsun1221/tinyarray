@@ -92,7 +92,15 @@ cor.full <- function(x,drop = min(x)-0.001,min.obs = 10){
   }
   re = do.call(cbind,p)
   colnames(re) = apply(ss1, 2, paste,collapse =":")
-  return(as.data.frame(t(re)))
+  re = as.data.frame(t(re))
+  ks = sapply(rownames(re), function(gs){
+    g1 = str_split(gs,":",simplify = T)[,1]
+    g2 = str_split(gs,":",simplify = T)[,2]
+    sum(x[,g1]>drop & x[,g2]>drop)
+  })
+  re$obsnumber = ks
+  re = na.omit(re)
+  return(re)
 }
 
 
@@ -137,6 +145,12 @@ cor.one <- function(x,var,drop.var = min(x[,var])-0.001,
   }
   re = do.call(cbind,p)
   colnames(re) = ss
-  return(as.data.frame(t(re)))
+  re = as.data.frame(t(re))
+  ks = sapply(rownames(re), function(g){
+    sum(x[,g]>drop.other)
+  })
+  re$obsnumber = ks
+  re = na.omit(re)
+  return(re)
 }
 

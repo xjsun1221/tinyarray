@@ -19,7 +19,8 @@ draw_heatmap(
     "#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F", "#E5C494",
     "#B3B3B3"),
   scale = TRUE,
-  main = NA
+  main = NA,
+  ...
 )
 }
 \arguments{
