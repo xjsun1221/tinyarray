@@ -17,7 +17,7 @@
 ##' @export
 ##' @examples
 ##' \donttest{gse = "GSE42872"
-##' geo = geo_download(gse,destdir=tempdir(),by_annopbrobe = FALSE)
+##' geo = geo_download(gse,destdir=tempdir())
 ##' Group = rep(c("control","treat"),each = 3)
 ##' Group = factor(Group)
 ##' find_anno(geo$gpl)
@@ -34,7 +34,7 @@ get_deg <- function(exp,
                     logFC_cutoff=1,
                     pvalue_cutoff=0.05,
                     adjust = FALSE,
-                    entriz = TRUE,...) {
+                    entriz = TRUE) {
   p3 <- is.factor(group_list)
   if(!p3) {
     group_list = factor(group_list)
@@ -88,7 +88,7 @@ get_deg <- function(exp,
                     logFC_cutoff = logFC_cutoff,
                     pvalue_cutoff = pvalue_cutoff,
                     adjust = adjust,
-                    entriz = entriz,...)
+                    entriz = entriz)
   }
   return(deg)
 }

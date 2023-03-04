@@ -13,6 +13,7 @@ multi_deg_all(
   my_genes = NULL,
   show_rownames = FALSE,
   cluster_cols = TRUE,
+  color_volcano = c("#2874C5", "grey", "#f87669"),
   ...
 )
 }
@@ -29,11 +30,13 @@ multi_deg_all(
 
 \item{my_genes}{genes for pheatmap}
 
-\item{show_rownames}{logical,show rownames or not}
+\item{show_rownames}{boolean specifying if column names are be shown.}
 
-\item{cluster_cols}{if F,heatmap will nor cluster in column}
+\item{cluster_cols}{boolean values determining if columns should be clustered or \code{hclust} object.}
 
 \item{color_volcano}{color for volcano}
+
+\item{...}{other parameters from multi_deg}
 }
 \value{
 a list with deg data.frame, volcano plot and a list with DEGs.
@@ -44,7 +47,7 @@ do diffiencial analysis according to exprission set and group information
 \examples{
 \donttest{
 gse = "GSE474"
-geo = geo_download(gse,destdir=tempdir(),by_annopbrobe = FALSE)
+geo = geo_download(gse,destdir=tempdir())
 geo$exp[1:4,1:4]
 geo$exp=log2(geo$exp+1)
 group_list=ifelse(stringr::str_detect(geo$pd$title,"MObese"),"MObese",

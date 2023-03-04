@@ -21,6 +21,8 @@ draw_volcano(
 
 \item{lab}{label for  x axis in volcano plot, if NA , x axis names by package}
 
+\item{xlab.package}{whether to use the package name as the x axis name}
+
 \item{pvalue_cutoff}{Cutoff value of pvalue,0.05 by default.}
 
 \item{logFC_cutoff}{Cutoff value of logFC,1 by default.}

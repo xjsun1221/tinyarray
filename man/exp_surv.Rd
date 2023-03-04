@@ -23,9 +23,9 @@ draw surv plot for a hub gene expression matrix for tumor samples
 }
 \examples{
 tmp = exp_surv(exprSet_hub1,meta1)
-patchwork::wrap_plots(tmp)+plot_layout(guides = "collect")
+patchwork::wrap_plots(tmp)+patchwork::plot_layout(guides = "collect")
 tmp2 = exp_surv(exprSet_hub1,meta1,cut.point = TRUE)
-patchwork::wrap_plots(tmp2)+plot_layout(guides = "collect")
+patchwork::wrap_plots(tmp2)+patchwork::plot_layout(guides = "collect")
 }
 \seealso{
 \code{\link{exp_boxplot}};\code{\link{box_surv}};\code{\link{draw_venn}}

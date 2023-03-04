@@ -16,6 +16,8 @@ draw_heatmap2(exp, group_list, deg, my_genes = NULL, heat_union = TRUE, ...)
 \item{my_genes}{genes for pheatmap}
 
 \item{heat_union}{logical ,use union or intersect DEGs for heatmap}
+
+\item{...}{other parameters from draw_heatmap}
 }
 \value{
 a heatmap plot according to \code{exp} and grouped by \code{group}.
@@ -26,7 +28,7 @@ print heatmap plots for expression matrix and group by group_list paramter
 \examples{
 \donttest{
 gse = "GSE474"
-geo = geo_download(gse,destdir=tempdir(),by_annopbrobe = FALSE)
+geo = geo_download(gse,destdir=tempdir())
 geo$exp[1:4,1:4]
 geo$exp=log2(geo$exp+1)
 group_list=ifelse(stringr::str_detect(geo$pd$title,"MObese"),"MObese",

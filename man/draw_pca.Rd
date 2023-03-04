@@ -28,6 +28,10 @@ draw_pca(
 \item{style}{plot style,"default","ggplot2"and "3D"}
 
 \item{color.label}{color legend label}
+
+\item{title}{plot title}
+
+\item{...}{other paramters from fviz_pca_ind}
 }
 \value{
 a pca plot according to \code{exp} and grouped by \code{group}.

@@ -91,8 +91,8 @@ surv_KM <- function(exprSet_hub,meta,cut.point = FALSE,pvalue_cutoff = 0.05,min_
 ##' @author Xiaojie Sun
 ##' @examples
 ##' surv_cox(exprSet_hub1,meta1)
-##' surv_cox(exprSet_hub1,meta1,cut.point = TRUE,continuous = T)
-##' surv_cox(exprSet_hub1,meta1,cut.point = TRUE,continuous = T,pvalue_cutoff = 1)
+##' surv_cox(exprSet_hub1,meta1,cut.point = TRUE,continuous = TRUE)
+##' surv_cox(exprSet_hub1,meta1,cut.point = TRUE,continuous = TRUE,pvalue_cutoff = 1)
 ##' @seealso
 ##' \code{\link{point_cut}};\code{\link{surv_KM}}
 

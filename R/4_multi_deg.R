@@ -18,7 +18,7 @@
 ##' @examples
 ##' \donttest{
 ##' gse = "GSE474"
-##' geo = geo_download(gse,destdir=tempdir(),by_annopbrobe = FALSE)
+##' geo = geo_download(gse,destdir=tempdir())
 ##' geo$exp[1:4,1:4]
 ##' geo$exp=log2(geo$exp+1)
 ##' group_list=ifelse(stringr::str_detect(geo$pd$title,"MObese"),

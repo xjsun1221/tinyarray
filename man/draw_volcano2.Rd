@@ -12,6 +12,8 @@ draw_volcano2(deg, pkg = 4, lab, ...)
 \item{pkg}{a integer ,means which Differential analysis packages you used,we support three packages by now, 1,2,3,4 respectively means "DESeq2","edgeR","limma(voom)","limma"}
 
 \item{lab}{label for  x axis in volcano plot, if NA , x axis names by package}
+
+\item{...}{other parameters from draw_volcano}
 }
 \value{
 one or more volcano plot
@@ -23,14 +25,14 @@ print one or more volcano plot for Differential analysis result in data.frame fo
 \donttest{
 #two group
 gse = "GSE42872"
-geo = geo_download(gse,destdir=tempdir(),by_annopbrobe = FALSE)
+geo = geo_download(gse,destdir=tempdir())
 group_list = rep(c("A","B"),each = 3)
 ids = AnnoProbe::idmap('GPL6244',destdir = tempdir())
 deg = get_deg(geo$exp,group_list,ids)
 draw_volcano2(deg)
 #multigroup
 gse = "GSE474"
-geo = geo_download(gse,destdir=tempdir(),by_annopbrobe = FALSE)
+geo = geo_download(gse,destdir=tempdir())
 geo$exp[1:4,1:4]
 geo$exp=log2(geo$exp+1)
 group_list=ifelse(stringr::str_detect(geo$pd$title,"MObese"),"MObese",

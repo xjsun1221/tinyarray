@@ -221,7 +221,6 @@ match_exp_cl = function(exp,cl,id_column = "id",sample_centric = TRUE){
 ##' @param exp expression set with ensembl as rownames
 ##' @param mrna_only only keep mrna rows in result
 ##' @param lncrna_only only keep lncrna rows in result
-##' @param org short latin name from 'ensOrg_name_data'.
 ##' @return a transformed expression set with symbol
 ##' @author Xiaojie Sun
 ##' @importFrom stringr str_split

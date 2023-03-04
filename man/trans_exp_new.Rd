@@ -12,8 +12,6 @@ trans_exp_new(exp, mrna_only = FALSE, lncrna_only = FALSE)
 \item{mrna_only}{only keep mrna rows in result}
 
 \item{lncrna_only}{only keep lncrna rows in result}
-
-\item{org}{short latin name from 'ensOrg_name_data'.}
 }
 \value{
 a transformed expression set with symbol

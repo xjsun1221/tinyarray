@@ -6,18 +6,64 @@
 \usage{
 draw_venn(
   x,
-  name,
+  main,
   color = c("#2874C5", "#f87669", "#e6b707", "#868686", "#66C2A5", "#FC8D62", "#8DA0CB",
     "#E78AC3", "#A6D854", "#FFD92F", "#E5C494", "#B3B3B3"),
+  imagetype = "png",
+  filename = NULL,
+  lwd = 1,
+  lty = 1,
+  col = color[1:length(x)],
+  fill = color[1:length(x)],
+  cat.col = color[1:length(x)],
+  cat.cex = 1,
+  cat.dist = -0.15,
+  rotation.degree = 0,
+  main.cex = 1,
+  cex = 1,
+  alpha = 0.1,
+  reverse = TRUE,
   ...
 )
 }
 \arguments{
 \item{x}{a list for plot}
 
-\item{name}{main of the plot}
+\item{main}{Character giving the main title of the diagram}
 
 \item{color}{color vector}
+
+\item{imagetype}{Specification of the image format (e.g. tiff, png or svg)}
+
+\item{filename}{Filename for image output, or if NULL returns the grid object itself}
+
+\item{lwd}{width of the circle's circumference}
+
+\item{lty}{dash pattern of the circle's circumference}
+
+\item{col}{Colour of the circle's circumference}
+
+\item{fill}{Colour of the circle's area}
+
+\item{cat.col}{Colour of the category name}
+
+\item{cat.cex}{size of the category name}
+
+\item{cat.dist}{The distance (in npc units) of the category name from the edge of the circle (can be negative)}
+
+\item{rotation.degree}{Number of degrees to rotate the entire diagram}
+
+\item{main.cex}{Number giving the cex (font size) of the main title}
+
+\item{cex}{size of the area label}
+
+\item{alpha}{Alpha transparency of the circle's area}
+
+\item{reverse}{logical,reflect the three-set Venn diagram along its central
+vertical axis of symmetry. Use in combination with rotation
+to generate all possible set orders}
+
+\item{...}{other parameters from venn.diagram}
 }
 \value{
 a venn plot according to \code{x}, \code{y} and.\code{z} named "name" paramter

@@ -48,6 +48,8 @@ draw_boxplot(
 \item{add_error_bar}{whether to add error bar}
 
 \item{color}{color vector}
+
+\item{...}{other parameters from stat_compare_means}
 }
 \value{
 a boxplot according to \code{exp} and grouped by \code{group}.

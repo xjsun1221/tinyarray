@@ -9,9 +9,10 @@ get_deg_all(
   group_list,
   ids,
   pkg = 4,
-  color = c("#2874C5", "grey", "#f87669"),
+  color_volcano = c("#2874C5", "grey", "#f87669"),
   my_genes = NULL,
   show_rownames = FALSE,
+  entriz = TRUE,
   ...
 )
 }
@@ -24,7 +25,7 @@ get_deg_all(
 
 \item{pkg}{a integer ,means which Differential analysis packages you used,we support three packages by now, 1,2,3,4 respectively means "DESeq2","edgeR","limma(voom)","limma"}
 
-\item{color}{color vector}
+\item{color_volcano}{color for volcano plot}
 
 \item{my_genes}{genes for pheatmap}
 
@@ -32,7 +33,7 @@ get_deg_all(
 
 \item{entriz}{logical , if TRUE ,convert symbol to entriz id.}
 
-\item{color_volcano}{color for volcano plot}
+\item{...}{other parameters from get_deg}
 }
 \value{
 a list with deg data.frame, volcano plot ,pca plot ,heatmap and a list with DEGs.
@@ -43,7 +44,7 @@ do diffiencial analysis according to exprission set and group information
 \examples{
 \donttest{
 gse = "GSE42872"
-geo = geo_download(gse,destdir=tempdir(),by_annopbrobe = FALSE)
+geo = geo_download(gse,destdir=tempdir())
 group_list = rep(c("A","B"),each = 3)
 group_list = factor(group_list)
 find_anno(geo$gpl)

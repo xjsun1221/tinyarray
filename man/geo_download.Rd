@@ -32,7 +32,7 @@ download gse data and get informations
 \examples{
 \donttest{
 gse = "GSE42872"
-a = geo_download(gse,by_annopbrobe = FALSE,destdir=tempdir())
+a = geo_download(gse,destdir=tempdir())
 }
 }
 \seealso{

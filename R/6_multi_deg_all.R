@@ -10,14 +10,14 @@
 ##' \donttest{
 ##' #two group
 ##' gse = "GSE42872"
-##' geo = geo_download(gse,destdir=tempdir(),by_annopbrobe = FALSE)
+##' geo = geo_download(gse,destdir=tempdir())
 ##' group_list = rep(c("A","B"),each = 3)
 ##' ids = AnnoProbe::idmap('GPL6244',destdir=tempdir())
 ##' deg = get_deg(geo$exp,group_list,ids)
 ##' cgs = get_cgs(deg)
 ##' #mutigroup
 ##' gse = "GSE474"
-##' geo = geo_download(gse,destdir=tempdir(),by_annopbrobe = FALSE)
+##' geo = geo_download(gse,destdir=tempdir())
 ##' geo$exp[1:4,1:4]
 ##' geo$exp=log2(geo$exp+1)
 ##' group_list=ifelse(stringr::str_detect(geo$pd$title,"MObese"),"MObese",
@@ -58,6 +58,7 @@ get_cgs <- function(deg){
 ##' print one or more volcano plot for Differential analysis result in data.frame fomat.
 ##'
 ##' @inheritParams draw_volcano
+##' @param ... other parameters from draw_volcano
 ##' @return one or more volcano plot
 ##' @author Xiaojie Sun
 ##' @importFrom patchwork wrap_plots
@@ -67,14 +68,14 @@ get_cgs <- function(deg){
 ##' \donttest{
 ##' #two group
 ##' gse = "GSE42872"
-##' geo = geo_download(gse,destdir=tempdir(),by_annopbrobe = FALSE)
+##' geo = geo_download(gse,destdir=tempdir())
 ##' group_list = rep(c("A","B"),each = 3)
 ##' ids = AnnoProbe::idmap('GPL6244',destdir = tempdir())
 ##' deg = get_deg(geo$exp,group_list,ids)
 ##' draw_volcano2(deg)
 ##' #multigroup
 ##' gse = "GSE474"
-##' geo = geo_download(gse,destdir=tempdir(),by_annopbrobe = FALSE)
+##' geo = geo_download(gse,destdir=tempdir())
 ##' geo$exp[1:4,1:4]
 ##' geo$exp=log2(geo$exp+1)
 ##' group_list=ifelse(stringr::str_detect(geo$pd$title,"MObese"),"MObese",
@@ -128,6 +129,7 @@ draw_volcano2 = function(deg,
 ##' @inheritParams draw_pca
 ##' @param heat_union logical ,use union or intersect DEGs for heatmap
 ##' @param my_genes genes for pheatmap
+##' @param ... other parameters from draw_heatmap
 ##' @return a heatmap plot according to \code{exp} and grouped by \code{group}.
 ##' @author Xiaojie Sun
 ##' @importFrom pheatmap pheatmap
@@ -135,7 +137,7 @@ draw_volcano2 = function(deg,
 ##' @examples
 ##' \donttest{
 ##' gse = "GSE474"
-##' geo = geo_download(gse,destdir=tempdir(),by_annopbrobe = FALSE)
+##' geo = geo_download(gse,destdir=tempdir())
 ##' geo$exp[1:4,1:4]
 ##' geo$exp=log2(geo$exp+1)
 ##' group_list=ifelse(stringr::str_detect(geo$pd$title,"MObese"),"MObese",
@@ -193,10 +195,12 @@ draw_heatmap2 <- function(exp,
 ##'
 ##' @inheritParams draw_pca
 ##' @inheritParams draw_volcano
+##' @inheritParams pheatmap::pheatmap
 ##' @inheritParams draw_heatmap
 ##' @inheritParams draw_heatmap2
 ##' @inheritParams multi_deg
 ##' @param color_volcano color for volcano
+##' @param ... other parameters from multi_deg
 ##' @return a list with deg data.frame, volcano plot and a list with DEGs.
 ##' @author Xiaojie Sun
 ##' @importFrom patchwork wrap_plots
@@ -207,7 +211,7 @@ draw_heatmap2 <- function(exp,
 ##' @examples
 ##' \donttest{
 ##' gse = "GSE474"
-##' geo = geo_download(gse,destdir=tempdir(),by_annopbrobe = FALSE)
+##' geo = geo_download(gse,destdir=tempdir())
 ##' geo$exp[1:4,1:4]
 ##' geo$exp=log2(geo$exp+1)
 ##' group_list=ifelse(stringr::str_detect(geo$pd$title,"MObese"),"MObese",
@@ -230,6 +234,7 @@ multi_deg_all <- function(exp,
                           my_genes = NULL,
                           show_rownames = FALSE,
                           cluster_cols = TRUE,
+                          color_volcano = c("#2874C5", "grey", "#f87669"),
                           ...
                           ) {
   deg = multi_deg(
@@ -243,7 +248,8 @@ multi_deg_all <- function(exp,
   cgs = get_cgs(deg)
   volcano_plot = draw_volcano2(deg,
                                pkg = pkg,
-                               symmetry = symmetry)
+                               symmetry = symmetry,
+                               color = color_volcano)
   pca_plot = draw_pca(exp,group_list)
   heatmap = draw_heatmap2(exp,group_list,deg,my_genes,show_rownames = show_rownames,cluster_cols = cluster_cols)
   x = lapply(cgs,function(x)x$diff$diffprobes)

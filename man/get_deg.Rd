@@ -11,8 +11,7 @@ get_deg(
   logFC_cutoff = 1,
   pvalue_cutoff = 0.05,
   adjust = FALSE,
-  entriz = TRUE,
-  ...
+  entriz = TRUE
 )
 }
 \arguments{
@@ -38,7 +37,7 @@ do differential analysis according to expression set and group information
 }
 \examples{
 \donttest{gse = "GSE42872"
-geo = geo_download(gse,destdir=tempdir(),by_annopbrobe = FALSE)
+geo = geo_download(gse,destdir=tempdir())
 Group = rep(c("control","treat"),each = 3)
 Group = factor(Group)
 find_anno(geo$gpl)

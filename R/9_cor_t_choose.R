@@ -99,7 +99,7 @@ cor.full <- function(x,drop = min(x)-0.001,min.obs = 10){
     sum(x[,g1]>drop & x[,g2]>drop)
   })
   re$obsnumber = ks
-  re = na.omit(re)
+  re = stats::na.omit(re)
   return(re)
 }
 
@@ -150,7 +150,7 @@ cor.one <- function(x,var,drop.var = min(x[,var])-0.001,
     sum(x[,g]>drop.other)
   })
   re$obsnumber = ks
-  re = na.omit(re)
+  re = stats::na.omit(re)
   return(re)
 }
 

@@ -8,6 +8,8 @@
 ##' @param addEllipses logical,add ellipses or not
 ##' @param style plot style,"default","ggplot2"and "3D"
 ##' @param color.label color legend label
+##' @param title plot title
+##' @param ... other paramters from fviz_pca_ind
 ##' @importFrom ggplot2 ggplot
 ##' @importFrom ggplot2 scale_color_manual
 ##' @importFrom ggplot2 scale_fill_manual
@@ -59,7 +61,8 @@ draw_pca <-  function(exp,group_list,
                              addEllipses = addEllipses,
                              palette = col,
                              legend.title = "Groups",
-                             title = title)
+                             title = title,
+                             ...)
   }else if(style == "ggplot2"){
     pdat = data.frame(dat.pca[["ind"]][["coord"]],
                       Group = group_list)
@@ -108,7 +111,6 @@ if(getRversion() >= "2.15.1")  utils::globalVariables(c(".","Dim.1","Dim.2","Gro
 ##' @param scale_before deprecated parameter
 ##' @param n_cutoff 3 by defalut , scale before plot and set a cutoff,usually 2 or 1.6
 ##' @param annotation_legend logical,show annotation legend or not
-##' @param cluster_cols if F,heatmap will nor cluster in column
 ##' @param color color for heatmap
 ##' @param color_an color for column annotation
 ##' @param legend logical,show legend or not
@@ -117,6 +119,7 @@ if(getRversion() >= "2.15.1")  utils::globalVariables(c(".","Dim.1","Dim.2","Gro
 ##' @param main the title of the plot
 ##' @param split_column split column by group_list
 ##' @param show_column_title show column title or not
+##' @param ... other parameters from pheatmap
 ##' @return a heatmap plot according to \code{exp} and grouped by \code{group}.
 ##' @author Xiaojie Sun
 ##' @importFrom pheatmap pheatmap
@@ -256,6 +259,7 @@ draw_heatmap <-  function(n,
 ##' @param symmetry a logical value ,would you like to get your plot symmetrical
 ##' @param color color vector
 ##' @param lab label for  x axis in volcano plot, if NA , x axis names by package
+##' @param xlab.package whether to use the package name as the x axis name
 ##' @return a volcano plot according to logFC and P.value(or adjust P.value)
 ##' @author Xiaojie Sun
 ##' @importFrom ggplot2 ggplot
@@ -338,9 +342,14 @@ utils::globalVariables(c("logFC","P.value","change"))
 ##'
 ##' print a venn plot for deg result created by three packages
 ##'
+##' @inheritParams VennDiagram::venn.diagram
+##' @inheritParams VennDiagram::draw.single.venn
 ##' @param x a list for plot
-##' @param name main of the plot
 ##' @param color color vector
+##' @param reverse logical,reflect the three-set Venn diagram along its central
+##' vertical axis of symmetry. Use in combination with rotation
+##' to generate all possible set orders
+##' @param ... other parameters from venn.diagram
 ##' @return a venn plot according to \code{x}, \code{y} and.\code{z} named "name" paramter
 ##' @author Xiaojie Sun
 ##' @export
@@ -351,7 +360,23 @@ utils::globalVariables(c("logFC","P.value","change"))
 ##' @seealso
 ##' \code{\link{draw_pca}};\code{\link{draw_volcano}};\code{\link{draw_heatmap}}
 
-draw_venn <- function(x,name,color = c("#2874C5","#f87669","#e6b707","#868686","#66C2A5","#FC8D62","#8DA0CB","#E78AC3","#A6D854","#FFD92F","#E5C494","#B3B3B3"),...){
+draw_venn <- function(x,main,
+                      color = c("#2874C5","#f87669","#e6b707","#868686","#66C2A5","#FC8D62","#8DA0CB","#E78AC3","#A6D854","#FFD92F","#E5C494","#B3B3B3"),
+                      imagetype ="png",
+                      filename=NULL,
+                      lwd=1,
+                      lty=1,
+                      col=color[1:length(x)],
+                      fill=color[1:length(x)],
+                      cat.col=color[1:length(x)],
+                      cat.cex = 1,
+                      cat.dist = -0.15,
+                      rotation.degree = 0,
+                      main.cex = 1,
+                      cex=1,
+                      alpha = 0.1,
+                      reverse=TRUE,
+                      ...){
   if(as.numeric(grDevices::dev.cur())!=1) grDevices::graphics.off()
   if(!requireNamespace("VennDiagram",quietly = TRUE)) {
     stop("Package \"VennDiagram\" needed for this function to work. Please install it byby install.packages('VennDiagram')",call. = FALSE)
@@ -364,23 +389,22 @@ draw_venn <- function(x,name,color = c("#2874C5","#f87669","#e6b707","#868686","
   }
   if(!is.list(x)) stop("x must be a list")
   if(length(x)>7) stop("why do you give me so many elements to compare, I reject!")
-  col = color[1:length(x)]
   p = VennDiagram::venn.diagram(x = x,
-                   imagetype ="png",
-                   filename=NULL,
-                   lwd=1,
-                   lty=1,
+                   imagetype =imagetype,
+                   filename=filename,
+                   lwd=lwd,
+                   lty=lty,
                    col=col,
-                   fill=col,
-                   cat.col=col,
-                   cat.cex = 1,
-                   cat.dist = -0.15,
-                   rotation.degree = 0,
-                   main = name,
-                   main.cex = 1,
-                   cex=1,
-                   alpha = 0.1,
-                   reverse=TRUE,
+                   fill=fill,
+                   cat.col=fill,
+                   cat.cex = cat.cex,
+                   cat.dist = cat.dist,
+                   rotation.degree = rotation.degree,
+                   main = main,
+                   main.cex = main.cex,
+                   cex=cex,
+                   alpha = alpha,
+                   reverse=reverse,
                    ...)
   p = ggplotify::as.ggplot(cowplot::as_grob(p))
   file.remove(dir(pattern = ("^VennDiagram.*log$")))
@@ -403,6 +427,7 @@ draw_venn <- function(x,name,color = c("#2874C5","#f87669","#e6b707","#868686","
 ##' @param grouplab title of group legend
 ##' @param p.label whether to show p value in the plot
 ##' @param add_error_bar whether to add error bar
+##' @param ... other parameters from stat_compare_means
 ##' @return a boxplot according to \code{exp} and grouped by \code{group}.
 ##' @author Xiaojie Sun
 ##' @importFrom tibble rownames_to_column
@@ -718,6 +743,7 @@ utils::globalVariables(c("Y1","Y2","group","patient","ri","time","event"))
 ##' @param event_col colname of event
 ##' @param legend.title legend title
 ##' @param legend.labs character vector specifying legend labels
+##' @param ... other parameters from ggsurvplot
 ##' @return a KM-plot
 ##' @author Xiaojie Sun
 ##' @importFrom survival survfit

@@ -30,6 +30,8 @@ draw_KM(
 \item{legend.labs}{character vector specifying legend labels}
 
 \item{color}{color vector}
+
+\item{...}{other parameters from ggsurvplot}
 }
 \value{
 a KM-plot

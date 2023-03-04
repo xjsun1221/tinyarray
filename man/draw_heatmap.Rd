@@ -50,7 +50,7 @@ draw_heatmap(
 
 \item{main}{the title of the plot}
 
-\item{cluster_cols}{if F,heatmap will nor cluster in column}
+\item{...}{other parameters from pheatmap}
 }
 \value{
 a heatmap plot according to \code{exp} and grouped by \code{group}.
