@@ -22,7 +22,7 @@ one or more volcano plot
 print one or more volcano plot for Differential analysis result in data.frame fomat.
 }
 \examples{
-\donttest{
+\dontrun{
 #two group
 gse = "GSE42872"
 geo = geo_download(gse,destdir=tempdir())

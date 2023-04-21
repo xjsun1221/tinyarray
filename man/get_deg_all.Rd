@@ -9,10 +9,17 @@ get_deg_all(
   group_list,
   ids,
   pkg = 4,
-  color_volcano = c("#2874C5", "grey", "#f87669"),
   my_genes = NULL,
   show_rownames = FALSE,
   entriz = TRUE,
+  adjust = FALSE,
+  logFC_cutoff = 1,
+  pvalue_cutoff = 0.05,
+  n_cutoff = 2,
+  cluster_cols = TRUE,
+  annotation_legend = FALSE,
+  lab = NA,
+  symmetry = FALSE,
   ...
 )
 }
@@ -25,13 +32,27 @@ get_deg_all(
 
 \item{pkg}{a integer ,means which Differential analysis packages you used,we support three packages by now, 1,2,3,4 respectively means "DESeq2","edgeR","limma(voom)","limma"}
 
-\item{color_volcano}{color for volcano plot}
-
 \item{my_genes}{genes for pheatmap}
 
 \item{show_rownames}{logical,show rownames or not}
 
 \item{entriz}{logical , if TRUE ,convert symbol to entriz id.}
+
+\item{adjust}{a logical value, would you like to use adjusted pvalue to draw this plot,FAlSE by default.}
+
+\item{logFC_cutoff}{Cutoff value of logFC,1 by default.}
+
+\item{pvalue_cutoff}{Cutoff value of pvalue,0.05 by default.}
+
+\item{n_cutoff}{3 by defalut , scale before plot and set a cutoff,usually 2 or 1.6}
+
+\item{cluster_cols}{boolean values determining if columns should be clustered or \code{hclust} object.}
+
+\item{annotation_legend}{logical,show annotation legend or not}
+
+\item{lab}{label for  x axis in volcano plot, if NA , x axis names by package}
+
+\item{symmetry}{a logical value ,would you like to get your plot symmetrical}
 
 \item{...}{other parameters from get_deg}
 }
@@ -42,7 +63,7 @@ a list with deg data.frame, volcano plot ,pca plot ,heatmap and a list with DEGs
 do diffiencial analysis according to exprission set and group information
 }
 \examples{
-\donttest{
+\dontrun{
 gse = "GSE42872"
 geo = geo_download(gse,destdir=tempdir())
 group_list = rep(c("A","B"),each = 3)

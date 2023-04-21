@@ -14,7 +14,7 @@
 ##' @importFrom dplyr %>%
 ##' @export
 ##' @examples
-##' \donttest{
+##' \dontrun{
 ##' gse = "GSE42872"
 ##' a = geo_download(gse,destdir=tempdir())
 ##' }
@@ -114,14 +114,11 @@ geo_download <-  function(gse,by_annopbrobe = TRUE,
 find_anno <-function(gpl,install = FALSE,update = FALSE){
   gpl = str_to_upper(gpl)
   if(!any(pkg_all$gpl==gpl)) {
-    # R包不可用
     if(gpl %in% setdiff(exists_anno_list,pkg_all$gpl)){
-      # 只有idmap可用
       ml1 = str_remove_all(paste0("`ids <- AnnoProbe::idmap\\(","\\'",gpl,"\\'","\\)`"),"\\\\")
-      print(paste0("no annotation packages avliable,please use ",ml1))
+      message(paste0("no annotation packages avliable,please use ",ml1))
     }else{
-      # R包和idmap都不可用
-      print("no annotation avliable in Bioconductor and AnnoProbe")
+      message("no annotation avliable in Bioconductor and AnnoProbe")
     }
   }else {
     qz = pkg_all$bioc_package[pkg_all$gpl== gpl]
@@ -134,11 +131,9 @@ find_anno <-function(gpl,install = FALSE,update = FALSE){
       }
     }
     if(!(gpl %in% exists_anno_list)) {
-      #仅有R包可用
-      print(paste0(ml2," is avaliable"))
+      message(paste0(ml2," is avaliable"))
     }else {
-      #idmap和R包都可用
-      print(paste0(ml2," and ",ml1 ," are both avaliable"))
+      message(paste0(ml2," and ",ml1 ," are both avaliable"))
     }
   }
 }

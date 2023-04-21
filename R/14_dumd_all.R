@@ -23,7 +23,7 @@ dumd <- function(x){
   }
   df <- tibble(colname,count) %>%
     arrange(desc(count))
-  print(df)
+  return(df)
 }
 
 ##' intersect_all

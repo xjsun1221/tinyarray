@@ -30,7 +30,7 @@ a list with exp,pd and gpl
 download gse data and get informations
 }
 \examples{
-\donttest{
+\dontrun{
 gse = "GSE42872"
 a = geo_download(gse,destdir=tempdir())
 }

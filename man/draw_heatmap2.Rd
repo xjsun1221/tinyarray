@@ -26,7 +26,7 @@ a heatmap plot according to \code{exp} and grouped by \code{group}.
 print heatmap plots for expression matrix and group by group_list paramter
 }
 \examples{
-\donttest{
+\dontrun{
 gse = "GSE474"
 geo = geo_download(gse,destdir=tempdir())
 geo$exp[1:4,1:4]

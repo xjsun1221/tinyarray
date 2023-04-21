@@ -16,7 +16,7 @@
 ##' @importFrom dplyr inner_join
 ##' @export
 ##' @examples
-##' \donttest{gse = "GSE42872"
+##' \dontrun{gse = "GSE42872"
 ##' geo = geo_download(gse,destdir=tempdir())
 ##' Group = rep(c("control","treat"),each = 3)
 ##' Group = factor(Group)

@@ -36,7 +36,7 @@ a deg data.frame with 10 columns
 do diffiential analysis according to expression set and group information
 }
 \examples{
-\donttest{
+\dontrun{
 gse = "GSE474"
 geo = geo_download(gse,destdir=tempdir())
 geo$exp[1:4,1:4]

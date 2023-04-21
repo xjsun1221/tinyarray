@@ -8,7 +8,6 @@
 ##' @inheritParams multi_deg_all
 ##' @param ids a data.frame with 2 columns,including probe_id and symbol
 ##' @param entriz logical , if TRUE ,convert symbol to entriz id.
-##' @param color_volcano color for volcano plot
 ##' @param ... other parameters from get_deg
 ##' @return a list with deg data.frame, volcano plot ,pca plot ,heatmap and a list with DEGs.
 ##' @author Xiaojie Sun
@@ -17,7 +16,7 @@
 ##' @importFrom stringr str_split
 ##' @export
 ##' @examples
-##' \donttest{
+##' \dontrun{
 ##' gse = "GSE42872"
 ##' geo = geo_download(gse,destdir=tempdir())
 ##' group_list = rep(c("A","B"),each = 3)
@@ -32,19 +31,40 @@
 ##' \code{\link{get_deg}};\code{\link{multi_deg_all}}
 
 get_deg_all <- function(exp,
-                    group_list,
-                    ids,pkg=4,
-                    color_volcano = c("#2874C5", "grey", "#f87669"),
-                    my_genes = NULL,
-                    show_rownames = FALSE,
-                    entriz = TRUE,
-                    ...) {
+                        group_list,
+                        ids,pkg=4,
+                        my_genes = NULL,
+                        show_rownames = FALSE,
+                        entriz = TRUE,
+                        adjust = FALSE,
+                        logFC_cutoff=1,
+                        pvalue_cutoff=0.05,
+                        n_cutoff = 2,
+                        cluster_cols = TRUE,
+                        annotation_legend = FALSE,
+                        lab = NA,
+                        symmetry = FALSE,
+                        ...) {
   if(nlevels(group_list)==2){
-    deg <-  get_deg(exp,group_list,ids,entriz = entriz,...)
-    cgs = get_cgs(deg)$deg
-    volcano_plot = draw_volcano2(deg,pkg = pkg,color = color_volcano)
+    deg <-  get_deg(exp,group_list,ids,
+                    logFC_cutoff=logFC_cutoff,
+                    pvalue_cutoff=pvalue_cutoff,
+                    adjust = adjust,
+                    entriz = entriz,
+                    ...)
+    cgs = get_cgs(deg)
+    volcano_plot = draw_volcano(deg,pkg=pkg,
+                                lab =lab,
+                                pvalue_cutoff = pvalue_cutoff,
+                                logFC_cutoff=logFC_cutoff,
+                                adjust = adjust,
+                                symmetry = symmetry)
     pca_plot = draw_pca(exp,group_list)
-    heatmap = draw_heatmap2(exp,group_list,deg,my_genes,show_rownames = show_rownames)
+    heatmap = draw_heatmap2(exp,group_list,deg,my_genes,
+                            show_rownames = show_rownames,
+                            n_cutoff = n_cutoff,
+                            cluster_cols = cluster_cols,
+                            annotation_legend=annotation_legend)
     if(as.numeric(grDevices::dev.cur())!=1) grDevices::graphics.off()
     result = list(
       deg = deg,

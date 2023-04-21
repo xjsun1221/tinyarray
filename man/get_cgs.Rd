@@ -16,7 +16,7 @@ a list with upgenes,downgenes,diffgenes.
 extract DEGs from deg data.frame
 }
 \examples{
-\donttest{
+\dontrun{
 #two group
 gse = "GSE42872"
 geo = geo_download(gse,destdir=tempdir())

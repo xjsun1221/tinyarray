@@ -16,7 +16,7 @@
 ##' @importFrom dplyr inner_join
 ##' @export
 ##' @examples
-##' \donttest{
+##' \dontrun{
 ##' gse = "GSE474"
 ##' geo = geo_download(gse,destdir=tempdir())
 ##' geo$exp[1:4,1:4]

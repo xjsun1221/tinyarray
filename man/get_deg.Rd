@@ -36,7 +36,7 @@ a deg data.frame with 10 columns
 do differential analysis according to expression set and group information
 }
 \examples{
-\donttest{gse = "GSE42872"
+\dontrun{gse = "GSE42872"
 geo = geo_download(gse,destdir=tempdir())
 Group = rep(c("control","treat"),each = 3)
 Group = factor(Group)

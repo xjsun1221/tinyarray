@@ -45,7 +45,7 @@ a list with deg data.frame, volcano plot and a list with DEGs.
 do diffiencial analysis according to exprission set and group information
 }
 \examples{
-\donttest{
+\dontrun{
 gse = "GSE474"
 geo = geo_download(gse,destdir=tempdir())
 geo$exp[1:4,1:4]

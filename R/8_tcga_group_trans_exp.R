@@ -210,7 +210,7 @@ match_exp_cl = function(exp,cl,id_column = "id",sample_centric = TRUE){
   compiler::setCompilerOptions(suppressAll = TRUE)
   return(list(exp_matched = exp,
               cl_matched = cl))
-  print("New version of tinyarray canceled global assigning inside the package,
+  message("New version of tinyarray canceled global assigning inside the package,
           please obtain exp_matched and cl_matched by split this list result.")
 }
 

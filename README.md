@@ -1,121 +1,107 @@
 # tinyarray
 
-### 前言
+### Introduction
 
-hi，我是小洁。这是我基于自己的数据分析需求写的R包，很高兴被你看到了。我会在公众号《生信星球》更新这里面一些好用的小函数，也做一些其他的分享。
+Hi, I'm Xiao Jie. This is an R package I wrote based on my own data analysis needs. I'm glad you found it. I will update some useful functions here on the public account "bioinfoplanet" and also do some other sharing.
 
-###  安装方式
+###  Installation
 
-#### 1.在线安装
-
-目前已经上传到了cran，但cran只允许1~2月提交一次更新，所以github的版本经常会比cran的高一点。
-
-目前在cran的版本是2.2.7，github是2.2.8。
+#### 1.online
 
 ```
 if(!require(tinyarray))install.packages("tinyarray")
 if(!require(devtools))install.packages("devtools")
-if(!require(tinyarray))devtools::install_github("xjsun1221/tinyarray",upgrade = F)
+if(!require(tinyarray))devtools::install_github("xjsun1221/tinyarray",upgrade = FALSE,dependencies = TRUE)
 ```
 
-#### 2.本地安装
+#### 2.local
 
-点击本页面的绿色按键`code`然后点击`Download ZIP`，下载到你的工作目录下，用`devtools::install_local("tinyarray-master.zip",upgrade = F,dependencies = T)`安装。
+Click the green button "code" on this page, then click "Download ZIP" to download it to your working directory. Install it with `devtools::install_local("tinyarray-master.zip",upgrade = F,dependencies = T)`.
 
-#### 3.安装R包过程中可能出现的问题及解决办法
+### functions
 
-如果报错说xx包找不到，那就安装它。
-如果报错信息中出现http,404,internet,url等关键词，说明是网络问题，一般来说本地安装即可解决。
+#### 1.basic
 
-### 函数介绍
+draw_heatmap(),draw_volcano(),draw_venn(),draw_boxplot(),draw_KM(),draw_venn(),risk_plot()
 
-#### 1.几个常用绘图函数
+ggheat() is a function from the ggplot2 package that can be used to create heatmaps. It is still relatively immature and mainly used for aligning plots and collecting legends.
 
-都是字面意思：表达矩阵可视化其乐无穷。
+Something about ggheat():
+https://mp.weixin.qq.com/s/WhsBf6QAhVXeXeScM59cSA
 
-draw_heatmap(),draw_volcano(),draw_venn(),draw_boxplot()
+#### 2.Downstream Analysis of Gene Expression Array Data from GEO Database
 
-ggheat(),也是字面意思，用ggplot2的函数来画热图，目前还不怎么成熟，这个主要是为了拼图对齐和图例收集。
+geo_download(): Provide a GEO number and get back the expression matrix, clinical information table, and platform number used.
 
-##### 详细的介绍在：
+find_anno(): Look up the annotation of the array platform.
 
-[披着ggplot皮的pheatmap,深夜激动更新我的包](https://mp.weixin.qq.com/s/WhsBf6QAhVXeXeScM59cSA)
+get_deg(): Provide the array expression matrix, grouping information, probe annotation and get back the differential analysis results.
 
-#### 2.GEO芯片下游分析
+multi_deg(): Differential analysis for multiple groups (up to 5).
 
-geo_download() : 提供geo编号，返回表达矩阵、临床信息表格和使用的平台编号。
+If you want to do differential analysis and get the common figures in one step, you can use get_deg_all() and multi_deg_all(). This part mainly integrates and simplifies the differential analysis of GEOquery, Annoprobe, and limma.
 
-find_anno():查找芯片平台注释
+quick_enrich(): Simple and intuitive enrichment analysis.
 
-get_deg() ：提供芯片表达矩阵、分组信息、探针注释，返回差异分析结果。
+double_enrich(): Separate enrichment of up- and down-regulated genes, combined with plotting.
 
-multi_deg() : 多个分组（最多5个）的差异分析
+https://mp.weixin.qq.com/s/YQQoDsE5JaKpgFGlbEfQNg
 
-如果是想一步到位，做出差异分析常见的几张图，可以用get_deg_all() 和multi_deg_all() 
+https://mp.weixin.qq.com/s/j5IB_MQ0zeOCe1j_ahwtdQ
 
-这一部分主要是融合跟简化一下GEOquery、Annoprobe、limma的差异分析。
+#### 3.Exploring Expression Matrices
 
-quick_enrich() : 简单直观的富集分析
+make_tcga_group(): Quickly get the grouping according to the TCGA sample naming rules.
 
-double_enrich():上下调基因分开富集，合并画图
+sam_filter(): Remove duplicate tumor samples in TCGA.
 
-##### 详细的介绍在：
+match_exp_cl(): Match TCGA expression matrix with clinical information.
 
-[我写了一个R包，简化芯片的差异分析](https://mp.weixin.qq.com/s/YQQoDsE5JaKpgFGlbEfQNg)
+trans_array(): Replace the row names of the matrix, such as replacing the probe names of the expression matrix with gene names.
 
-[我完善了那个R包，可以简化多组的差异分析啦](https://mp.weixin.qq.com/s/j5IB_MQ0zeOCe1j_ahwtdQ)
+trans_exp(): Convert TCGA or TCGA+GTeX data to gene IDs (old version, genecode v22 or v23)
 
-#### 3.表达矩阵探索
+trans_exp_new(): Convert TCGA or TCGA+GTeX data to gene IDs(new versions)
 
-make_tcga_group():根据TCGA的样本命名规则，快速得出分组
+t_choose(): Do t-tests for individual genes in batches.
 
-sam_filter():去除tcga中的重复tumor样本
+cor.full() and cor.one(): Calculate correlations between genes in batches.
 
-match_exp_cl():匹配tcga表达矩阵与临床信息
+#### 4.Survival Analysis and Visualization
+ 
+point_cut(): Calculate the best cutoff point for survival analysis in batches.
 
-trans_array():替换矩阵的行名，比如把表达矩阵的探针名替换为基因名
+surv_KM(): Do KM survival analysis in batches, supporting grouping with the best cutoff point.
 
-trans_exp():将tcga或tcga+gtex数据进行基因id转换
+surv_cox(): Do single factor Cox in batches, supporting grouping with the best cutoff point.
 
-t_choose():批量做单个基因的t检验
+risk_plot(): Risk factor three-way linkage.
 
-cor.full()和cor.one() :批量计算基因间的相关性
+https://mp.weixin.qq.com/s/WYBhGxfGg6QFUPHFBashaA
 
-#### 4.生存分析及可视化
+exp_boxplot(): Draw T-N boxplot for the interested genes.
 
-point_cut():批量计算生存分析最佳截点
+exp_surv(): Draw KM-plot for the interested genes.
 
-surv_KM():批量做KM生存分析，支持用最佳截点分组
+box_surv(): Draw boxplot and KM-plot for the interested genes.
 
-surv_cox():批量做单因素cox，支持用最佳截点分组
+#### 5.Something about network graph
 
-[太好用了！批量生存分析加画图，一步到位，还支持最佳截点~](https://mp.weixin.qq.com/s/WYBhGxfGg6QFUPHFBashaA)
+hypertest(): Do hypergeometric distribution test for mRNA and lncRNA in batches.
 
-exp_boxplot()：给感兴趣的基因画T-N箱线图
+plcortest(): Do correlation test for mRNA and lncRNA in batches.
 
-exp_surv()：给感兴趣的基因画KM-plot
+https://www.yuque.com/xiaojiewanglezenmofenshen/bsgk2d/dt0isp
 
-box_surv(): 给感兴趣的基因画箱线图和KM-plot
+interaction_to_edges(): Generate the connection table for the network graph based on the relationship table.
 
-#### 5.网络图相关
+edges_to_nodes(): Generate the node table based on the connection table.
 
-hypertest():批量做mRNA和lncRNA的超几何分布检验
+#### 6.Tricks
 
-plcortest():批量做mRNA和lncRNA的相关性检验
+dumd(): Count how many values each column of the data frame has.
 
-[**两个检验给ceRNA锦上添花**](https://www.yuque.com/xiaojiewanglezenmofenshen/bsgk2d/dt0isp)
+intersect_all(): Take the intersection of any number of vectors.
 
-interaction_to_edges():根据关系表格生成网络图的连接表格
-
-edges_to_nodes():根据连接表格生成节点表格
-
-#### 6.灵活小函数
-
-dumd():统计数据框每一列各有多少个取值
-
-intersect_all()：任意数量的向量取交集
-
-union_all():任意数量的向量取合集
-
-split_list():拆分列表，每个元素成为一个数据
+union_all(): Take the union of any number of vectors.
 

@@ -7,7 +7,7 @@
 ##' @author Xiaojie Sun
 ##' @export
 ##' @examples
-##' \donttest{
+##' \dontrun{
 ##' #two group
 ##' gse = "GSE42872"
 ##' geo = geo_download(gse,destdir=tempdir())
@@ -65,7 +65,7 @@ get_cgs <- function(deg){
 ##' @importFrom patchwork plot_layout
 ##' @export
 ##' @examples
-##' \donttest{
+##' \dontrun{
 ##' #two group
 ##' gse = "GSE42872"
 ##' geo = geo_download(gse,destdir=tempdir())
@@ -135,7 +135,7 @@ draw_volcano2 = function(deg,
 ##' @importFrom pheatmap pheatmap
 ##' @export
 ##' @examples
-##' \donttest{
+##' \dontrun{
 ##' gse = "GSE474"
 ##' geo = geo_download(gse,destdir=tempdir())
 ##' geo$exp[1:4,1:4]
@@ -209,7 +209,7 @@ draw_heatmap2 <- function(exp,
 ##' @importFrom patchwork plot_layout
 ##' @export
 ##' @examples
-##' \donttest{
+##' \dontrun{
 ##' gse = "GSE474"
 ##' geo = geo_download(gse,destdir=tempdir())
 ##' geo$exp[1:4,1:4]
