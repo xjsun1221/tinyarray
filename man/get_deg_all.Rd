@@ -8,19 +8,19 @@ get_deg_all(
   exp,
   group_list,
   ids,
-  pkg = 4,
+  symmetry = TRUE,
   my_genes = NULL,
   show_rownames = FALSE,
-  entriz = TRUE,
-  adjust = FALSE,
+  cluster_cols = TRUE,
+  color_volcano = c("#2874C5", "grey", "#f87669"),
   logFC_cutoff = 1,
   pvalue_cutoff = 0.05,
+  adjust = FALSE,
+  entriz = TRUE,
   n_cutoff = 2,
-  cluster_cols = TRUE,
   annotation_legend = FALSE,
   lab = NA,
-  symmetry = FALSE,
-  ...
+  species = "human"
 )
 }
 \arguments{
@@ -30,31 +30,31 @@ get_deg_all(
 
 \item{ids}{a data.frame with 2 columns,including probe_id and symbol}
 
-\item{pkg}{a integer ,means which Differential analysis packages you used,we support three packages by now, 1,2,3,4 respectively means "DESeq2","edgeR","limma(voom)","limma"}
+\item{symmetry}{a logical value ,would you like to get your plot symmetrical}
 
 \item{my_genes}{genes for pheatmap}
 
 \item{show_rownames}{logical,show rownames or not}
 
-\item{entriz}{logical , if TRUE ,convert symbol to entriz id.}
+\item{cluster_cols}{boolean values determining if columns should be clustered or \code{hclust} object.}
 
-\item{adjust}{a logical value, would you like to use adjusted pvalue to draw this plot,FAlSE by default.}
+\item{color_volcano}{color for volcano}
 
 \item{logFC_cutoff}{Cutoff value of logFC,1 by default.}
 
 \item{pvalue_cutoff}{Cutoff value of pvalue,0.05 by default.}
 
-\item{n_cutoff}{3 by defalut , scale before plot and set a cutoff,usually 2 or 1.6}
+\item{adjust}{a logical value, would you like to use adjusted pvalue to draw this plot,FAlSE by default.}
 
-\item{cluster_cols}{boolean values determining if columns should be clustered or \code{hclust} object.}
+\item{entriz}{logical , if TRUE ,convert symbol to entriz id.}
+
+\item{n_cutoff}{3 by defalut , scale before plot and set a cutoff,usually 2 or 1.6}
 
 \item{annotation_legend}{logical,show annotation legend or not}
 
 \item{lab}{label for  x axis in volcano plot, if NA , x axis names by package}
 
-\item{symmetry}{a logical value ,would you like to get your plot symmetrical}
-
-\item{...}{other parameters from get_deg}
+\item{species}{choose human or mouse, or rat, default: human}
 }
 \value{
 a list with deg data.frame, volcano plot ,pca plot ,heatmap and a list with DEGs.

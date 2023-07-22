@@ -8,13 +8,18 @@ multi_deg_all(
   exp,
   group_list,
   ids,
-  pkg = 4,
   symmetry = TRUE,
   my_genes = NULL,
   show_rownames = FALSE,
   cluster_cols = TRUE,
   color_volcano = c("#2874C5", "grey", "#f87669"),
-  ...
+  pvalue_cutoff = 0.05,
+  logFC_cutoff = 1,
+  adjust = FALSE,
+  entriz = TRUE,
+  annotation_legend = FALSE,
+  lab = NA,
+  species = "human"
 )
 }
 \arguments{
@@ -23,8 +28,6 @@ multi_deg_all(
 \item{group_list}{A factor with duplicated character or factor}
 
 \item{ids}{a data.frame with 2 columns,including probe_id and symbol}
-
-\item{pkg}{a integer ,means which Differential analysis packages you used,we support three packages by now, 1,2,3,4 respectively means "DESeq2","edgeR","limma(voom)","limma"}
 
 \item{symmetry}{a logical value ,would you like to get your plot symmetrical}
 
@@ -36,7 +39,20 @@ multi_deg_all(
 
 \item{color_volcano}{color for volcano}
 
-\item{...}{other parameters from multi_deg}
+\item{pvalue_cutoff}{Cutoff value of pvalue,0.05 by default.}
+
+\item{logFC_cutoff}{Cutoff value of logFC,1 by default.}
+
+\item{adjust}{a logical value, would you like to use adjusted pvalue to draw this plot,FAlSE by default.}
+
+\item{entriz}{whether convert symbols to entriz ids}
+
+\item{annotation_legend}{boolean value showing if the legend for annotation 
+tracks should be drawn.}
+
+\item{lab}{label for  x axis in volcano plot, if NA , x axis names by package}
+
+\item{species}{choose human or mouse, or rat, default: human}
 }
 \value{
 a list with deg data.frame, volcano plot and a list with DEGs.

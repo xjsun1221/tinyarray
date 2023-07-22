@@ -8,7 +8,6 @@
 ##' @inheritParams multi_deg_all
 ##' @param ids a data.frame with 2 columns,including probe_id and symbol
 ##' @param entriz logical , if TRUE ,convert symbol to entriz id.
-##' @param ... other parameters from get_deg
 ##' @return a list with deg data.frame, volcano plot ,pca plot ,heatmap and a list with DEGs.
 ##' @author Xiaojie Sun
 ##' @importFrom patchwork wrap_plots
@@ -32,28 +31,29 @@
 
 get_deg_all <- function(exp,
                         group_list,
-                        ids,pkg=4,
+                        ids,
+                        symmetry = TRUE,
                         my_genes = NULL,
                         show_rownames = FALSE,
-                        entriz = TRUE,
-                        adjust = FALSE,
+                        cluster_cols = TRUE,
+                        color_volcano = c("#2874C5", "grey", "#f87669"),
                         logFC_cutoff=1,
                         pvalue_cutoff=0.05,
+                        adjust = FALSE,
+                        entriz = TRUE,
                         n_cutoff = 2,
-                        cluster_cols = TRUE,
                         annotation_legend = FALSE,
                         lab = NA,
-                        symmetry = FALSE,
-                        ...) {
+                        species = "human") {
   if(nlevels(group_list)==2){
     deg <-  get_deg(exp,group_list,ids,
                     logFC_cutoff=logFC_cutoff,
                     pvalue_cutoff=pvalue_cutoff,
                     adjust = adjust,
                     entriz = entriz,
-                    ...)
+                    species = species)
     cgs = get_cgs(deg)
-    volcano_plot = draw_volcano(deg,pkg=pkg,
+    volcano_plot = draw_volcano(deg,pkg=4,
                                 lab =lab,
                                 pvalue_cutoff = pvalue_cutoff,
                                 logFC_cutoff=logFC_cutoff,
@@ -71,13 +71,20 @@ get_deg_all <- function(exp,
       cgs = cgs,
       plots = wrap_plots(heatmap,pca_plot,volcano_plot)+plot_layout(guides = 'collect')
     )
-    message(paste0(nrow(cgs$down)," down genes,",nrow(cgs$up)," up genes"))
+    message(paste0(nrow(cgs$deg$down)," down genes,",nrow(cgs$deg$up)," up genes"))
   }else{
     result <- multi_deg_all(exp,
                             group_list,
                             ids,
-                            pkg = pkg,
-                            ...)
+                            logFC_cutoff = logFC_cutoff,
+                            pvalue_cutoff = pvalue_cutoff,
+                            symmetry = symmetry,
+                            my_genes = my_genes,
+                            show_rownames = show_rownames,
+                            cluster_cols = cluster_cols,
+                            color_volcano = color_volcano,
+                            adjust = adjust,
+                            entriz = entriz)
   }
   return(result)
 }

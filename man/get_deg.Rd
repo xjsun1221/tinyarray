@@ -11,7 +11,8 @@ get_deg(
   logFC_cutoff = 1,
   pvalue_cutoff = 0.05,
   adjust = FALSE,
-  entriz = TRUE
+  entriz = TRUE,
+  species = "human"
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ get_deg(
 \item{adjust}{a logical value, would you like to use adjusted pvalue to draw this plot,FAlSE by default.}
 
 \item{entriz}{whether convert symbols to entriz ids}
+
+\item{species}{choose human or mouse, or rat, default: human}
 }
 \value{
 a deg data.frame with 10 columns

@@ -4,7 +4,7 @@
 \alias{trans_exp_new}
 \title{trans_exp_new}
 \usage{
-trans_exp_new(exp, mrna_only = FALSE, lncrna_only = FALSE)
+trans_exp_new(exp, mrna_only = FALSE, lncrna_only = FALSE, species = "human")
 }
 \arguments{
 \item{exp}{expression set with ensembl as rownames}
@@ -12,6 +12,8 @@ trans_exp_new(exp, mrna_only = FALSE, lncrna_only = FALSE)
 \item{mrna_only}{only keep mrna rows in result}
 
 \item{lncrna_only}{only keep lncrna rows in result}
+
+\item{species}{choose human or mouse, or rat, default: human}
 }
 \value{
 a transformed expression set with symbol

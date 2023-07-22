@@ -11,6 +11,7 @@ multi_deg(
   logFC_cutoff = 1,
   pvalue_cutoff = 0.05,
   adjust = FALSE,
+  species = "human",
   entriz = TRUE
 )
 }
@@ -26,6 +27,8 @@ multi_deg(
 \item{pvalue_cutoff}{Cutoff value of pvalue,0.05 by default.}
 
 \item{adjust}{a logical value, would you like to use adjusted pvalue to draw this plot,FAlSE by default.}
+
+\item{species}{choose human or mouse, or rat, default: human}
 
 \item{entriz}{whether convert symbols to entriz ids}
 }

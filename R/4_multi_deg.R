@@ -42,6 +42,7 @@ multi_deg <- function(exp,
                       logFC_cutoff = 1,
                       pvalue_cutoff = 0.05,
                       adjust = FALSE,
+                      species = "human",
                       entriz = TRUE) {
   p1 <-  all(apply(exp,2,is.numeric))
   if(!p1) stop("exp must be a numeric matrix")
@@ -120,13 +121,33 @@ multi_deg <- function(exp,
     change = ifelse(k1,"down",ifelse(k2,"up","stable"))
     deg[[i]] <- mutate(deg[[i]],change)
     if(entriz){
+      if(species == "human"){
+        if(!requireNamespace("org.Hs.eg.db",quietly = TRUE)) {
+          stop("Package \"org.Hs.eg.db\" needed for this function to work.
+         Please install it by BiocManger::install('org.Hs.eg.db')",call. = FALSE)
+        }
+        or = org.Hs.eg.db::org.Hs.eg.db
+      }
+      if(species == "mouse"){
+        if(!requireNamespace("org.Mm.eg.db",quietly = TRUE)) {
+          stop("Package \"org.Mm.eg.db\" needed for this function to work.
+         Please install it by BiocManger::install('org.Mm.eg.db')",call. = FALSE)
+        }
+        or = org.Mm.eg.db::org.Mm.eg.db
+      }
+      if(species == "rat"){
+        if(!requireNamespace("org.Rn.eg.db",quietly = TRUE)) {
+          stop("Package \"org.Rn.eg.db\" needed for this function to work.
+         Please install it by BiocManger::install('org.Rn.eg.db')",call. = FALSE)
+        }
+        or = org.Rn.eg.db::org.Rn.eg.db
     s2e <- bitr(unique(deg[[i]]$symbol), fromType = "SYMBOL",
                 toType = c( "ENTREZID"),
-                OrgDb = org.Hs.eg.db)
+                OrgDb = or)
     s2e <- s2e[!duplicated(s2e$SYMBOL),]
     deg[[i]] <- inner_join(deg[[i]],s2e,by=c("symbol"="SYMBOL"))
     }
   }
   return(deg)
-
+  }
 }

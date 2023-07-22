@@ -4,6 +4,7 @@
 ##'
 ##' @inheritParams draw_pca
 ##' @inheritParams draw_volcano
+##' @inheritParams trans_exp_new
 ##' @param entriz whether convert symbols to entriz ids
 ##' @param ids a data.frame with 2 columns,including probe_id and symbol
 ##' @return a deg data.frame with 10 columns
@@ -34,7 +35,8 @@ get_deg <- function(exp,
                     logFC_cutoff=1,
                     pvalue_cutoff=0.05,
                     adjust = FALSE,
-                    entriz = TRUE) {
+                    entriz = TRUE,
+                    species = "human") {
   p3 <- is.factor(group_list)
   if(!p3) {
     group_list = factor(group_list)
@@ -73,10 +75,32 @@ get_deg <- function(exp,
     deg <- mutate(deg,change)
 
     if(entriz){
+      if(species == "human"){
+        if(!requireNamespace("org.Hs.eg.db",quietly = TRUE)) {
+          stop("Package \"org.Hs.eg.db\" needed for this function to work.
+         Please install it by BiocManger::install('org.Hs.eg.db')",call. = FALSE)
+        }
+        or = org.Hs.eg.db::org.Hs.eg.db
+      }
+      if(species == "mouse"){
+        if(!requireNamespace("org.Mm.eg.db",quietly = TRUE)) {
+          stop("Package \"org.Mm.eg.db\" needed for this function to work.
+         Please install it by BiocManger::install('org.Mm.eg.db')",call. = FALSE)
+        }
+        or = org.Mm.eg.db::org.Mm.eg.db
+      }
+      if(species == "rat"){
+        if(!requireNamespace("org.Rn.eg.db",quietly = TRUE)) {
+          stop("Package \"org.Rn.eg.db\" needed for this function to work.
+         Please install it by BiocManger::install('org.Rn.eg.db')",call. = FALSE)
+        }
+        or = org.Rn.eg.db::org.Rn.eg.db
+      }
+
       s2e <- bitr(deg$symbol,
                   fromType = "SYMBOL",
                   toType = "ENTREZID",
-                  OrgDb = org.Hs.eg.db::org.Hs.eg.db)
+                  OrgDb = or)
 
       deg <- inner_join(deg,s2e,by=c("symbol"="SYMBOL"))
       deg <- deg[!duplicated(deg$symbol),]
@@ -88,7 +112,8 @@ get_deg <- function(exp,
                     logFC_cutoff = logFC_cutoff,
                     pvalue_cutoff = pvalue_cutoff,
                     adjust = adjust,
-                    entriz = entriz)
+                    entriz = entriz,
+                    species = species)
   }
   return(deg)
 }

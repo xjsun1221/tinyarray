@@ -48,8 +48,7 @@ get_cgs <- function(deg){
                                       stringsAsFactors = FALSE)
     )
   }
-  if(!is.data.frame(deg)) names(cgs) = names(deg)
-  if(is.data.frame(deg)) cgs = cgs[[1]]
+  names(cgs) = names(deg)
   return(cgs)
 }
 
@@ -200,7 +199,6 @@ draw_heatmap2 <- function(exp,
 ##' @inheritParams draw_heatmap2
 ##' @inheritParams multi_deg
 ##' @param color_volcano color for volcano
-##' @param ... other parameters from multi_deg
 ##' @return a list with deg data.frame, volcano plot and a list with DEGs.
 ##' @author Xiaojie Sun
 ##' @importFrom patchwork wrap_plots
@@ -229,29 +227,43 @@ draw_heatmap2 <- function(exp,
 multi_deg_all <- function(exp,
                           group_list,
                           ids,
-                          pkg = 4,
                           symmetry = TRUE,
                           my_genes = NULL,
                           show_rownames = FALSE,
                           cluster_cols = TRUE,
                           color_volcano = c("#2874C5", "grey", "#f87669"),
-                          ...
+                          pvalue_cutoff = 0.05,
+                          logFC_cutoff = 1,
+                          adjust = FALSE,
+                          entriz = TRUE,
+                          annotation_legend = FALSE,
+                          lab = NA,
+                          species = "human"
                           ) {
   deg = multi_deg(
     exp,
     group_list,
     ids,
-    ...
+    logFC_cutoff = logFC_cutoff,
+    pvalue_cutoff = pvalue_cutoff,
+    adjust = adjust,
+    entriz = entriz
   )
   #exp = data.frame(exp)
   #exp = exp[match(deg[[1]]$probe_id,rownames(exp)),]
   cgs = get_cgs(deg)
   volcano_plot = draw_volcano2(deg,
-                               pkg = pkg,
+                               pkg = 4,
                                symmetry = symmetry,
-                               color = color_volcano)
+                               color = color_volcano,
+                               pvalue_cutoff = pvalue_cutoff,
+                               logFC_cutoff = logFC_cutoff,
+                               adjust = adjust
+                               )
   pca_plot = draw_pca(exp,group_list)
-  heatmap = draw_heatmap2(exp,group_list,deg,my_genes,show_rownames = show_rownames,cluster_cols = cluster_cols)
+  heatmap = draw_heatmap2(exp,group_list,deg,my_genes,
+                          show_rownames = show_rownames,
+                          cluster_cols = cluster_cols)
   x = lapply(cgs,function(x)x$diff$diffprobes)
   venn = draw_venn(x," ")
   if(as.numeric(grDevices::dev.cur())!=1) grDevices::graphics.off()

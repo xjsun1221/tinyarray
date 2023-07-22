@@ -119,3 +119,11 @@ cran 人工返回修改意见：
 4.cor.one 和cor.full添加过滤0值参数
 
 5.更新trans_exp函数
+
+### 2.3.1
+
+1.差异分析、富集分析、id转换的函数支持人，小鼠，大鼠三个物种
+
+2.修复get_deg_all不显示差异基因、logFC阈值设置无效的bug
+
+3.trans_exp_new改到支持数据框

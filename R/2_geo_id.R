@@ -3,15 +3,12 @@
 ##' download gse data and get informations
 ##'
 ##' @param gse gse assession number
-##' @param by_annopbrobe getGEO or geoChina
+##' @param by_annopbrobe download data by geoquery or annoprobe
 ##' @param simpd get simplified pdata,drop out columns with all same values
 ##' @param colon_remove whether to remove duplicated columns with colons
 ##' @param destdir	 The destination directory for data downloads.
 ##' @return a list with exp,pd and gpl
 ##' @author Xiaojie Sun
-##' @importFrom dplyr arrange
-##' @importFrom dplyr filter
-##' @importFrom dplyr %>%
 ##' @export
 ##' @examples
 ##' \dontrun{
@@ -60,12 +57,13 @@ geo_download <-  function(gse,by_annopbrobe = TRUE,
       colname[i] = colnames(pd)[[i]]
       count[i] = nrow(pd[!duplicated(pd[, i]), ])
     }
-    df <- data.frame(colname, count,stringsAsFactors = FALSE) %>% arrange(desc(count)) %>% dplyr::filter(count >1)
+    df <- data.frame(colname, count) |>
+      dplyr::arrange(desc(count)) |> dplyr::filter(count >1)
     pd <-  pd[,df$colname]
     pd <- pd[,!(colnames(pd) %in% c("geo_accession", "supplementary_file"))]
     if(colon_remove){
-      pd = pd[,!apply(pd, 2, function(x){all(str_detect(x,": |https|www")|is.na(x)|x=="")})]
-      colnames(pd) = str_remove(colnames(pd),":ch1")
+      pd = pd[,!apply(pd, 2, function(x){all(stringr::str_detect(x,": |https|www")|is.na(x)|x=="")})]
+      colnames(pd) = stringr::str_remove(colnames(pd),":ch1")
     }
   }
   p1 = identical(rownames(pd),colnames(exp))
@@ -78,7 +76,9 @@ geo_download <-  function(gse,by_annopbrobe = TRUE,
     }
   }
   gpl <- eSet[[1]]@annotation
-  re = list(exp=exp,pd=pd,gpl=gpl)
+  pd2 = apply(pd,2,as.character) |> as.data.frame()
+  rownames(pd2) = rownames(pd)
+  re = list(exp=exp,pd=pd2,gpl=gpl)
   if(is.null(dim(exp)) | nrow(exp)==0){
     warning("exp is empty")
   } else if (any(is.na(exp)|is.nan(exp))) {

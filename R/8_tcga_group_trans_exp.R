@@ -221,6 +221,7 @@ match_exp_cl = function(exp,cl,id_column = "id",sample_centric = TRUE){
 ##' @param exp expression set with ensembl as rownames
 ##' @param mrna_only only keep mrna rows in result
 ##' @param lncrna_only only keep lncrna rows in result
+##' @param species choose human or mouse, or rat, default: human
 ##' @return a transformed expression set with symbol
 ##' @author Xiaojie Sun
 ##' @importFrom stringr str_split
@@ -233,11 +234,13 @@ match_exp_cl = function(exp,cl,id_column = "id",sample_centric = TRUE){
 ##' @seealso
 ##' \code{\link{trans_exp}}
 trans_exp_new = function(exp,mrna_only = FALSE,
-                         lncrna_only = FALSE){
+                         lncrna_only = FALSE,
+                         species = "human"){
+  if(is.data.frame(exp)){exp = as.matrix(exp)}
   if(!requireNamespace("AnnoProbe"))stop("Package \"AnnoProbe\" needed for this function to work.
          Please install it by install.packages('AnnoProbe')",call. = FALSE)
   rownames(exp) = str_split(rownames(exp),"\\.",simplify = T)[,1]
-  re = AnnoProbe::annoGene(rownames(exp),ID_type = "ENSEMBL")
+  re = AnnoProbe::annoGene(rownames(exp),ID_type = "ENSEMBL",species = species)
   if(mrna_only){
     re = re[re$biotypes=="protein_coding",]
   }else if(lncrna_only){

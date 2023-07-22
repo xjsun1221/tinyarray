@@ -5,6 +5,7 @@
 ##' @param genes a gene symbol or entrizid vector
 ##' @param kkgo_file Rdata filename for kegg and go result
 ##' @param destdir destdir to save kkgofile
+##' @inheritParams trans_exp_new
 ##' @return enrichment results and dotplots
 ##' @author Xiaojie Sun
 ##' @importFrom clusterProfiler bitr
@@ -12,7 +13,6 @@
 ##' @importFrom clusterProfiler enrichGO
 ##' @importFrom clusterProfiler dotplot
 ##' @importFrom clusterProfiler setReadable
-##' @importFrom org.Hs.eg.db org.Hs.eg.db
 ##' @importFrom ggplot2 facet_grid
 ##' @export
 ##' @examples
@@ -29,22 +29,54 @@
 
 quick_enrich <- function(genes,
                          kkgo_file = "kkgo_file.Rdata",
-                         destdir = getwd()){
+                         destdir = getwd(),
+                         species = "human"){
   if(any(is.na(suppressWarnings(as.numeric(genes))))){
+    if(species == "human"){
+      if(!requireNamespace("org.Hs.eg.db",quietly = TRUE)) {
+        stop("Package \"org.Hs.eg.db\" needed for this function to work.
+         Please install it by BiocManger::install('org.Hs.eg.db')",call. = FALSE)
+      }
+      or = org.Hs.eg.db::org.Hs.eg.db
+    }
+    if(species == "mouse"){
+      if(!requireNamespace("org.Mm.eg.db",quietly = TRUE)) {
+        stop("Package \"org.Mm.eg.db\" needed for this function to work.
+         Please install it by BiocManger::install('org.Mm.eg.db')",call. = FALSE)
+      }
+      or = org.Mm.eg.db::org.Mm.eg.db
+    }
+    if(species == "rat"){
+      if(!requireNamespace("org.Rn.eg.db",quietly = TRUE)) {
+        stop("Package \"org.Rn.eg.db\" needed for this function to work.
+         Please install it by BiocManger::install('org.Rn.eg.db')",call. = FALSE)
+      }
+      or = org.Rn.eg.db::org.Rn.eg.db
+    }
     s2e <- bitr(genes, fromType = "SYMBOL",
-                toType = c( "ENTREZID"),
-                OrgDb = org.Hs.eg.db::org.Hs.eg.db)
+                toType = "ENTREZID",
+                OrgDb = or)
     s2e <- s2e[!duplicated(s2e$SYMBOL),]
     genes = s2e$ENTREZID
   }
   f = paste0(destdir,"/",kkgo_file)
   if(!file.exists(f)){
+    if(species == "human"){
+      or = "org.Hs.eg.db"
+      orgs = 'hsa'
+    }else if(species == 'mouse'){
+      or = "org.Mm.eg.db"
+      orgs = 'mmu'
+    }else if(species == 'rat'){
+      or = "org.Rn.eg.db"
+      orgs = 'rno'
+    }
     kk <- enrichKEGG(gene         = genes,
-                     organism     = 'hsa',
+                     organism     = orgs,
                      pvalueCutoff = 0.05)
-    kk = setReadable(kk,OrgDb = "org.Hs.eg.db",keyType = "ENTREZID")
+    kk = setReadable(kk,OrgDb = or,keyType = "ENTREZID")
     go <- enrichGO(genes,
-                   OrgDb = "org.Hs.eg.db",
+                   OrgDb = or,
                    ont="all",
                    readable = TRUE)
     save(kk,go,file = f)

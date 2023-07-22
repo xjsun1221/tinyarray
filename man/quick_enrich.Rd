@@ -4,7 +4,12 @@
 \alias{quick_enrich}
 \title{quick_enrich}
 \usage{
-quick_enrich(genes, kkgo_file = "kkgo_file.Rdata", destdir = getwd())
+quick_enrich(
+  genes,
+  kkgo_file = "kkgo_file.Rdata",
+  destdir = getwd(),
+  species = "human"
+)
 }
 \arguments{
 \item{genes}{a gene symbol or entrizid vector}
@@ -12,6 +17,8 @@ quick_enrich(genes, kkgo_file = "kkgo_file.Rdata", destdir = getwd())
 \item{kkgo_file}{Rdata filename for kegg and go result}
 
 \item{destdir}{destdir to save kkgofile}
+
+\item{species}{choose human or mouse, or rat, default: human}
 }
 \value{
 enrichment results and dotplots

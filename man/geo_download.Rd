@@ -15,7 +15,7 @@ geo_download(
 \arguments{
 \item{gse}{gse assession number}
 
-\item{by_annopbrobe}{getGEO or geoChina}
+\item{by_annopbrobe}{download data by geoquery or annoprobe}
 
 \item{simpd}{get simplified pdata,drop out columns with all same values}
 

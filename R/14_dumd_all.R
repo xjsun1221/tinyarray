@@ -6,7 +6,6 @@
 ##' @importFrom dplyr arrange
 ##' @importFrom dplyr desc
 ##' @importFrom tibble tibble
-##' @importFrom dplyr %>%
 ##' @export
 ##' @examples
 ##' dumd(iris)
@@ -21,7 +20,7 @@ dumd <- function(x){
     colname[i] = colnames(x)[[i]]
     count[i]=nrow(x[!duplicated(x[,i]),])
   }
-  df <- tibble(colname,count) %>%
+  df <- tibble(colname,count) |>
     arrange(desc(count))
   return(df)
 }
