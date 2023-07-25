@@ -19,8 +19,7 @@ Imports:
     ggplot2,
     survival,
     survminer,
-    patchwork,
-    magrittr
+    patchwork
 Suggests: testthat, AnnoProbe, GEOquery, Biobase, VennDiagram,
         FactoMineR, factoextra, knitr, rmarkdown, cowplot, ggpubr,
         ggplotify, tidyr, labeling, Rtsne, scatterplot3d,

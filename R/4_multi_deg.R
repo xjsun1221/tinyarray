@@ -141,13 +141,13 @@ multi_deg <- function(exp,
          Please install it by BiocManger::install('org.Rn.eg.db')",call. = FALSE)
         }
         or = org.Rn.eg.db::org.Rn.eg.db
-    s2e <- bitr(unique(deg[[i]]$symbol), fromType = "SYMBOL",
-                toType = c( "ENTREZID"),
-                OrgDb = or)
-    s2e <- s2e[!duplicated(s2e$SYMBOL),]
-    deg[[i]] <- inner_join(deg[[i]],s2e,by=c("symbol"="SYMBOL"))
+      }
+      s2e <- bitr(unique(deg[[i]]$symbol), fromType = "SYMBOL",
+                  toType = c( "ENTREZID"),
+                  OrgDb = or)
+      s2e <- s2e[!duplicated(s2e$SYMBOL),]
+      deg[[i]] <- inner_join(deg[[i]],s2e,by=c("symbol"="SYMBOL"))
     }
   }
   return(deg)
-  }
 }
