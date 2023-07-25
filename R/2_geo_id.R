@@ -21,7 +21,7 @@
 
 geo_download <-  function(gse,by_annopbrobe = TRUE,
                           simpd = TRUE,colon_remove = FALSE,
-                          destdir = getwd(),n= 1){
+                          destdir = getwd(),n = 1){
 
   if(!requireNamespace("Biobase",quietly = TRUE)) {
     stop("Package \"Biobase\" needed for this function to work.
@@ -53,8 +53,8 @@ geo_download <-  function(gse,by_annopbrobe = TRUE,
   }else{
     eSet <- GEOquery::getGEO(gse,destdir = destdir,getGPL = FALSE)
   }
-  if(length(n!=1)) stop("only one ExpresssionSet can be analyzed")
-  if(length(eSet)==1 &n!=1) n = 1;warning("this data only have one ExpresssionSet object")
+  if(length(n)!=1) stop("only one ExpresssionSet can be analyzed")
+  if(length(eSet)==1 & n!=1) n = 1;warning("this data only have one ExpresssionSet object")
   exp <- Biobase::exprs(eSet[[n]])
   pd <- Biobase::pData(eSet[[n]])
   if(simpd){
