@@ -9,7 +9,8 @@ geo_download(
   by_annopbrobe = TRUE,
   simpd = TRUE,
   colon_remove = FALSE,
-  destdir = getwd()
+  destdir = getwd(),
+  n = 1
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ geo_download(
 \item{colon_remove}{whether to remove duplicated columns with colons}
 
 \item{destdir}{The destination directory for data downloads.}
+
+\item{n}{For data with more than one ExpressionSet, specify which one to analyze}
 }
 \value{
 a list with exp,pd and gpl

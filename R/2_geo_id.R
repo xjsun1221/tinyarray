@@ -7,6 +7,7 @@
 ##' @param simpd get simplified pdata,drop out columns with all same values
 ##' @param colon_remove whether to remove duplicated columns with colons
 ##' @param destdir	 The destination directory for data downloads.
+##' @param n For data with more than one ExpressionSet, specify which one to analyze
 ##' @return a list with exp,pd and gpl
 ##' @author Xiaojie Sun
 ##' @export
@@ -20,7 +21,7 @@
 
 geo_download <-  function(gse,by_annopbrobe = TRUE,
                           simpd = TRUE,colon_remove = FALSE,
-                          destdir = getwd()){
+                          destdir = getwd(),n= 1){
 
   if(!requireNamespace("Biobase",quietly = TRUE)) {
     stop("Package \"Biobase\" needed for this function to work.
@@ -48,8 +49,10 @@ geo_download <-  function(gse,by_annopbrobe = TRUE,
                    destdir = destdir,
                    getGPL = FALSE)
   }
-  exp <- Biobase::exprs(eSet[[1]])
-  pd <- Biobase::pData(eSet[[1]])
+  if(length(n!=1)) stop("only one ExpresssionSet can be analyzed")
+  if(length(eSet)==1 &n!=1) n = 1;warning("this data only have one ExpresssionSet object")
+  exp <- Biobase::exprs(eSet[[n]])
+  pd <- Biobase::pData(eSet[[n]])
   if(simpd){
     colname <- vector("character")
     count <- vector("integer")
