@@ -37,17 +37,21 @@ geo_download <-  function(gse,by_annopbrobe = TRUE,
   }
   if(by_annopbrobe){
     if(!file.exists(paste0(destdir,"/",gse,"_eSet.Rdata"))){
-      eSet <- AnnoProbe::geoChina(gse, destdir = destdir)
+      tryCatch({
+        eSet <- AnnoProbe::geoChina(gse, destdir = destdir)
+      },error = function(e){
+        warning("This data is not indexed by AnnoProbe, downloaded by GEOquery")
+        eSet <- GEOquery::getGEO(gse,destdir = destdir,getGPL = FALSE)
+        gset = eSet
+        save(gset,file = paste0(destdir,"/",gse,"_eSet.Rdata"))
+      })
     }else{
       suppressWarnings(load(paste0(destdir,"/",gse,"_eSet.Rdata")))
       eSet = gset
       rm(gset)
     }
-
   }else{
-    eSet <- GEOquery::getGEO(gse,
-                   destdir = destdir,
-                   getGPL = FALSE)
+    eSet <- GEOquery::getGEO(gse,destdir = destdir,getGPL = FALSE)
   }
   if(length(n!=1)) stop("only one ExpresssionSet can be analyzed")
   if(length(eSet)==1 &n!=1) n = 1;warning("this data only have one ExpresssionSet object")
@@ -120,6 +124,7 @@ find_anno <-function(gpl,install = FALSE,update = FALSE){
     if(gpl %in% setdiff(exists_anno_list,pkg_all$gpl)){
       ml1 = str_remove_all(paste0("`ids <- AnnoProbe::idmap\\(","\\'",gpl,"\\'","\\)`"),"\\\\")
       message(paste0("no annotation packages avliable,please use ",ml1))
+      message("if you get error by this code ,please try different `type` parameters")
     }else{
       message("no annotation avliable in Bioconductor and AnnoProbe")
     }
@@ -129,7 +134,7 @@ find_anno <-function(gpl,install = FALSE,update = FALSE){
     ml2 = str_remove_all(paste0("`library\\(",qz,".db","\\)",";","ids <- toTable\\(",qz,"SYMBOL\\)`"),"\\\\")
     if(install){
       if(!suppressMessages(requireNamespace(paste0(qz,".db")))){
-        BiocManager::install(paste0(qz,".db"),update = update)
+        BiocManager::install(paste0(qz,".db"),update = update,ask = FALSE)
         suppressMessages(requireNamespace(paste0(qz,".db")))
       }
     }
@@ -137,6 +142,7 @@ find_anno <-function(gpl,install = FALSE,update = FALSE){
       message(paste0(ml2," is avaliable"))
     }else {
       message(paste0(ml2," and ",ml1 ," are both avaliable"))
+      message("if you get error by idmap, please try different `type` parameters")
     }
   }
 }
