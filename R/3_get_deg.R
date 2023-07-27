@@ -46,7 +46,7 @@ get_deg <- function(exp,
     if(ncol(exp)!=length(group_list))stop("wrong group_list or exp")
     if(ncol(ids)!=2)stop("wrong ids pramater,it should be a data.frame with probe_id and symbol")
     colnames(ids) = c("probe_id","symbol")
-    if(is.character(ids$probe_id)) ids$probe_id = as.character(ids$probe_id)
+    if(!is.character(ids$probe_id)) ids$probe_id = as.character(ids$probe_id)
 
     design=stats::model.matrix(~group_list)
     fit=lmFit(exp,design)

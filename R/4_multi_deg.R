@@ -108,7 +108,7 @@ multi_deg <- function(exp,
   for(i in 1:length(deg)){
     deg[[i]] <- mutate(deg[[i]],probe_id=rownames(deg[[i]]))
     ids = stats::na.omit(ids)
-    if(is.character(ids$probe_id)) ids$probe_id = as.character(ids$probe_id)
+    if(!is.character(ids$probe_id)) ids$probe_id = as.character(ids$probe_id)
     ids = ids[!duplicated(ids$symbol),]
     ids = ids[!duplicated(ids$probe_id),]
     deg[[i]] <- inner_join(deg[[i]],ids,by="probe_id")
