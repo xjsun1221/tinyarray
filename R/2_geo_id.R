@@ -54,7 +54,11 @@ geo_download <-  function(gse,by_annopbrobe = TRUE,
     eSet <- GEOquery::getGEO(gse,destdir = destdir,getGPL = FALSE)
   }
   if(length(n)!=1) stop("only one ExpresssionSet can be analyzed")
-  if(length(eSet)==1 & n!=1) n = 1;warning("this data only have one ExpresssionSet object")
+  if(length(eSet)==1 & n!=1) {
+    n = 1
+    warning("this data only have one ExpresssionSet object")
+  }
+
   exp <- Biobase::exprs(eSet[[n]])
   pd <- Biobase::pData(eSet[[n]])
   if(simpd){
@@ -82,7 +86,7 @@ geo_download <-  function(gse,by_annopbrobe = TRUE,
       pd = pd[intersect(rownames(pd),colnames(exp)),]
     }
   }
-  gpl <- eSet[[1]]@annotation
+  gpl <- eSet[[n]]@annotation
   pd2 = apply(pd,2,as.character) |> as.data.frame()
   rownames(pd2) = rownames(pd)
   re = list(exp=exp,pd=pd2,gpl=gpl)
