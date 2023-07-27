@@ -84,7 +84,8 @@ get_deg_all <- function(exp,
                             cluster_cols = cluster_cols,
                             color_volcano = color_volcano,
                             adjust = adjust,
-                            entriz = entriz)
+                            entriz = entriz,
+                            species = species)
   }
   return(result)
 }

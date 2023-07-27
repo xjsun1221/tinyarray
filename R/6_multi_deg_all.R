@@ -247,7 +247,8 @@ multi_deg_all <- function(exp,
     logFC_cutoff = logFC_cutoff,
     pvalue_cutoff = pvalue_cutoff,
     adjust = adjust,
-    entriz = entriz
+    entriz = entriz,
+    species = species
   )
   #exp = data.frame(exp)
   #exp = exp[match(deg[[1]]$probe_id,rownames(exp)),]
