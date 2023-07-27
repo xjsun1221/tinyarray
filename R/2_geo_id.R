@@ -37,14 +37,15 @@ geo_download <-  function(gse,by_annopbrobe = TRUE,
   }
   if(by_annopbrobe){
     if(!file.exists(paste0(destdir,"/",gse,"_eSet.Rdata"))){
-      tryCatch({
-        eSet <- AnnoProbe::geoChina(gse, destdir = destdir)
-      },error = function(e){
+      eSet <- tryCatch({AnnoProbe::geoChina(gse, destdir = destdir)
+      },error = function(e){555})
+
+      if(eSet == 555){
         warning("This data is not indexed by AnnoProbe, downloaded by GEOquery")
         eSet <- GEOquery::getGEO(gse,destdir = destdir,getGPL = FALSE)
         gset = eSet
         save(gset,file = paste0(destdir,"/",gse,"_eSet.Rdata"))
-      })
+      }
     }else{
       suppressWarnings(load(paste0(destdir,"/",gse,"_eSet.Rdata")))
       eSet = gset
