@@ -125,21 +125,21 @@ multi_deg <- function(exp,
       if(species == "human"){
         if(!requireNamespace("org.Hs.eg.db",quietly = TRUE)) {
           stop("Package \"org.Hs.eg.db\" needed for this function to work.
-         Please install it by BiocManger::install('org.Hs.eg.db')",call. = FALSE)
+         Please install it by BiocManager::install('org.Hs.eg.db')",call. = FALSE)
         }
         or = org.Hs.eg.db::org.Hs.eg.db
       }
       if(species == "mouse"){
         if(!requireNamespace("org.Mm.eg.db",quietly = TRUE)) {
           stop("Package \"org.Mm.eg.db\" needed for this function to work.
-         Please install it by BiocManger::install('org.Mm.eg.db')",call. = FALSE)
+         Please install it by BiocManager::install('org.Mm.eg.db')",call. = FALSE)
         }
         or = org.Mm.eg.db::org.Mm.eg.db
       }
       if(species == "rat"){
         if(!requireNamespace("org.Rn.eg.db",quietly = TRUE)) {
           stop("Package \"org.Rn.eg.db\" needed for this function to work.
-         Please install it by BiocManger::install('org.Rn.eg.db')",call. = FALSE)
+         Please install it by BiocManager::install('org.Rn.eg.db')",call. = FALSE)
         }
         or = org.Rn.eg.db::org.Rn.eg.db
       }

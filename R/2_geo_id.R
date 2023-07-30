@@ -25,11 +25,11 @@ geo_download <-  function(gse,by_annopbrobe = TRUE,
 
   if(!requireNamespace("Biobase",quietly = TRUE)) {
     stop("Package \"Biobase\" needed for this function to work.
-         Please install it by BiocManger::install('Biobase')",call. = FALSE)
+         Please install it by BiocManager::install('Biobase')",call. = FALSE)
   }
   if((!by_annopbrobe) & !requireNamespace("GEOquery",quietly = TRUE)) {
     stop("Package \"GEOquery\" needed for this function to work.
-         Please install it by BiocManger::install('GEOquery')",call. = FALSE)
+         Please install it by BiocManager::install('GEOquery')",call. = FALSE)
   }
   if((by_annopbrobe) & !requireNamespace("AnnoProbe",quietly = TRUE)) {
     stop("Package \"Biobase\" needed for this function to work.
