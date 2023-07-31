@@ -40,7 +40,7 @@ geo_download <-  function(gse,by_annopbrobe = TRUE,
       eSet <- tryCatch({AnnoProbe::geoChina(gse, destdir = destdir)
       },error = function(e){555})
 
-      if(eSet == 555){
+      if(!is.list(eSet)){
         warning("This data is not indexed by AnnoProbe, downloaded by GEOquery")
         eSet <- GEOquery::getGEO(gse,destdir = destdir,getGPL = FALSE)
         gset = eSet
