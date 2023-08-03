@@ -192,6 +192,7 @@ draw_heatmap2 <- function(exp,
 ##' plot pca plot,volcano plot,heatmap,and venn plot for  Differential analysis result
 ##'
 ##' @inheritParams multi_deg_all
+##' @param  deg result of multi_deg or get_deg function
 ##' @return plots
 ##' @author Xiaojie Sun
 ##' @export
@@ -211,6 +212,7 @@ draw_heatmap2 <- function(exp,
 ##' }
 plot_deg = function(exp,
                     group_list,
+                    deg,
                     symmetry = TRUE,
                     my_genes = NULL,
                     show_rownames = FALSE,
