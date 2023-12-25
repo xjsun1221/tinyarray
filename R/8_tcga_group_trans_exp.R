@@ -251,3 +251,52 @@ trans_exp_new = function(exp,mrna_only = FALSE,
   exp = trans_array(exp,ids = re,from = "ENSEMBL",to = "SYMBOL")
   return(exp)
 }
+
+##' trans_entrezexp
+##'
+##' transform rownames of expression set from "entrez" to"symbol",according to the bitr function.
+##'
+##' @param entrezexp expression set with entrezid as rownames
+##' @param species choose human or mouse, or rat, default: human
+##' @return a transformed expression set with symbol
+##' @author Xiaojie Sun
+##' @export
+##' @examples
+##' exp = matrix(rnorm(200),ncol = 10)
+##' rownames(exp) = c("79691", "56271", "8662", "10394", "55630", "159162", "23541",
+##'                   "79723", "54413", "22927", "92342", "23787", "5550", "8924",
+##'                   "55274", "866", "8844", "353299", "587", "1473")
+##' colnames(exp) = paste0("s",1:10)
+##' exp2 = trans_entrezexp(exp)
+##' @seealso
+##' \code{\link{trans_exp}}
+trans_entrezexp = function(entrezexp,species="human"){
+  if(species == "human"){
+    if(!requireNamespace("org.Hs.eg.db",quietly = TRUE)) {
+      stop("Package \"org.Hs.eg.db\" needed for this function to work.
+         Please install it by BiocManager::install('org.Hs.eg.db')",call. = FALSE)
+    }
+    or = org.Hs.eg.db::org.Hs.eg.db
+  }
+  if(species == "mouse"){
+    if(!requireNamespace("org.Mm.eg.db",quietly = TRUE)) {
+      stop("Package \"org.Mm.eg.db\" needed for this function to work.
+         Please install it by BiocManager::install('org.Mm.eg.db')",call. = FALSE)
+    }
+    or = org.Mm.eg.db::org.Mm.eg.db
+  }
+  if(species == "rat"){
+    if(!requireNamespace("org.Rn.eg.db",quietly = TRUE)) {
+      stop("Package \"org.Rn.eg.db\" needed for this function to work.
+         Please install it by BiocManager::install('org.Rn.eg.db')",call. = FALSE)
+    }
+    or = org.Rn.eg.db::org.Rn.eg.db
+  }
+  if(is.data.frame(entrezexp)){exp = as.matrix(entrezexp)}
+  re = clusterProfiler::bitr(rownames(entrezexp),
+                             fromType = "ENTREZID",
+                             toType = "SYMBOL",
+                             OrgDb = or)
+  exp = trans_array(entrezexp,ids = re,from = "ENTREZID",to = "SYMBOL")
+  return(exp)
+}

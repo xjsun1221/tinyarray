@@ -151,4 +151,59 @@ find_anno <-function(gpl,install = FALSE,update = FALSE){
     }
   }
 }
+
+##' get count from GEO
+##'
+##' get RNA-seq count file from GEO database
+##'
+##' @inheritParams geo_download
+##' @return a list with deg data.frame, volcano plot and a list with DEGs.
+##' @author Xiaojie Sun
+##' @export
+##' @examples
+##' get_count_txt("GSE162550",destdir = tempdir())
+##' @seealso
+##' \code{\link{geo_download}}
+
+get_count_txt <- function(gse,destdir = getwd(),download = FALSE){
+  if(!stringr::str_starts(gse,"GSE|gse"))stop("wrong GSE accession")
+  gse = stringr::str_to_upper(gse)
+  url = paste0("https://www.ncbi.nlm.nih.gov/geo/download/?type=rnaseq_counts&acc=",
+             gse,
+             "&format=file&file=",
+             gse,
+             "_raw_counts_GRCh38.p13_NCBI.tsv.gz")
+  message(url)
+
+  if(download){download.file(url,destfile = paste0(destdir,gse,"_raw_counts_GRCh38.p13_NCBI.tsv.gz"))
+    message("If the download fails, check that your data is RNA-seq data.")}
+}
+
+
+##' get gpl txt from GEO
+##'
+##' get gpl annotation txt file from GEO database
+##'
+##' @inheritParams geo_download
+##' @inheritParams get_count_txt
+##' @return a list with deg data.frame, volcano plot and a list with DEGs.
+##' @author Xiaojie Sun
+##' @export
+##' @examples
+##' get_gpl_txt("GSE162550",destdir = tempdir())
+##' @seealso
+##' \code{\link{geo_download}}
+
+get_gpl_txt = function(gpl,destdir = getwd(),download = F){
+  if(!stringr::str_starts(gpl,"GPL|gpl"))stop("wrong GPL accession")
+  gpl = stringr::str_to_upper(gpl)
+  url = paste0("https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=",
+               gpl,
+               "&targ=self&form=text&view=data")
+  message(url)
+  if(download){download.file(url,destfile = paste0(gpl,".txt"))
+    message("If the download fails, check that your data is microarray data.")}
+}
+
+
 utils::globalVariables(c("pkg_all","exists_anno_list","gset"))

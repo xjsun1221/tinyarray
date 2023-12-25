@@ -127,3 +127,14 @@ cran 人工返回修改意见：
 2.修复get_deg_all不显示差异基因、logFC阈值设置无效的bug
 
 3.trans_exp_new改到支持数据框
+
+### 2.3.2
+
+增加3个函数
+
+1.trans_entrezexp
+
+2.get_count_txt
+
+3.get_gpl_txt
+
