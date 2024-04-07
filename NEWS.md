@@ -138,3 +138,11 @@ cran 人工返回修改意见：
 
 3.get_gpl_txt
 
+### 2.3.3
+
+增加2个函数
+
+1.corscatterplot
+
+2.corheatmap
+

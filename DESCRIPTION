@@ -22,9 +22,9 @@ Imports:
     patchwork
 Suggests: testthat, AnnoProbe, GEOquery, Biobase, VennDiagram,
         FactoMineR, factoextra, knitr, rmarkdown, cowplot, ggpubr,
-        ggplotify, tidyr, labeling, Rtsne, scatterplot3d,
+        ggplotify, tidyr, labeling, Rtsne, scatterplot3d,Hmisc,
         ComplexHeatmap, circlize,org.Hs.eg.db,org.Rn.eg.db,org.Mm.eg.db
 URL: https://github.com/xjsun1221/tinyarray
 BugReports: https://github.com/xjsun1221/tinyarray/issues
 Depends: R (>= 3.5.0)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1

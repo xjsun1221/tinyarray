@@ -10,6 +10,8 @@ get_count_txt(gse, destdir = getwd(), download = FALSE)
 \item{gse}{gse assession number}
 
 \item{destdir}{The destination directory for data downloads.}
+
+\item{download}{download the txt file or not}
 }
 \value{
 a list with deg data.frame, volcano plot and a list with DEGs.

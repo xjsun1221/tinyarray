@@ -7,7 +7,11 @@
 get_gpl_txt(gpl, destdir = getwd(), download = F)
 }
 \arguments{
+\item{gpl}{gpl accession from GEO database}
+
 \item{destdir}{The destination directory for data downloads.}
+
+\item{download}{download the txt file or not}
 }
 \value{
 a list with deg data.frame, volcano plot and a list with DEGs.
@@ -16,7 +20,7 @@ a list with deg data.frame, volcano plot and a list with DEGs.
 get gpl annotation txt file from GEO database
 }
 \examples{
-get_gpl_txt("GSE162550",destdir = tempdir())
+get_gpl_txt("GPL23270",destdir = tempdir())
 }
 \seealso{
 \code{\link{geo_download}}

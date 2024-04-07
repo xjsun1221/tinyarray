@@ -791,3 +791,85 @@ draw_KM = function(meta,
   return(p$plot)
 }
 
+##' corscatterplot
+##'
+##' draw cor scatter plot with density plot by ggplot2
+##' @param dat plot data
+##' @param x x
+##' @param y y
+##' @param color_cor color for cor reg.line
+##' @param fill_cor fill for cor reg.line
+##' @param fill_x fill for top density plot
+##' @param fill_y fill for right density plot
+##' @return a ggplot object
+##' @author Xiaojie Sun
+##' @importFrom ggplot2 ggplot
+##' @importFrom ggplot2 geom_density
+##' @importFrom ggplot2 theme_void
+##' @importFrom ggplot2 theme_bw
+##' @importFrom patchwork plot_layout
+##' @importFrom patchwork plot_spacer
+##' @export
+##' @examples
+##' corscatterplot(iris,"Sepal.Length","Sepal.Width")
+corscatterplot = function(dat,x,y,color_cor = "blue",fill_cor = "lightgray",fill_x = "#ff820e",fill_y = "#0000fe"){
+  p1 <- ggpubr::ggscatter( dat, x = x, y = y,
+                           add = "reg.line", conf.int = TRUE,
+                           add.params = list(color = color_cor, fill = fill_cor))+
+    ggpubr::stat_cor()+
+    theme_bw()
+
+  p2 <- ggplot(dat, aes_string(x)) +
+    geom_density(fill = fill_x) +
+    theme_void()
+
+  p3 <- ggplot(dat, aes_string(y)) +
+    geom_density(fill = fill_y) +
+    coord_flip() +
+    theme_void()
+  p2 + p1 + p3 + plot_spacer() + plot_layout(design = c("AAAAD
+       BBBBC
+       BBBBC
+       BBBBC
+       BBBBC"))
+}
+
+##' corheatmap
+##'
+##' draw cor heatmap
+##' @param exp A numeric matrix
+##' @param x genes or cells from exp
+##' @param y genes or cells from exp
+##' @param color color for heatmap
+##' @return a ggplot object
+##' @author Xiaojie Sun
+##' @importFrom dplyr case_when
+##' @importFrom pheatmap pheatmap
+##' @export
+##' @examples
+##' x = rownames(exprSet_hub1)[1:3]
+##' y = rownames(exprSet_hub1)[4:7]
+##' corheatmap(exprSet_hub1,x,y)
+
+corheatmap = function(exp,x,y,color = c("#2fa1dd", "white", "#f87669")){
+  x = unique(x)
+  y = unique(y)
+  y = setdiff(y,x)
+  da = t(exp[c(x,y),])
+  m = Hmisc::rcorr(da)$r[1:length(x),(ncol(da)-length(y)+1):ncol(da)]
+  p = Hmisc::rcorr(da)$P[1:length(x),(ncol(da)-length(y)+1):ncol(da)]
+  tmp = matrix(case_when(as.logical(p<=0.0001)~"****",
+                         as.logical(p<=0.001)~"***",
+                         as.logical(p<=0.01)~"**",
+                         as.logical(p<=0.05)~"*",
+                         T~""),nrow = nrow(p))
+  pheatmap(t(m),
+           display_numbers = t(tmp),
+           angle_col = ifelse(length(x)>10,45,0),
+           color = grDevices::colorRampPalette(color)(100),
+           border_color = "white",
+           width = 7,
+           height = 9.1,
+           treeheight_col = 0,
+           treeheight_row = 0)
+}

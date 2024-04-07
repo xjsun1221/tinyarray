@@ -157,6 +157,7 @@ find_anno <-function(gpl,install = FALSE,update = FALSE){
 ##' get RNA-seq count file from GEO database
 ##'
 ##' @inheritParams geo_download
+##' @param download download the txt file or not
 ##' @return a list with deg data.frame, volcano plot and a list with DEGs.
 ##' @author Xiaojie Sun
 ##' @export
@@ -175,7 +176,7 @@ get_count_txt <- function(gse,destdir = getwd(),download = FALSE){
              "_raw_counts_GRCh38.p13_NCBI.tsv.gz")
   message(url)
 
-  if(download){download.file(url,destfile = paste0(destdir,gse,"_raw_counts_GRCh38.p13_NCBI.tsv.gz"))
+  if(download){utils::download.file(url,destfile = paste0(destdir,gse,"_raw_counts_GRCh38.p13_NCBI.tsv.gz"))
     message("If the download fails, check that your data is RNA-seq data.")}
 }
 
@@ -186,11 +187,12 @@ get_count_txt <- function(gse,destdir = getwd(),download = FALSE){
 ##'
 ##' @inheritParams geo_download
 ##' @inheritParams get_count_txt
+##' @param gpl gpl accession from GEO database
 ##' @return a list with deg data.frame, volcano plot and a list with DEGs.
 ##' @author Xiaojie Sun
 ##' @export
 ##' @examples
-##' get_gpl_txt("GSE162550",destdir = tempdir())
+##' get_gpl_txt("GPL23270",destdir = tempdir())
 ##' @seealso
 ##' \code{\link{geo_download}}
 
@@ -201,7 +203,7 @@ get_gpl_txt = function(gpl,destdir = getwd(),download = F){
                gpl,
                "&targ=self&form=text&view=data")
   message(url)
-  if(download){download.file(url,destfile = paste0(gpl,".txt"))
+  if(download){utils::download.file(url,destfile = paste0(gpl,".txt"))
     message("If the download fails, check that your data is microarray data.")}
 }
 
