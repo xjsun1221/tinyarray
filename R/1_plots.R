@@ -832,11 +832,11 @@ corscatterplot = function(dat,x,y,color_cor = "blue",fill_cor = "lightgray",
       theme_void()
   }else if( type == "histogram"){
     p2 <- ggplot(dat, aes_string(x)) +
-      geom_histogram(fill = fill_x,width = 0.1) +
+      geom_histogram(fill = fill_x,width = 0.1,color = "black") +
       theme_void()
 
     p3 <- ggplot(dat, aes_string(y)) +
-      geom_histogram(fill = fill_y,width = 0.1) +
+      geom_histogram(fill = fill_y,width = 0.1,color = "black") +
       coord_flip() +
       theme_void()
   }else{
