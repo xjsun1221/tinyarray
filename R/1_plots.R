@@ -802,6 +802,7 @@ draw_KM = function(meta,
 ##' @param fill_x fill for top density plot
 ##' @param fill_y fill for right density plot
 ##' @param type whether to use a density plot or a histogram plot for the side panel.
+##' @param ... other paramters for ggscatter
 ##' @return a ggplot object
 ##' @author Xiaojie Sun
 ##' @importFrom ggplot2 ggplot
@@ -815,10 +816,11 @@ draw_KM = function(meta,
 ##' @examples
 ##' corscatterplot(iris,"Sepal.Length","Sepal.Width")
 corscatterplot = function(dat,x,y,color_cor = "blue",fill_cor = "lightgray",
-                          fill_x = "#ff820e",fill_y = "#0000fe",type = "density"){
+                          fill_x = "#ff820e",fill_y = "#0000fe",
+                          type = "density",...){
   p1 <- ggpubr::ggscatter( dat, x = x, y = y,
                            add = "reg.line", conf.int = TRUE,
-                           add.params = list(color = color_cor, fill = fill_cor))+
+                           add.params = list(color = color_cor, fill = fill_cor),...)+
     ggpubr::stat_cor()+
     theme_bw()
   if(type == "density"){

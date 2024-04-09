@@ -12,7 +12,8 @@ corscatterplot(
   fill_cor = "lightgray",
   fill_x = "#ff820e",
   fill_y = "#0000fe",
-  type = "density"
+  type = "density",
+  ...
 )
 }
 \arguments{
@@ -31,6 +32,8 @@ corscatterplot(
 \item{fill_y}{fill for right density plot}
 
 \item{type}{whether to use a density plot or a histogram plot for the side panel.}
+
+\item{...}{other paramters for ggscatter}
 }
 \value{
 a ggplot object
