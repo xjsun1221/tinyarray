@@ -1,7 +1,7 @@
 Package: tinyarray
 Type: Package
 Title: Expression Data Analysis and Visualization
-Version: 2.3.2
+Version: 2.3.3
 Authors@R: person("Xiaojie","Sun",email = "18763899370@163.com",role = c("aut","cre"))
 Maintainer: Xiaojie Sun <18763899370@163.com>
 Description: Gene Expression Omnibus(GEO) and The Cancer Genome Atlas(TCGA) are common bioinformatics public databases. We integrate the regular analysis and charts for expression data, to analyze and display the data concisely and intuitively.
@@ -26,5 +26,5 @@ Suggests: testthat, AnnoProbe, GEOquery, Biobase, VennDiagram,
         ComplexHeatmap, circlize,org.Hs.eg.db,org.Rn.eg.db,org.Mm.eg.db
 URL: https://github.com/xjsun1221/tinyarray
 BugReports: https://github.com/xjsun1221/tinyarray/issues
-Depends: R (>= 3.5.0)
+Depends: R (>= 4.1.0)
 RoxygenNote: 7.3.1
