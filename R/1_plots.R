@@ -801,32 +801,48 @@ draw_KM = function(meta,
 ##' @param fill_cor fill for cor reg.line
 ##' @param fill_x fill for top density plot
 ##' @param fill_y fill for right density plot
+##' @param type whether to use a density plot or a histogram plot for the side panel.
 ##' @return a ggplot object
 ##' @author Xiaojie Sun
 ##' @importFrom ggplot2 ggplot
 ##' @importFrom ggplot2 geom_density
 ##' @importFrom ggplot2 theme_void
 ##' @importFrom ggplot2 theme_bw
+##' @importFrom ggplot2 geom_histogram
 ##' @importFrom patchwork plot_layout
 ##' @importFrom patchwork plot_spacer
 ##' @export
 ##' @examples
 ##' corscatterplot(iris,"Sepal.Length","Sepal.Width")
-corscatterplot = function(dat,x,y,color_cor = "blue",fill_cor = "lightgray",fill_x = "#ff820e",fill_y = "#0000fe"){
+corscatterplot = function(dat,x,y,color_cor = "blue",fill_cor = "lightgray",
+                          fill_x = "#ff820e",fill_y = "#0000fe",type = "density"){
   p1 <- ggpubr::ggscatter( dat, x = x, y = y,
                            add = "reg.line", conf.int = TRUE,
                            add.params = list(color = color_cor, fill = fill_cor))+
     ggpubr::stat_cor()+
     theme_bw()
+  if(type == "density"){
+    p2 <- ggplot(dat, aes_string(x)) +
+      geom_density(fill = fill_x) +
+      theme_void()
 
-  p2 <- ggplot(dat, aes_string(x)) +
-    geom_density(fill = fill_x) +
-    theme_void()
+    p3 <- ggplot(dat, aes_string(y)) +
+      geom_density(fill = fill_y) +
+      coord_flip() +
+      theme_void()
+  }else if( type == "histogram"){
+    p2 <- ggplot(dat, aes_string(x)) +
+      geom_histogram(fill = fill_x,width = 0.1) +
+      theme_void()
 
-  p3 <- ggplot(dat, aes_string(y)) +
-    geom_density(fill = fill_y) +
-    coord_flip() +
-    theme_void()
+    p3 <- ggplot(dat, aes_string(y)) +
+      geom_histogram(fill = fill_y,width = 0.1) +
+      coord_flip() +
+      theme_void()
+  }else{
+    stop("The `type` parameter must be either 'density' or 'histogram'.")
+  }
+
   p2 + p1 + p3 + plot_spacer() + plot_layout(design = c("AAAAD
        BBBBC
        BBBBC
