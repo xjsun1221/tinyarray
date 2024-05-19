@@ -20,8 +20,20 @@ a list with kegg and go bar plot according to up and down genes enrichment resul
 draw enrichment bar plots for both up and down genes,for human only.
 }
 \examples{
-\donttest{
-double_enrich(deg)
+\dontrun{
+if(requireNamespace("org.Hs.eg.db",quietly = TRUE)&
+   requireNamespace("labeling",quietly = TRUE)){
+   double_enrich(deg)
+}else{
+  if(!requireNamespace("org.Hs.eg.db",quietly = TRUE)) {
+    warning("Package 'org.Hs.eg.db' needed for this function to work.
+        Please install it by BiocManager::install('org.Hs.eg.db')",call. = FALSE)
+  }
+  if(!requireNamespace("labeling",quietly = TRUE)) {
+    warning("Package 'labeling' needed for this function to work.
+        Please install it by install.packages('labeling')",call. = FALSE)
+  }
+}
 }
 }
 \seealso{

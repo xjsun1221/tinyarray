@@ -34,8 +34,20 @@ download gse data and get informations
 }
 \examples{
 \dontrun{
-gse = "GSE42872"
-a = geo_download(gse,destdir=tempdir())
+if(requireNamespace("Biobase",quietly = TRUE)&
+   requireNamespace("AnnoProbe",quietly = TRUE)){
+  gse = "GSE42872"
+  a = geo_download(gse,destdir=tempdir())
+}else{
+  if(!requireNamespace("AnnoProbe",quietly = TRUE)) {
+    print("Package 'AnnoProbe' needed for this function to work.
+         Please install it by install.packages('AnnoProbe')"print)
+  }
+  if(!requireNamespace("Biobase",quietly = TRUE)) {
+    print("Package 'Biobase' needed for this function to work.
+         Please install it by BiocManager::install('Biobase')"print)
+  }
+}
 }
 }
 \seealso{

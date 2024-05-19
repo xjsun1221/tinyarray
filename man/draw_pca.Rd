@@ -37,14 +37,39 @@ draw_pca(
 a pca plot according to \code{exp} and grouped by \code{group}.
 }
 \description{
-do PCA analysis and print a PCA plot
+do PCA analysis and warning a PCA plot
 }
 \examples{
-draw_pca(t(iris[,1:4]),iris$Species)
-draw_pca(t(iris[,1:4]),iris$Species,style = "ggplot2")
-draw_pca(t(iris[,1:4]),iris$Species,style = "3D")
-#change color
-draw_pca(t(iris[,1:4]),iris$Species,color = c("#E78AC3", "#A6D854", "#FFD92F"))
+if(requireNamespace("FactoMineR",quietly = TRUE)&
+   requireNamespace("factoextra",quietly = TRUE)){
+  draw_pca(t(iris[,1:4]),iris$Species)
+  draw_pca(t(iris[,1:4]),iris$Species,style = "ggplot2")
+  #change color
+  draw_pca(t(iris[,1:4]),iris$Species,color = c("#E78AC3", "#A6D854", "#FFD92F"))
+}else{
+  if(!requireNamespace("FactoMineR",quietly = TRUE)){
+    warning("Package 'FactoMineR' needed for this function to work.
+         Please install it by install.packages('FactoMineR')")
+  }
+  if(!requireNamespace("factoextra",quietly = TRUE)){
+    warning("Package 'factoextra' needed for this function to work.
+         Please install it by install.packages('factoextra')")
+  }
+}
+
+if(requireNamespace("scatterplot3d",quietly = TRUE)&
+   requireNamespace("FactoMineR",quietly = TRUE)){
+  draw_pca(t(iris[,1:4]),iris$Species,style = "3D")
+}else{
+  if(!requireNamespace("scatterplot3d",quietly = TRUE)){
+    warning("Package 'scatterplot3d' needed for this function to work.
+         Please install it by install.packages('scatterplot3d')")
+  }
+  if(!requireNamespace("FactoMineR",quietly = TRUE)){
+    warning("Package 'FactoMineR' needed for this function to work.
+         Please install it by install.packages('FactoMineR')")
+  }
+}
 }
 \seealso{
 \code{\link{draw_heatmap}};\code{\link{draw_volcano}};\code{\link{draw_venn}}

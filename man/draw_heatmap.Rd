@@ -56,7 +56,7 @@ draw_heatmap(
 a heatmap plot according to \code{exp} and grouped by \code{group}.
 }
 \description{
-print a heatmap plot for expression matrix and group by group_list praramter, exp will be scaled.
+warning a heatmap plot for expression matrix and group by group_list praramter, exp will be scaled.
 }
 \examples{
 #example data
@@ -66,13 +66,18 @@ colnames(exp) <- paste0("sample",1:6)
 rownames(exp) <- paste0("gene",1:10)
 exp[1:4,1:4]
 group_list = factor(rep(c("A","B"),each = 3))
-draw_heatmap(exp,group_list)
-#use iris
-n = t(iris[,1:4]);colnames(n) = 1:150
-group_list = iris$Species
-draw_heatmap(n,group_list)
-draw_heatmap(n,group_list,color = colorRampPalette(c("green","black","red"))(100),
-             color_an = c("red","blue","pink") )
+if(requireNamespace("ggplotify",quietly = TRUE)){
+  draw_heatmap(exp,group_list)
+  #use iris
+  n = t(iris[,1:4]);colnames(n) = 1:150
+  group_list = iris$Species
+  draw_heatmap(n,group_list)
+  draw_heatmap(n,group_list,color = colorRampPalette(c("green","black","red"))(100),
+               color_an = c("red","blue","pink") )
+}else{
+  warning("Package 'ggplotify' needed for this function to work.
+    Please install it by install.packages('ggplotify')")
+}
 }
 \seealso{
 \code{\link{draw_pca}};\code{\link{draw_volcano}};\code{\link{draw_venn}}

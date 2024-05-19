@@ -1,6 +1,6 @@
 ##' draw PCA plots
 ##'
-##' do PCA analysis and print a PCA plot
+##' do PCA analysis and warning a PCA plot
 ##'
 ##' @param exp A numeric matrix
 ##' @param group_list A factor with duplicated character or factor
@@ -22,11 +22,37 @@
 ##' @author Xiaojie Sun
 ##' @export
 ##' @examples
-##' draw_pca(t(iris[,1:4]),iris$Species)
-##' draw_pca(t(iris[,1:4]),iris$Species,style = "ggplot2")
-##' draw_pca(t(iris[,1:4]),iris$Species,style = "3D")
-##' #change color
-##' draw_pca(t(iris[,1:4]),iris$Species,color = c("#E78AC3", "#A6D854", "#FFD92F"))
+##' if(requireNamespace("FactoMineR",quietly = TRUE)&
+##'    requireNamespace("factoextra",quietly = TRUE)){
+##'   draw_pca(t(iris[,1:4]),iris$Species)
+##'   draw_pca(t(iris[,1:4]),iris$Species,style = "ggplot2")
+##'   #change color
+##'   draw_pca(t(iris[,1:4]),iris$Species,color = c("#E78AC3", "#A6D854", "#FFD92F"))
+##' }else{
+##'   if(!requireNamespace("FactoMineR",quietly = TRUE)){
+##'     warning("Package 'FactoMineR' needed for this function to work.
+##'          Please install it by install.packages('FactoMineR')")
+##'   }
+##'   if(!requireNamespace("factoextra",quietly = TRUE)){
+##'     warning("Package 'factoextra' needed for this function to work.
+##'          Please install it by install.packages('factoextra')")
+##'   }
+##' }
+##'
+##' if(requireNamespace("scatterplot3d",quietly = TRUE)&
+##'    requireNamespace("FactoMineR",quietly = TRUE)){
+##'   draw_pca(t(iris[,1:4]),iris$Species,style = "3D")
+##' }else{
+##'   if(!requireNamespace("scatterplot3d",quietly = TRUE)){
+##'     warning("Package 'scatterplot3d' needed for this function to work.
+##'          Please install it by install.packages('scatterplot3d')")
+##'   }
+##'   if(!requireNamespace("FactoMineR",quietly = TRUE)){
+##'     warning("Package 'FactoMineR' needed for this function to work.
+##'          Please install it by install.packages('FactoMineR')")
+##'   }
+##' }
+
 
 
 ##' @seealso
@@ -43,10 +69,6 @@ draw_pca <-  function(exp,group_list,
     stop("Package \"FactoMineR\" needed for this function to work.
          Please install it by install.packages('FactoMineR')",call. = FALSE)
   }
-  if(!requireNamespace("factoextra",quietly = TRUE)) {
-    stop("Package \"factoextra\" needed for this function to work.
-         Please install it by install.packages('factoextra')",call. = FALSE)
-  }
   p1 <-  all(apply(exp,2,is.numeric))
   if(!p1) stop("exp must be a numeric matrix")
   p2  <-  (sum(!duplicated(group_list)) > 1)
@@ -55,6 +77,10 @@ draw_pca <-  function(exp,group_list,
   dat.pca <- FactoMineR::PCA(dat, graph = FALSE)
   col = color[1:length(levels(group_list))]
   if(style == "default"){
+    if(!requireNamespace("factoextra",quietly = TRUE)) {
+      stop("Package \"factoextra\" needed for this function to work.
+         Please install it by install.packages('factoextra')",call. = FALSE)
+    }
     factoextra::fviz_pca_ind(dat.pca,
                              geom.ind = "point",
                              col.ind = group_list,
@@ -82,7 +108,11 @@ draw_pca <-  function(exp,group_list,
                    linetype = 2)
     return(p)
   }else if(style == "3D"){
-    colors = color[as.numeric(group_list)]
+    if(!requireNamespace("scatterplot3d",quietly = TRUE)) {
+      stop("Package \"scatterplot3d\" needed for this function to work.
+         Please install it by install.packages('scatterplot3d')",call. = FALSE)
+    }
+     colors = color[as.numeric(group_list)]
     pdat = data.frame(dat.pca[["ind"]][["coord"]],
                       Group = group_list)
     scatterplot3d::scatterplot3d(pdat[,1:3],
@@ -104,7 +134,7 @@ if(getRversion() >= "2.15.1")  utils::globalVariables(c(".","Dim.1","Dim.2","Gro
 
 ##' draw a heatmap plot
 ##'
-##' print a heatmap plot for expression matrix and group by group_list praramter, exp will be scaled.
+##' warning a heatmap plot for expression matrix and group by group_list praramter, exp will be scaled.
 ##'
 ##' @inheritParams draw_pca
 ##' @param n  A numeric matrix
@@ -132,13 +162,19 @@ if(getRversion() >= "2.15.1")  utils::globalVariables(c(".","Dim.1","Dim.2","Gro
 ##' rownames(exp) <- paste0("gene",1:10)
 ##' exp[1:4,1:4]
 ##' group_list = factor(rep(c("A","B"),each = 3))
-##' draw_heatmap(exp,group_list)
-##' #use iris
-##' n = t(iris[,1:4]);colnames(n) = 1:150
-##' group_list = iris$Species
-##' draw_heatmap(n,group_list)
-##' draw_heatmap(n,group_list,color = colorRampPalette(c("green","black","red"))(100),
-##'              color_an = c("red","blue","pink") )
+##' if(requireNamespace("ggplotify",quietly = TRUE)){
+##'   draw_heatmap(exp,group_list)
+##'   #use iris
+##'   n = t(iris[,1:4]);colnames(n) = 1:150
+##'   group_list = iris$Species
+##'   draw_heatmap(n,group_list)
+##'   draw_heatmap(n,group_list,color = colorRampPalette(c("green","black","red"))(100),
+##'                color_an = c("red","blue","pink") )
+##' }else{
+##'   warning("Package 'ggplotify' needed for this function to work.
+##'     Please install it by install.packages('ggplotify')")
+##' }
+
 ##' @seealso
 ##' \code{\link{draw_pca}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
 
@@ -156,7 +192,8 @@ draw_heatmap <-  function(n,
                           scale = TRUE,
                           main = NA,...){
   if(!requireNamespace("ggplotify",quietly = TRUE)) {
-    stop("Package \"ggplotify\" needed for this function to work. Please install it by install.packages('ggplotify')",call. = FALSE)
+    stop("Package 'ggplotify' needed for this function to work.
+         Please install it by install.packages('ggplotify')",call. = FALSE)
   }
   p3 <- is.factor(group_list)
   if(!p3) {
@@ -174,10 +211,12 @@ draw_heatmap <-  function(n,
   if(!p2) stop("group_list must more than 1")
   if(split_column){
     if(!requireNamespace("circlize",quietly = TRUE)) {
-      stop("Package \"circlize\" needed for this function to work. Please install it by install.packages('circlize')",call. = FALSE)
+      stop("Package 'circlize' needed for this function to work.
+           Please install it by install.packages('circlize')",call. = FALSE)
     }
     if(!requireNamespace("ComplexHeatmap",quietly = TRUE)) {
-      stop("Package \"ComplexHeatmap\" needed for this function to work. Please install it by BiocManager::install('ComplexHeatmap')",call. = FALSE)
+      stop("Package 'ComplexHeatmap' needed for this function to work.
+           Please install it by BiocManager::install('ComplexHeatmap')",call. = FALSE)
     }
     col_fun = circlize::colorRamp2(c(-n_cutoff, 0, n_cutoff), c(color[1], "white", color[100]))
     if(scale){
@@ -249,7 +288,7 @@ draw_heatmap <-  function(n,
 
 ##' draw a volcano plot
 ##'
-##' print a volcano plot for Differential analysis result in data.frame format.
+##' warning a volcano plot for Differential analysis result in data.frame format.
 ##'
 ##' @param deg a data.frame created by Differential analysis
 ##' @param pvalue_cutoff Cutoff value of pvalue,0.05 by default.
@@ -340,7 +379,7 @@ utils::globalVariables(c("logFC","P.value","change"))
 
 ##' draw a venn plot
 ##'
-##' print a venn plot for deg result created by three packages
+##' warning a venn plot for deg result created by three packages
 ##'
 ##' @inheritParams VennDiagram::venn.diagram
 ##' @inheritParams VennDiagram::draw.single.venn
@@ -354,9 +393,26 @@ utils::globalVariables(c("logFC","P.value","change"))
 ##' @author Xiaojie Sun
 ##' @export
 ##' @examples
-##' x = list(Deseq2=sample(1:100,30),edgeR = sample(1:100,30),limma = sample(1:100,30))
-##' draw_venn(x,"test")
-##' draw_venn(x,"test",color = c("darkgreen", "darkblue", "#B2182B"))
+##'if(requireNamespace("VennDiagram",quietly = TRUE)&
+##'   requireNamespace("ggplotify",quietly = TRUE)&
+##'   requireNamespace("cowplot",quietly = TRUE)){
+##'  x = list(Deseq2=sample(1:100,30),edgeR = sample(1:100,30),limma = sample(1:100,30))
+##'  draw_venn(x,"test")
+##'  draw_venn(x,"test",color = c("darkgreen", "darkblue", "#B2182B"))
+##'}else{
+##'  if(!requireNamespace("VennDiagram",quietly = TRUE)) {
+##'    warning("Package 'VennDiagram' needed for this function to work.
+##'    Please install it by install.packages('VennDiagram')")
+##'  }
+##'  if(!requireNamespace("ggplotify",quietly = TRUE)) {
+##'    warning("Package 'ggplotify' needed for this function to work.
+##'    Please install it by install.packages('ggplotify')")
+##'  }
+##'  if(!requireNamespace("cowplot",quietly = TRUE)) {
+##'    warning("Package 'cowplot' needed for this function to work.
+##'    Please install it by install.packages('cowplot')")
+##'  }
+##'}
 ##' @seealso
 ##' \code{\link{draw_pca}};\code{\link{draw_volcano}};\code{\link{draw_heatmap}}
 
@@ -379,13 +435,16 @@ draw_venn <- function(x,main,
                       ...){
   if(as.numeric(grDevices::dev.cur())!=1) grDevices::graphics.off()
   if(!requireNamespace("VennDiagram",quietly = TRUE)) {
-    stop("Package \"VennDiagram\" needed for this function to work. Please install it byby install.packages('VennDiagram')",call. = FALSE)
+    stop("Package \"VennDiagram\" needed for this function to work.
+         Please install it byby install.packages('VennDiagram')",call. = FALSE)
   }
   if(!requireNamespace("ggplotify",quietly = TRUE)) {
-    stop("Package \"ggplotify\" needed for this function to work. Please install it by install.packages('ggplotify')",call. = FALSE)
+    stop("Package \"ggplotify\" needed for this function to work.
+         Please install it by install.packages('ggplotify')",call. = FALSE)
   }
   if(!requireNamespace("cowplot",quietly = TRUE)) {
-    stop("Package \"cowplot\" needed for this function to work. Please install it by install.packages('cowplot')",call. = FALSE)
+    stop("Package \"cowplot\" needed for this function to work.
+         Please install it by install.packages('cowplot')",call. = FALSE)
   }
   if(!is.list(x)) stop("x must be a list")
   if(length(x)>7) stop("why do you give me so many elements to compare, I reject!")
@@ -442,15 +501,27 @@ draw_venn <- function(x,main,
 ##' @importFrom ggplot2 after_stat
 ##' @export
 ##' @examples
-##' draw_boxplot(t(iris[,1:4]),iris$Species)
-##' exp <-  matrix(rnorm(60),nrow = 10)
-##' colnames(exp) <- paste0("sample",1:6)
-##' rownames(exp) <- paste0("gene",1:10)
-##' exp[,4:6] = exp[,4:6] +10
-##' exp[1:4,1:4]
-##' group_list <- factor(rep(c("A","B"),each = 3))
-##' draw_boxplot(exp,group_list)
-##' draw_boxplot(exp,group_list,color = c("grey","red"))
+##' if(requireNamespace("tidyr",quietly = TRUE)&
+##'    requireNamespace("ggpubr",quietly = TRUE)){
+##'   draw_boxplot(t(iris[,1:4]),iris$Species)
+##'   exp <-  matrix(rnorm(60),nrow = 10)
+##'   colnames(exp) <- paste0("sample",1:6)
+##'   rownames(exp) <- paste0("gene",1:10)
+##'   exp[,4:6] = exp[,4:6] +10
+##'   exp[1:4,1:4]
+##'   group_list <- factor(rep(c("A","B"),each = 3))
+##'   draw_boxplot(exp,group_list)
+##'   draw_boxplot(exp,group_list,color = c("grey","red"))
+##'   }else{
+##' if(!requireNamespace("ggpubr",quietly = TRUE)) {
+##'  warning("Package 'ggpubr' needed for this function to work.
+##'         Please install it by install.packages('ggpubr')")
+##' }
+##' if(!requireNamespace("tidyr",quietly = TRUE)) {
+##'  warning("Package 'tidyr' needed for this function to work.
+##'         Please install it by install.packages('tidyr')")
+##' }
+##'}
 ##' @seealso
 ##' \code{\link{draw_heatmap}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
 
@@ -693,7 +764,12 @@ utils::globalVariables(c("gene","samples"))
 ##'exp[1:4,1:4]
 ##'exp[,1:100] = exp[,1:100]+10
 ##'group_list <- factor(rep(c("A","B"),each = 100))
-##'draw_tsne(exp,group_list)
+##'if(requireNamespace("Rtsne",quietly = TRUE)){
+##' draw_tsne(exp,group_list)
+##'}else{
+##'  warning("Package 'Rtsne' needed for this function to work.
+##'         Please install it by install.packages('Rtsne')")
+##'}
 
 draw_tsne = function(exp,group_list,perplexity=30,
                      color = c("#2874C5","#f87669","#e6b707","#868686","#92C5DE", "#F4A582", "#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3",
@@ -814,10 +890,19 @@ draw_KM = function(meta,
 ##' @importFrom patchwork plot_spacer
 ##' @export
 ##' @examples
+##' if(requireNamespace("ggpubr",quietly = TRUE)){
 ##' corscatterplot(iris,"Sepal.Length","Sepal.Width")
+##' }else{
+##'   warning("Package 'ggpubr' needed for this function to work.
+##'            Please install it by install.packages('ggpubr')")
+##' }
 corscatterplot = function(dat,x,y,color_cor = "blue",fill_cor = "lightgray",
                           fill_x = "#ff820e",fill_y = "#0000fe",
                           type = "density",...){
+  if(!requireNamespace("ggpubr",quietly = TRUE))
+    stop("Package \"ggpubr\" needed for this function to work.
+         Please install it by install.packages('ggpubr')",call. = FALSE)
+
   p1 <- ggpubr::ggscatter( dat, x = x, y = y,
                            add = "reg.line", conf.int = TRUE,
                            add.params = list(color = color_cor, fill = fill_cor),...)+
@@ -863,6 +948,7 @@ corscatterplot = function(dat,x,y,color_cor = "blue",fill_cor = "lightgray",
 ##' @author Xiaojie Sun
 ##' @importFrom dplyr case_when
 ##' @importFrom pheatmap pheatmap
+##' @importFrom Hmisc rcorr
 ##' @export
 ##' @examples
 ##' x = rownames(exprSet_hub1)[1:3]
@@ -874,8 +960,8 @@ corheatmap = function(exp,x,y,color = c("#2fa1dd", "white", "#f87669")){
   y = unique(y)
   y = setdiff(y,x)
   da = t(exp[c(x,y),])
-  m = Hmisc::rcorr(da)$r[1:length(x),(ncol(da)-length(y)+1):ncol(da)]
-  p = Hmisc::rcorr(da)$P[1:length(x),(ncol(da)-length(y)+1):ncol(da)]
+  m = rcorr(da)$r[1:length(x),(ncol(da)-length(y)+1):ncol(da)]
+  p = rcorr(da)$P[1:length(x),(ncol(da)-length(y)+1):ncol(da)]
   tmp = matrix(case_when(as.logical(p<=0.0001)~"****",
                          as.logical(p<=0.001)~"***",
                          as.logical(p<=0.01)~"**",

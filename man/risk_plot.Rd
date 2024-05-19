@@ -9,7 +9,8 @@ risk_plot(
   meta,
   riskscore,
   cut.point = FALSE,
-  color = c("#2fa1dd", "#f87669")
+  color = c("#2fa1dd", "#f87669"),
+  n_cutoff = 3
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ risk_plot(
 \item{cut.point}{logical , use cut_point or not, if FALSE,use median by defult}
 
 \item{color}{color for boxplot}
+
+\item{n_cutoff}{3 by defalut , scale before plot and set a cutoff,usually 2 or 1.6}
 }
 \value{
 risk plot

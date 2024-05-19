@@ -23,6 +23,8 @@ print one or more volcano plot for Differential analysis result in data.frame fo
 }
 \examples{
 \dontrun{
+if(requireNamespace("Biobase",quietly = TRUE)&
+   requireNamespace("AnnoProbe",quietly = TRUE)){
 #two group
 gse = "GSE42872"
 geo = geo_download(gse,destdir=tempdir())
@@ -40,9 +42,19 @@ ifelse(stringr::str_detect(geo$pd$title,"NonObese"),"NonObese","Obese"))
 group_list=factor(group_list,levels = c("NonObese","Obese","MObese"))
 find_anno(geo$gpl)
 ids <- AnnoProbe::idmap(geo$gpl,destdir = tempdir())
-deg = multi_deg(geo$exp,group_list,ids,adjust = FALSE)
+deg = multi_deg(geo$exp,group_list,ids,adjust = FALSE,entriz = FALSE)
 draw_volcano2(deg)
 draw_volcano2(deg,color = c("darkgreen","grey","darkred"))
+}else{
+  if(!requireNamespace("AnnoProbe",quietly = TRUE)) {
+    warning("Package 'AnnoProbe' needed for this function to work.
+         Please install it by install.packages('AnnoProbe')",call. = FALSE)
+  }
+  if(!requireNamespace("Biobase",quietly = TRUE)) {
+    warning("Package 'Biobase' needed for this function to work.
+         Please install it by BiocManager::install('Biobase')",call. = FALSE)
+  }
+}
 }
 }
 \seealso{

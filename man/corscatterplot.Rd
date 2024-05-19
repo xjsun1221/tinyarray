@@ -42,7 +42,12 @@ a ggplot object
 draw cor scatter plot with density plot by ggplot2
 }
 \examples{
+if(requireNamespace("ggpubr",quietly = TRUE)){
 corscatterplot(iris,"Sepal.Length","Sepal.Width")
+}else{
+  warning("Package 'ggpubr' needed for this function to work.
+           Please install it by install.packages('ggpubr')")
+}
 }
 \author{
 Xiaojie Sun

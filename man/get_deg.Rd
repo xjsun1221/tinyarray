@@ -39,14 +39,27 @@ a deg data.frame with 10 columns
 do differential analysis according to expression set and group information
 }
 \examples{
-\dontrun{gse = "GSE42872"
-geo = geo_download(gse,destdir=tempdir())
-Group = rep(c("control","treat"),each = 3)
-Group = factor(Group)
-find_anno(geo$gpl)
-ids <- AnnoProbe::idmap(geo$gpl,destdir = tempdir())
-deg = get_deg(geo$exp,Group,ids)
-head(deg)
+\dontrun{
+if(requireNamespace("Biobase",quietly = TRUE)&
+   requireNamespace("AnnoProbe",quietly = TRUE)){
+  gse = "GSE42872"
+  a = geo_download(gse,destdir=tempdir())
+  find_anno(geo$gpl)
+  ids <- AnnoProbe::idmap(geo$gpl,destdir = tempdir())
+  Group = rep(c("control","treat"),each = 3)
+  Group = factor(Group)
+  deg = get_deg(geo$exp,Group,ids,entriz = FALSE)
+  head(deg)
+}else{
+  if(!requireNamespace("AnnoProbe",quietly = TRUE)) {
+    warning("Package 'AnnoProbe' needed for this function to work.
+         Please install it by install.packages('AnnoProbe')",call. = FALSE)
+  }
+  if(!requireNamespace("Biobase",quietly = TRUE)) {
+    warning("Package 'Biobase' needed for this function to work.
+         Please install it by BiocManager::install('Biobase')",call. = FALSE)
+  }
+}
 }
 }
 \seealso{

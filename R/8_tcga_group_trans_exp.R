@@ -230,7 +230,12 @@ match_exp_cl = function(exp,cl,id_column = "id",sample_centric = TRUE){
 ##' exp = matrix(rnorm(1000),ncol = 10)
 ##' rownames(exp) = sample(mRNA_annov23$gene_id,100)
 ##' colnames(exp) = c(paste0("TCGA",1:5),paste0("GTEX",1:5))
+##' if(requireNamespace("AnnoProbe")){
 ##' k  = trans_exp_new(exp)
+##' }else{
+##'   warning("Package \"AnnoProbe\" needed for this function to work.
+##'          Please install it by install.packages('AnnoProbe')")
+##' }
 ##' @seealso
 ##' \code{\link{trans_exp}}
 trans_exp_new = function(exp,mrna_only = FALSE,
@@ -258,6 +263,7 @@ trans_exp_new = function(exp,mrna_only = FALSE,
 ##'
 ##' @param entrezexp expression set with entrezid as rownames
 ##' @param species choose human or mouse, or rat, default: human
+##' @importFrom clusterProfiler bitr
 ##' @return a transformed expression set with symbol
 ##' @author Xiaojie Sun
 ##' @export
@@ -267,7 +273,12 @@ trans_exp_new = function(exp,mrna_only = FALSE,
 ##'                   "79723", "54413", "22927", "92342", "23787", "5550", "8924",
 ##'                   "55274", "866", "8844", "353299", "587", "1473")
 ##' colnames(exp) = paste0("s",1:10)
+##' if(requireNamespace("org.Hs.eg.db",quietly = TRUE)){
 ##' exp2 = trans_entrezexp(exp)
+##' }else{
+##'     warning("Package \"org.Hs.eg.db\" needed for this function to work.
+##'         Please install it by BiocManager::install('org.Hs.eg.db')",call. = FALSE)
+##' }
 ##' @seealso
 ##' \code{\link{trans_exp}}
 trans_entrezexp = function(entrezexp,species="human"){
@@ -293,10 +304,7 @@ trans_entrezexp = function(entrezexp,species="human"){
     or = org.Rn.eg.db::org.Rn.eg.db
   }
   if(is.data.frame(entrezexp)){exp = as.matrix(entrezexp)}
-  re = clusterProfiler::bitr(rownames(entrezexp),
-                             fromType = "ENTREZID",
-                             toType = "SYMBOL",
-                             OrgDb = or)
+  re = bitr(rownames(entrezexp),fromType = "ENTREZID",toType = "SYMBOL",OrgDb = or)
   exp = trans_array(entrezexp,ids = re,from = "ENTREZID",to = "SYMBOL")
   return(exp)
 }

@@ -65,6 +65,8 @@ get_cgs <- function(deg){
 ##' @export
 ##' @examples
 ##' \dontrun{
+##' if(requireNamespace("Biobase",quietly = TRUE)&
+##'    requireNamespace("AnnoProbe",quietly = TRUE)){
 ##' #two group
 ##' gse = "GSE42872"
 ##' geo = geo_download(gse,destdir=tempdir())
@@ -82,9 +84,19 @@ get_cgs <- function(deg){
 ##' group_list=factor(group_list,levels = c("NonObese","Obese","MObese"))
 ##' find_anno(geo$gpl)
 ##' ids <- AnnoProbe::idmap(geo$gpl,destdir = tempdir())
-##' deg = multi_deg(geo$exp,group_list,ids,adjust = FALSE)
+##' deg = multi_deg(geo$exp,group_list,ids,adjust = FALSE,entriz = FALSE)
 ##' draw_volcano2(deg)
 ##' draw_volcano2(deg,color = c("darkgreen","grey","darkred"))
+##' }else{
+##'   if(!requireNamespace("AnnoProbe",quietly = TRUE)) {
+##'     warning("Package 'AnnoProbe' needed for this function to work.
+##'          Please install it by install.packages('AnnoProbe')",call. = FALSE)
+##'   }
+##'   if(!requireNamespace("Biobase",quietly = TRUE)) {
+##'     warning("Package 'Biobase' needed for this function to work.
+##'          Please install it by BiocManager::install('Biobase')",call. = FALSE)
+##'   }
+##' }
 ##' }
 ##' @seealso
 ##' \code{\link{geo_download}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
@@ -135,17 +147,29 @@ draw_volcano2 = function(deg,
 ##' @export
 ##' @examples
 ##' \dontrun{
-##' gse = "GSE474"
-##' geo = geo_download(gse,destdir=tempdir())
-##' geo$exp[1:4,1:4]
-##' geo$exp=log2(geo$exp+1)
-##' group_list=ifelse(stringr::str_detect(geo$pd$title,"MObese"),"MObese",
-##' ifelse(stringr::str_detect(geo$pd$title,"NonObese"),"NonObese","Obese"))
-##' group_list=factor(group_list,levels = c("NonObese","Obese","MObese"))
-##' find_anno(geo$gpl)
-##' ids <- AnnoProbe::idmap(geo$gpl,destdir = tempdir())
-##' deg = multi_deg(geo$exp,group_list,ids,adjust = FALSE)
-##' draw_heatmap2(geo$exp,group_list,deg)
+##' if(requireNamespace("Biobase",quietly = TRUE)&
+##'    requireNamespace("AnnoProbe",quietly = TRUE)){
+##'   gse = "GSE474"
+##'   geo = geo_download(gse,destdir=tempdir())
+##'   geo$exp[1:4,1:4]
+##'   geo$exp=log2(geo$exp+1)
+##'   group_list=ifelse(stringr::str_detect(geo$pd$title,"MObese"),"MObese",
+##'   ifelse(stringr::str_detect(geo$pd$title,"NonObese"),"NonObese","Obese"))
+##'   group_list=factor(group_list,levels = c("NonObese","Obese","MObese"))
+##'   find_anno(geo$gpl)
+##'   ids <- AnnoProbe::idmap(geo$gpl,destdir = tempdir())
+##'   deg = multi_deg(geo$exp,group_list,ids,adjust = FALSE,entriz = FALSE)
+##'   draw_heatmap2(geo$exp,group_list,deg)
+##' }else{
+##'   if(!requireNamespace("AnnoProbe",quietly = TRUE)) {
+##'     warning("Package 'AnnoProbe' needed for this function to work.
+##'          Please install it by install.packages('AnnoProbe')",call. = FALSE)
+##'   }
+##'   if(!requireNamespace("Biobase",quietly = TRUE)) {
+##'     warning("Package 'Biobase' needed for this function to work.
+##'          Please install it by BiocManager::install('Biobase')",call. = FALSE)
+##'   }
+##' }
 ##' }
 ##' @seealso
 ##' \code{\link{draw_pca}};\code{\link{draw_volcano}};\code{\link{draw_venn}}
@@ -198,6 +222,8 @@ draw_heatmap2 <- function(exp,
 ##' @export
 ##' @examples
 ##' \dontrun{
+##' if(requireNamespace("Biobase",quietly = TRUE)&
+##'    requireNamespace("AnnoProbe",quietly = TRUE)){
 ##' gse = "GSE474"
 ##' geo = geo_download(gse,destdir=tempdir())
 ##' geo$exp[1:4,1:4]
@@ -207,8 +233,18 @@ draw_heatmap2 <- function(exp,
 ##' group_list=factor(group_list,levels = c("NonObese","Obese","MObese"))
 ##' find_anno(geo$gpl)
 ##' ids = AnnoProbe::idmap(geo$gpl,destdir = tempdir())
-##' deg = get_deg(geo$exp,group_list,ids,adjust = FALSE)
+##' deg = get_deg(geo$exp,group_list,ids,adjust = FALSE,entriz = FALSE)
 ##' plot_deg(geo$exp,group_list,deg)
+##' }else{
+##'   if(!requireNamespace("AnnoProbe",quietly = TRUE)) {
+##'     warning("Package 'AnnoProbe' needed for this function to work.
+##'          Please install it by install.packages('AnnoProbe')",call. = FALSE)
+##'   }
+##'   if(!requireNamespace("Biobase",quietly = TRUE)) {
+##'     warning("Package 'Biobase' needed for this function to work.
+##'          Please install it by BiocManager::install('Biobase')",call. = FALSE)
+##'   }
+##' }
 ##' }
 plot_deg = function(exp,
                     group_list,
@@ -274,6 +310,8 @@ plot_deg = function(exp,
 ##' @export
 ##' @examples
 ##' \dontrun{
+##' if(requireNamespace("Biobase",quietly = TRUE)&
+##'    requireNamespace("AnnoProbe",quietly = TRUE)){
 ##' gse = "GSE474"
 ##' geo = geo_download(gse,destdir=tempdir())
 ##' geo$exp[1:4,1:4]
@@ -284,8 +322,18 @@ plot_deg = function(exp,
 ##' find_anno(geo$gpl)
 ##' ids = AnnoProbe::idmap(geo$gpl,destdir = tempdir())
 ##' dcp = multi_deg_all(geo$exp,
-##' group_list,ids,adjust = FALSE)
+##' group_list,ids,adjust = FALSE,entriz = FALSE)
 ##' dcp[[3]]
+##' }else{
+##'   if(!requireNamespace("AnnoProbe",quietly = TRUE)) {
+##'     warning("Package 'AnnoProbe' needed for this function to work.
+##'          Please install it by install.packages('AnnoProbe')",call. = FALSE)
+##'   }
+##'   if(!requireNamespace("Biobase",quietly = TRUE)) {
+##'     warning("Package 'Biobase' needed for this function to work.
+##'          Please install it by BiocManager::install('Biobase')",call. = FALSE)
+##'   }
+##' }
 ##' }
 ##' @seealso
 ##' \code{\link{geo_download}};\code{\link{draw_volcano}};\code{\link{draw_venn}}

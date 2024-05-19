@@ -32,8 +32,8 @@ exp_surv <- function(exprSet_hub,meta,cut.point = FALSE,color = c("#2874C5", "#f
       meta$gene=ifelse(as.numeric(exprSet_hub[g,]) > stats::median(as.numeric(exprSet_hub[g,])),'high','low')
     }
     if(length(unique(meta$gene))==1) stop(paste0("gene",g,"with too low expression"))
-    sfit1=survival::survfit(survival::Surv(time, event)~gene, data=meta)
-    p = survminer::ggsurvplot(sfit1,pval =TRUE,
+    sfit1=survfit(Surv(time, event)~gene, data=meta)
+    p = ggsurvplot(sfit1,pval =TRUE,
                               palette = rev(color),
                               data = meta,
                               legend = c(0.8,0.8),
@@ -62,12 +62,21 @@ exp_surv <- function(exprSet_hub,meta,cut.point = FALSE,color = c("#2874C5", "#f
 ##' @return box plots list for all genes in the matrix
 ##' @author Xiaojie Sun
 ##' @examples
+##'if(requireNamespace("ggpubr",quietly = TRUE)) {
 ##' k = exp_boxplot(log2(exp_hub1+1));k[[1]]
+##'}else{
+##'  warning("Package 'ggpubr' needed for this function to work.
+##'         Please install it by install.packages('ggpubr')")
+##'}
 ##' @seealso
 ##' \code{\link{exp_surv}};\code{\link{box_surv}}
 
-exp_boxplot <-  function(exp_hub,color = c("grey","red")){
+exp_boxplot <-  function(exp_hub,color = c("#2fa1dd","#f87669")){
   if(nrow(exp_hub)>15)warning(paste0(nrow(exp_hub)," figures will be produced"))
+  if(!requireNamespace("ggpubr",quietly = TRUE)) {
+    stop("Package \"ggpubr\" needed for this function to work.
+         Please install it by install.packages('ggpubr')",call. = FALSE)
+  }
   group_list = make_tcga_group(exp_hub)
   k = rownames(exp_hub)
   rownames(exp_hub) = paste0("gene",1:nrow(exp_hub))
@@ -103,7 +112,12 @@ exp_boxplot <-  function(exp_hub,color = c("grey","red")){
 ##' @return patchwork result for hub genes boxplot and survival plot
 ##' @author Xiaojie Sun
 ##' @examples
+##'if(requireNamespace("ggpubr",quietly = TRUE)) {
 ##' k = box_surv(log2(exp_hub1+1),exprSet_hub1,meta1);k[[1]]
+##'}else{
+##'  warning("Package 'ggpubr' needed for this function to work.
+##'         Please install it by install.packages('ggpubr')")
+##'}
 ##' @seealso
 ##' \code{\link{exp_boxplot}};\code{\link{exp_surv}}
 
@@ -127,7 +141,9 @@ box_surv <-function(exp_hub,exprSet_hub,meta){
 ##' draw risk plot
 ##'
 ##' @inheritParams exp_surv
+##' @inheritParams draw_heatmap
 ##' @param riskscore a numeric vector of riskscore
+##' @importFrom survminer surv_cutpoint
 ##' @importFrom ggplot2 ggplot
 ##' @importFrom ggplot2 aes
 ##' @importFrom ggplot2 geom_point
@@ -151,7 +167,7 @@ box_surv <-function(exp_hub,exprSet_hub,meta){
 ##' \code{\link{exp_boxplot}};\code{\link{box_surv}};\code{\link{draw_venn}}
 
 risk_plot = function(exprSet_hub,meta,riskscore,
-                     cut.point = FALSE,color = c("#2fa1dd","#f87669")){
+                     cut.point = FALSE,color = c("#2fa1dd","#f87669"),n_cutoff = 3){
   if(ncol(exprSet_hub) != nrow(meta))stop("your exprSet_hub is not corresponds to meta")
   if(length(riskscore) != nrow(meta))stop("riskscore is not corresponds to meta")
   if (nrow(exprSet_hub)>30) {
@@ -162,7 +178,7 @@ risk_plot = function(exprSet_hub,meta,riskscore,
   }
   meta$riskscorefp = riskscore
   if(cut.point){
-    cut = survminer::surv_cutpoint(
+    cut = surv_cutpoint(
       meta,
       time = "time",
       event = "event",
@@ -182,8 +198,9 @@ risk_plot = function(exprSet_hub,meta,riskscore,
 
   # exp
 
-  exp_dat=scale(t(exprSet_hub[,order(riskscore)]))
-
+  exp_dat = scale(t(exprSet_hub[,order(riskscore)]))
+  exp_dat[exp_dat > n_cutoff] = n_cutoff
+  exp_dat[exp_dat < -n_cutoff] = -n_cutoff
   ###第一个图----
   p1=ggplot(fp_dat,aes(x=patientid,y=riskscore,color = ri))+
     geom_point()+

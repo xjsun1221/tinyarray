@@ -23,7 +23,12 @@ rownames(exp) = c("79691", "56271", "8662", "10394", "55630", "159162", "23541",
                   "79723", "54413", "22927", "92342", "23787", "5550", "8924",
                   "55274", "866", "8844", "353299", "587", "1473")
 colnames(exp) = paste0("s",1:10)
+if(requireNamespace("org.Hs.eg.db",quietly = TRUE)){
 exp2 = trans_entrezexp(exp)
+}else{
+    warning("Package \"org.Hs.eg.db\" needed for this function to work.
+        Please install it by BiocManager::install('org.Hs.eg.db')",call. = FALSE)
+}
 }
 \seealso{
 \code{\link{trans_exp}}

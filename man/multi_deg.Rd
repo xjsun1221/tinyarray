@@ -40,21 +40,33 @@ do diffiential analysis according to expression set and group information
 }
 \examples{
 \dontrun{
-gse = "GSE474"
-geo = geo_download(gse,destdir=tempdir())
-geo$exp[1:4,1:4]
-geo$exp=log2(geo$exp+1)
-group_list=ifelse(stringr::str_detect(geo$pd$title,"MObese"),
-"MObese",ifelse(stringr::str_detect(geo$pd$title,"NonObese"),
-"NonObese","Obese"))
-group_list=factor(group_list,levels = c("NonObese","Obese","MObese"))
-find_anno(geo$gpl)
-ids <- AnnoProbe::idmap(geo$gpl,destdir = tempdir())
-deg = multi_deg(geo$exp,group_list,ids,adjust = FALSE)
-names(deg)
-head(deg[[1]])
-head(deg[[2]])
-head(deg[[3]])
+if(requireNamespace("Biobase",quietly = TRUE)&
+   requireNamespace("AnnoProbe",quietly = TRUE)){
+  gse = "GSE474"
+  geo = geo_download(gse,destdir=tempdir())
+  geo$exp[1:4,1:4]
+  geo$exp=log2(geo$exp+1)
+  group_list=ifelse(stringr::str_detect(geo$pd$title,"MObese"),
+  "MObese",ifelse(stringr::str_detect(geo$pd$title,"NonObese"),
+  "NonObese","Obese"))
+  group_list=factor(group_list,levels = c("NonObese","Obese","MObese"))
+  find_anno(geo$gpl)
+  ids <- AnnoProbe::idmap(geo$gpl,destdir = tempdir())
+  deg = multi_deg(geo$exp,group_list,ids,adjust = FALSE,entriz = FALSE)
+  names(deg)
+  head(deg[[1]])
+  head(deg[[2]])
+  head(deg[[3]])
+}else{
+  if(!requireNamespace("AnnoProbe",quietly = TRUE)) {
+    warning("Package 'AnnoProbe' needed for this function to work.
+         Please install it by install.packages('AnnoProbe')",call. = FALSE)
+  }
+  if(!requireNamespace("Biobase",quietly = TRUE)) {
+    warning("Package 'Biobase' needed for this function to work.
+         Please install it by BiocManager::install('Biobase')",call. = FALSE)
+  }
+}
 }
 }
 \seealso{

@@ -40,7 +40,12 @@ rownames(exp) <- paste0("gene",1:50)
 exp[1:4,1:4]
 exp[,1:100] = exp[,1:100]+10
 group_list <- factor(rep(c("A","B"),each = 100))
+if(requireNamespace("Rtsne",quietly = TRUE)){
 draw_tsne(exp,group_list)
+}else{
+ warning("Package 'Rtsne' needed for this function to work.
+        Please install it by install.packages('Rtsne')")
+}
 }
 \author{
 Xiaojie Sun

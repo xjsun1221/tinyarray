@@ -25,7 +25,12 @@ transform rownames of expression set from "ensembl" to"symbol",according to the 
 exp = matrix(rnorm(1000),ncol = 10)
 rownames(exp) = sample(mRNA_annov23$gene_id,100)
 colnames(exp) = c(paste0("TCGA",1:5),paste0("GTEX",1:5))
+if(requireNamespace("AnnoProbe")){
 k  = trans_exp_new(exp)
+}else{
+  warning("Package \"AnnoProbe\" needed for this function to work.
+         Please install it by install.packages('AnnoProbe')")
+}
 }
 \seealso{
 \code{\link{trans_exp}}

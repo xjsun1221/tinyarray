@@ -16,13 +16,18 @@
 ##' @importFrom ggplot2 facet_grid
 ##' @export
 ##' @examples
-##' \donttest{
-##' head(genes)
-##' g = quick_enrich(genes,destdir = tempdir())
-##' names(g)
-##' g[[1]][1:4,1:4]
-##' g[[3]]
-##' g[[4]]
+##' \dontrun{
+##' if(requireNamespace("org.Hs.eg.db",quietly = TRUE)){
+##'   head(genes)
+##'   g = quick_enrich(genes,destdir = tempdir())
+##'   names(g)
+##'   g[[1]][1:4,1:4]
+##'   g[[3]]
+##'   g[[4]]
+##' }else{
+##'   warning("Package 'org.Hs.eg.db' needed for this function to work.
+##'          Please install it by BiocManager::install('org.Hs.eg.db')",call. = FALSE)
+##'   }
 ##' }
 ##' @seealso
 ##' \code{\link{double_enrich}}
@@ -74,7 +79,7 @@ quick_enrich <- function(genes,
     kk <- enrichKEGG(gene         = genes,
                      organism     = orgs,
                      pvalueCutoff = 0.05)
-    kk = setReadable(kk,OrgDb = or,keyType = "ENTREZID")
+    if(!is.null(kk)){kk = setReadable(kk,OrgDb = or,keyType = "ENTREZID")}
     go <- enrichGO(genes,
                    OrgDb = or,
                    ont="all",
@@ -123,8 +128,20 @@ quick_enrich <- function(genes,
 ##' @importFrom ggplot2 theme
 ##' @export
 ##' @examples
-##' \donttest{
-##' double_enrich(deg)
+##' \dontrun{
+##' if(requireNamespace("org.Hs.eg.db",quietly = TRUE)&
+##'    requireNamespace("labeling",quietly = TRUE)){
+##'    double_enrich(deg)
+##' }else{
+##'   if(!requireNamespace("org.Hs.eg.db",quietly = TRUE)) {
+##'     warning("Package 'org.Hs.eg.db' needed for this function to work.
+##'         Please install it by BiocManager::install('org.Hs.eg.db')",call. = FALSE)
+##'   }
+##'   if(!requireNamespace("labeling",quietly = TRUE)) {
+##'     warning("Package 'labeling' needed for this function to work.
+##'         Please install it by install.packages('labeling')",call. = FALSE)
+##'   }
+##' }
 ##' }
 ##' @seealso
 ##' \code{\link{quick_enrich}}
@@ -137,36 +154,44 @@ double_enrich <- function(deg,n = 10,color = c("#2874C5", "#f87669")){
   deg$change = str_to_lower(deg$change)
   up = quick_enrich(deg$ENTREZID[deg$change=="up"],"up.rdata",destdir = tempdir())
   down = quick_enrich(deg$ENTREZID[deg$change=="down"],"down.rdata",destdir = tempdir())
-  up$kk@result = mutate(up$kk@result,change = "up")
-  down$kk@result = mutate(down$kk@result,change = "down")
-  kk = rbind(up$kk@result[1:n,],down$kk@result[1:n,])
+  if(!is.null(up$kk) & !is.null(down$kk) &!is.null(up$go) &!is.null(up$go)){
+    up$kk@result = mutate(up$kk@result,change = "up")
+    down$kk@result = mutate(down$kk@result,change = "down")
 
-  up$go@result = mutate(up$go@result,change = "up")
-  down$go@result = mutate(down$go@result,change = "down")
-  go = rbind(up$go@result[1:n,],down$go@result[1:n,])
-  ud_enrich = function(df){
-    df$pl = ifelse(df$change == "up",-log10(df$p.adjust),log10(df$p.adjust))
-    df = arrange(df,change,pl)
-    df$Description = factor(df$Description,levels = unique(df$Description),ordered = TRUE)
-    tmp = with(df, labeling::extended(range(pl)[1], range(pl)[2], m = 5))
-    lm = tmp[c(1,length(tmp))]
-    lm = c(floor(min(df$pl)),ceiling(max(df$pl)))
-    ggplot(df, aes(x=Description, y= pl)) +
-      geom_bar(stat='identity', aes(fill=change), width=.7)+
-      scale_fill_manual(values = color)+
-      coord_flip()+
-      theme_light() +
-      ylim(lm)+
-      scale_x_discrete(labels=function(x) str_wrap(x, width=30))+
-      scale_y_continuous(breaks = tmp,
-                         labels = abs(tmp))+
-      theme(
-        panel.border = element_blank()
-      )
+    kk = rbind(up$kk@result[1:n,],down$kk@result[1:n,])
+    up$go@result = mutate(up$go@result,change = "up")
+    down$go@result = mutate(down$go@result,change = "down")
+    go = rbind(up$go@result[1:n,],down$go@result[1:n,])
+    ud_enrich = function(df){
+      df$pl = ifelse(df$change == "up",-log10(df$p.adjust),log10(df$p.adjust))
+      df = arrange(df,change,pl)
+      df$Description = factor(df$Description,levels = unique(df$Description),ordered = TRUE)
+      tmp = with(df, labeling::extended(range(pl)[1], range(pl)[2], m = 5))
+      lm = tmp[c(1,length(tmp))]
+      lm = c(floor(min(df$pl)),ceiling(max(df$pl)))
+      ggplot(df, aes(x=Description, y= pl)) +
+        geom_bar(stat='identity', aes(fill=change), width=.7)+
+        scale_fill_manual(values = color)+
+        coord_flip()+
+        theme_light() +
+        ylim(lm)+
+        scale_x_discrete(labels=function(x) str_wrap(x, width=30))+
+        scale_y_continuous(breaks = tmp,
+                           labels = abs(tmp))+
+        theme(
+          panel.border = element_blank()
+        )
+    }
+    result = list(kp = ud_enrich(kk),
+                  gp = ud_enrich(go))
+    return(result)
+  }else {
+    warning("no pathway enriched in kegg or go,return results from quick_enrich")
+    result = list(up = up,
+                  down = down)
+    return(result)
   }
-  result = list(kp = ud_enrich(kk),
-                gp = ud_enrich(go))
-  return(result)
+
 }
 
 utils::globalVariables(c("change","pl","Description"))

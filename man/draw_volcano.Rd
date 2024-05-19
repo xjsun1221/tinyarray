@@ -39,7 +39,7 @@ draw_volcano(
 a volcano plot according to logFC and P.value(or adjust P.value)
 }
 \description{
-print a volcano plot for Differential analysis result in data.frame format.
+warning a volcano plot for Differential analysis result in data.frame format.
 }
 \examples{
 head(deseq_data)

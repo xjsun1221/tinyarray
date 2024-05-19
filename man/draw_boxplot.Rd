@@ -58,15 +58,27 @@ a boxplot according to \code{exp} and grouped by \code{group}.
 draw boxplot for expression
 }
 \examples{
-draw_boxplot(t(iris[,1:4]),iris$Species)
-exp <-  matrix(rnorm(60),nrow = 10)
-colnames(exp) <- paste0("sample",1:6)
-rownames(exp) <- paste0("gene",1:10)
-exp[,4:6] = exp[,4:6] +10
-exp[1:4,1:4]
-group_list <- factor(rep(c("A","B"),each = 3))
-draw_boxplot(exp,group_list)
-draw_boxplot(exp,group_list,color = c("grey","red"))
+if(requireNamespace("tidyr",quietly = TRUE)&
+   requireNamespace("ggpubr",quietly = TRUE)){
+  draw_boxplot(t(iris[,1:4]),iris$Species)
+  exp <-  matrix(rnorm(60),nrow = 10)
+  colnames(exp) <- paste0("sample",1:6)
+  rownames(exp) <- paste0("gene",1:10)
+  exp[,4:6] = exp[,4:6] +10
+  exp[1:4,1:4]
+  group_list <- factor(rep(c("A","B"),each = 3))
+  draw_boxplot(exp,group_list)
+  draw_boxplot(exp,group_list,color = c("grey","red"))
+  }else{
+if(!requireNamespace("ggpubr",quietly = TRUE)) {
+ warning("Package 'ggpubr' needed for this function to work.
+        Please install it by install.packages('ggpubr')")
+}
+if(!requireNamespace("tidyr",quietly = TRUE)) {
+ warning("Package 'tidyr' needed for this function to work.
+        Please install it by install.packages('tidyr')")
+}
+}
 }
 \seealso{
 \code{\link{draw_heatmap}};\code{\link{draw_volcano}};\code{\link{draw_venn}}

@@ -69,12 +69,29 @@ to generate all possible set orders}
 a venn plot according to \code{x}, \code{y} and.\code{z} named "name" paramter
 }
 \description{
-print a venn plot for deg result created by three packages
+warning a venn plot for deg result created by three packages
 }
 \examples{
-x = list(Deseq2=sample(1:100,30),edgeR = sample(1:100,30),limma = sample(1:100,30))
-draw_venn(x,"test")
-draw_venn(x,"test",color = c("darkgreen", "darkblue", "#B2182B"))
+if(requireNamespace("VennDiagram",quietly = TRUE)&
+  requireNamespace("ggplotify",quietly = TRUE)&
+  requireNamespace("cowplot",quietly = TRUE)){
+ x = list(Deseq2=sample(1:100,30),edgeR = sample(1:100,30),limma = sample(1:100,30))
+ draw_venn(x,"test")
+ draw_venn(x,"test",color = c("darkgreen", "darkblue", "#B2182B"))
+}else{
+ if(!requireNamespace("VennDiagram",quietly = TRUE)) {
+   warning("Package 'VennDiagram' needed for this function to work.
+   Please install it by install.packages('VennDiagram')")
+ }
+ if(!requireNamespace("ggplotify",quietly = TRUE)) {
+   warning("Package 'ggplotify' needed for this function to work.
+   Please install it by install.packages('ggplotify')")
+ }
+ if(!requireNamespace("cowplot",quietly = TRUE)) {
+   warning("Package 'cowplot' needed for this function to work.
+   Please install it by install.packages('cowplot')")
+ }
+}
 }
 \seealso{
 \code{\link{draw_pca}};\code{\link{draw_volcano}};\code{\link{draw_heatmap}}

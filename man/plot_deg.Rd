@@ -59,6 +59,8 @@ plot pca plot,volcano plot,heatmap,and venn plot for  Differential analysis resu
 }
 \examples{
 \dontrun{
+if(requireNamespace("Biobase",quietly = TRUE)&
+   requireNamespace("AnnoProbe",quietly = TRUE)){
 gse = "GSE474"
 geo = geo_download(gse,destdir=tempdir())
 geo$exp[1:4,1:4]
@@ -68,8 +70,18 @@ ifelse(stringr::str_detect(geo$pd$title,"NonObese"),"NonObese","Obese"))
 group_list=factor(group_list,levels = c("NonObese","Obese","MObese"))
 find_anno(geo$gpl)
 ids = AnnoProbe::idmap(geo$gpl,destdir = tempdir())
-deg = get_deg(geo$exp,group_list,ids,adjust = FALSE)
+deg = get_deg(geo$exp,group_list,ids,adjust = FALSE,entriz = FALSE)
 plot_deg(geo$exp,group_list,deg)
+}else{
+  if(!requireNamespace("AnnoProbe",quietly = TRUE)) {
+    warning("Package 'AnnoProbe' needed for this function to work.
+         Please install it by install.packages('AnnoProbe')",call. = FALSE)
+  }
+  if(!requireNamespace("Biobase",quietly = TRUE)) {
+    warning("Package 'Biobase' needed for this function to work.
+         Please install it by BiocManager::install('Biobase')",call. = FALSE)
+  }
+}
 }
 }
 \author{

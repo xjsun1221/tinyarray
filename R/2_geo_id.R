@@ -13,8 +13,20 @@
 ##' @export
 ##' @examples
 ##' \dontrun{
-##' gse = "GSE42872"
-##' a = geo_download(gse,destdir=tempdir())
+##' if(requireNamespace("Biobase",quietly = TRUE)&
+##'    requireNamespace("AnnoProbe",quietly = TRUE)){
+##'   gse = "GSE42872"
+##'   a = geo_download(gse,destdir=tempdir())
+##' }else{
+##'   if(!requireNamespace("AnnoProbe",quietly = TRUE)) {
+##'     print("Package 'AnnoProbe' needed for this function to work.
+##'          Please install it by install.packages('AnnoProbe')"print)
+##'   }
+##'   if(!requireNamespace("Biobase",quietly = TRUE)) {
+##'     print("Package 'Biobase' needed for this function to work.
+##'          Please install it by BiocManager::install('Biobase')"print)
+##'   }
+##' }
 ##' }
 ##' @seealso
 ##' \code{\link{find_anno}}
@@ -22,20 +34,11 @@
 geo_download <-  function(gse,by_annopbrobe = TRUE,
                           simpd = TRUE,colon_remove = FALSE,
                           destdir = getwd(),n = 1){
-
-  if(!requireNamespace("Biobase",quietly = TRUE)) {
-    stop("Package \"Biobase\" needed for this function to work.
-         Please install it by BiocManager::install('Biobase')",call. = FALSE)
-  }
-  if((!by_annopbrobe) & !requireNamespace("GEOquery",quietly = TRUE)) {
-    stop("Package \"GEOquery\" needed for this function to work.
-         Please install it by BiocManager::install('GEOquery')",call. = FALSE)
-  }
-  if((by_annopbrobe) & !requireNamespace("AnnoProbe",quietly = TRUE)) {
-    stop("Package \"Biobase\" needed for this function to work.
-         Please install it by install.packages('AnnoProbe')",call. = FALSE)
-  }
   if(by_annopbrobe){
+    if(!requireNamespace("AnnoProbe",quietly = TRUE)) {
+      stop("Package \"Biobase\" needed for this function to work.
+         Please install it by install.packages('AnnoProbe')",call. = FALSE)
+    }
     if(!file.exists(paste0(destdir,"/",gse,"_eSet.Rdata"))){
       eSet <- tryCatch({AnnoProbe::geoChina(gse, destdir = destdir)
       },error = function(e){555})
@@ -52,6 +55,10 @@ geo_download <-  function(gse,by_annopbrobe = TRUE,
       rm(gset)
     }
   }else{
+    if((!by_annopbrobe) & !requireNamespace("GEOquery",quietly = TRUE)) {
+      stop("Package \"GEOquery\" needed for this function to work.
+         Please install it by BiocManager::install('GEOquery')",call. = FALSE)
+    }
     eSet <- GEOquery::getGEO(gse,destdir = destdir,getGPL = FALSE)
   }
   if(length(n)!=1) stop("only one ExpresssionSet can be analyzed")
@@ -59,7 +66,10 @@ geo_download <-  function(gse,by_annopbrobe = TRUE,
     n = 1
     warning("this data only have one ExpresssionSet object")
   }
-
+  if(!requireNamespace("Biobase",quietly = TRUE)) {
+    stop("Package \"Biobase\" needed for this function to work.
+         Please install it by BiocManager::install('Biobase')",call. = FALSE)
+  }
   exp <- Biobase::exprs(eSet[[n]])
   pd <- Biobase::pData(eSet[[n]])
   if(simpd){
@@ -158,6 +168,8 @@ find_anno <-function(gpl,install = FALSE,update = FALSE){
 ##'
 ##' @inheritParams geo_download
 ##' @param download download the txt file or not
+##' @importFrom stringr str_starts
+##' @importFrom stringr str_to_upper
 ##' @return a list with deg data.frame, volcano plot and a list with DEGs.
 ##' @author Xiaojie Sun
 ##' @export
@@ -167,8 +179,8 @@ find_anno <-function(gpl,install = FALSE,update = FALSE){
 ##' \code{\link{geo_download}}
 
 get_count_txt <- function(gse,destdir = getwd(),download = FALSE){
-  if(!stringr::str_starts(gse,"GSE|gse"))stop("wrong GSE accession")
-  gse = stringr::str_to_upper(gse)
+  if(!str_starts(gse,"GSE|gse"))stop("wrong GSE accession")
+  gse = str_to_upper(gse)
   url = paste0("https://www.ncbi.nlm.nih.gov/geo/download/?type=rnaseq_counts&acc=",
              gse,
              "&format=file&file=",
@@ -188,6 +200,8 @@ get_count_txt <- function(gse,destdir = getwd(),download = FALSE){
 ##' @inheritParams geo_download
 ##' @inheritParams get_count_txt
 ##' @param gpl gpl accession from GEO database
+##' @importFrom stringr str_starts
+##' @importFrom stringr str_to_upper
 ##' @return a list with deg data.frame, volcano plot and a list with DEGs.
 ##' @author Xiaojie Sun
 ##' @export
@@ -196,9 +210,9 @@ get_count_txt <- function(gse,destdir = getwd(),download = FALSE){
 ##' @seealso
 ##' \code{\link{geo_download}}
 
-get_gpl_txt = function(gpl,destdir = getwd(),download = F){
-  if(!stringr::str_starts(gpl,"GPL|gpl"))stop("wrong GPL accession")
-  gpl = stringr::str_to_upper(gpl)
+get_gpl_txt = function(gpl,destdir = getwd(),download = FALSE){
+  if(!str_starts(gpl,"GPL|gpl"))stop("wrong GPL accession")
+  gpl = str_to_upper(gpl)
   url = paste0("https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=",
                gpl,
                "&targ=self&form=text&view=data")

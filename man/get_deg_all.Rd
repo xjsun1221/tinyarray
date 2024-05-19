@@ -64,15 +64,27 @@ do diffiencial analysis according to exprission set and group information
 }
 \examples{
 \dontrun{
-gse = "GSE42872"
-geo = geo_download(gse,destdir=tempdir())
-group_list = rep(c("A","B"),each = 3)
-group_list = factor(group_list)
-find_anno(geo$gpl)
-ids <- AnnoProbe::idmap(geo$gpl,destdir = tempdir())
-dcp = get_deg_all(geo$exp,group_list,ids)
-head(dcp$deg)
-dcp$plots
+if(requireNamespace("Biobase",quietly = TRUE)&
+   requireNamespace("AnnoProbe",quietly = TRUE)){
+  gse = "GSE42872"
+  geo = geo_download(gse,destdir=tempdir())
+  group_list = rep(c("A","B"),each = 3)
+  group_list = factor(group_list)
+  find_anno(geo$gpl)
+  ids <- AnnoProbe::idmap(geo$gpl,destdir = tempdir())
+  dcp = get_deg_all(geo$exp,group_list,ids,entriz = FALSE)
+  head(dcp$deg)
+  dcp$plots
+}else{
+  if(!requireNamespace("AnnoProbe",quietly = TRUE)) {
+    warning("Package 'AnnoProbe' needed for this function to work.
+         Please install it by install.packages('AnnoProbe')",call. = FALSE)
+  }
+  if(!requireNamespace("Biobase",quietly = TRUE)) {
+    warning("Package 'Biobase' needed for this function to work.
+         Please install it by BiocManager::install('Biobase')",call. = FALSE)
+  }
+}
 }
 }
 \seealso{

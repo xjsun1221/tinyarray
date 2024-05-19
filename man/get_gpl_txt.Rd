@@ -4,7 +4,7 @@
 \alias{get_gpl_txt}
 \title{get gpl txt from GEO}
 \usage{
-get_gpl_txt(gpl, destdir = getwd(), download = F)
+get_gpl_txt(gpl, destdir = getwd(), download = FALSE)
 }
 \arguments{
 \item{gpl}{gpl accession from GEO database}

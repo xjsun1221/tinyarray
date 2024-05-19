@@ -4,7 +4,7 @@
 \alias{exp_boxplot}
 \title{exp_boxplot}
 \usage{
-exp_boxplot(exp_hub, color = c("grey", "red"))
+exp_boxplot(exp_hub, color = c("#2fa1dd", "#f87669"))
 }
 \arguments{
 \item{exp_hub}{an expression matrix for hubgenes}
@@ -18,7 +18,12 @@ box plots list for all genes in the matrix
 draw box plot for a hub gene expression matrix
 }
 \examples{
+if(requireNamespace("ggpubr",quietly = TRUE)) {
 k = exp_boxplot(log2(exp_hub1+1));k[[1]]
+}else{
+ warning("Package 'ggpubr' needed for this function to work.
+        Please install it by install.packages('ggpubr')")
+}
 }
 \seealso{
 \code{\link{exp_surv}};\code{\link{box_surv}}

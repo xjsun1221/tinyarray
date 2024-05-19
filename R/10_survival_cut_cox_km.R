@@ -21,7 +21,7 @@ point_cut <- function(exprSet_hub,meta){
   dat = cbind(t(exprSet_hub),meta)
   cut.point = c()
   for(i in 1:nrow(exprSet_hub)){
-    cut = survminer::surv_cutpoint(
+    cut = surv_cutpoint(
       dat,
       time = "time",
       event = "event",
@@ -64,7 +64,7 @@ surv_KM <- function(exprSet_hub,meta,cut.point = FALSE,pvalue_cutoff = 0.05,min_
     }else{
       meta$group=ifelse(gene>stats::median(gene),'high','low')
     }
-    data.survdiff=survival::survdiff(survival::Surv(time, event)~group,data=meta)
+    data.survdiff=survdiff(Surv(time, event)~group,data=meta)
     log_rank_p[[i]] = 1 - stats::pchisq(data.survdiff$chisq, length(data.survdiff$n) - 1)
     nn = min(table(meta$group))<= min_gn * nrow(meta)
     if(nn) log_rank_p[[i]] = 1
@@ -105,7 +105,7 @@ surv_cox <-function(exprSet_hub,meta,cut.point = FALSE,
   for(i in 1:nrow(exprSet_hub)){
     if(continuous) {
       gene= as.numeric(exprSet_hub[i,])
-      m=survival::coxph(survival::Surv(time, event)~gene, data =  meta)
+      m=coxph(Surv(time, event)~gene, data =  meta)
     }else{
       gene= as.numeric(exprSet_hub[i,])
       if(cut.point){
@@ -114,7 +114,7 @@ surv_cox <-function(exprSet_hub,meta,cut.point = FALSE,
         meta$group=ifelse(gene>stats::median(gene),'high','low')
       }
       meta$group = factor(meta$group,levels = c("low","high"))
-      m=survival::coxph(survival::Surv(time, event)~group, data =  meta)
+      m=coxph(Surv(time, event)~group, data =  meta)
       }
     beta <- stats::coef(m)
     se <- sqrt(diag(stats::vcov(m)))

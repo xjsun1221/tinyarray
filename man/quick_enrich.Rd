@@ -27,13 +27,18 @@ enrichment results and dotplots
 do diffiencial analysis according to exprission set and group information,for human only
 }
 \examples{
-\donttest{
-head(genes)
-g = quick_enrich(genes,destdir = tempdir())
-names(g)
-g[[1]][1:4,1:4]
-g[[3]]
-g[[4]]
+\dontrun{
+if(requireNamespace("org.Hs.eg.db",quietly = TRUE)){
+  head(genes)
+  g = quick_enrich(genes,destdir = tempdir())
+  names(g)
+  g[[1]][1:4,1:4]
+  g[[3]]
+  g[[4]]
+}else{
+  warning("Package 'org.Hs.eg.db' needed for this function to work.
+         Please install it by BiocManager::install('org.Hs.eg.db')",call. = FALSE)
+  }
 }
 }
 \seealso{

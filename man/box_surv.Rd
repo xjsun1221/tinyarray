@@ -20,7 +20,12 @@ patchwork result for hub genes boxplot and survival plot
 draw box plot for a hub gene expression matrix
 }
 \examples{
+if(requireNamespace("ggpubr",quietly = TRUE)) {
 k = box_surv(log2(exp_hub1+1),exprSet_hub1,meta1);k[[1]]
+}else{
+ warning("Package 'ggpubr' needed for this function to work.
+        Please install it by install.packages('ggpubr')")
+}
 }
 \seealso{
 \code{\link{exp_boxplot}};\code{\link{exp_surv}}
