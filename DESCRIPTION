@@ -1,10 +1,10 @@
 Package: tinyarray
 Type: Package
 Title: Expression Data Analysis and Visualization
-Version: 2.4.1
-Authors@R: person("Xiaojie","Sun",email = "18763899370@163.com",role = c("aut","cre"))
+Version: 2.4.2
+Authors@R:person("Xiaojie", "Sun", email = "18763899370@163.com", role = c("aut", "cre"))
 Maintainer: Xiaojie Sun <18763899370@163.com>
-Description: Gene Expression Omnibus(GEO) and The Cancer Genome Atlas(TCGA) are common bioinformatics public databases. We integrate the regular analysis and charts for expression data, to analyze and display the data concisely and intuitively.
+Description: The Gene Expression Omnibus (<https://www.ncbi.nlm.nih.gov/geo/>) and The Cancer Genome Atlas (<https://portal.gdc.cancer.gov/>) are widely used medical public databases. Our platform integrates routine analysis and visualization tools for expression data to provide concise and intuitive data analysis and presentation.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

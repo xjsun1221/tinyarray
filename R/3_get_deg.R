@@ -99,26 +99,28 @@ get_deg <- function(exp,
       }
       if(species == "mouse"){
         if(!requireNamespace("org.Mm.eg.db",quietly = TRUE)) {
-          stop("Package \"org.Mm.eg.db\" needed for this function to work.
+          warning("Package \"org.Mm.eg.db\" needed for this function to work.
          Please install it by BiocManager::install('org.Mm.eg.db')",call. = FALSE)
         }
         or = org.Mm.eg.db::org.Mm.eg.db
       }
       if(species == "rat"){
         if(!requireNamespace("org.Rn.eg.db",quietly = TRUE)) {
-          stop("Package \"org.Rn.eg.db\" needed for this function to work.
+          warning("Package \"org.Rn.eg.db\" needed for this function to work.
          Please install it by BiocManager::install('org.Rn.eg.db')",call. = FALSE)
         }
         or = org.Rn.eg.db::org.Rn.eg.db
       }
 
-      s2e <- bitr(deg$symbol,
-                  fromType = "SYMBOL",
-                  toType = "ENTREZID",
-                  OrgDb = or)
-
-      deg <- inner_join(deg,s2e,by=c("symbol"="SYMBOL"))
-      deg <- deg[!duplicated(deg$symbol),]
+      s2e <- tryCatch({
+        bitr(deg$symbol,fromType = "SYMBOL",toType = "ENTREZID",OrgDb = or)
+      },error = function(e){666})
+      if(!is.character(s2e)){
+        deg <- inner_join(deg,s2e,by=c("symbol"="SYMBOL"))
+        deg <- deg[!duplicated(deg$symbol),]
+      }else{
+        warning("Entriz ID conversion failed, please check the previous warning.")
+      }
     }
   }else{
     deg <-multi_deg(exp = exp,

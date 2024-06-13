@@ -155,11 +155,17 @@ multi_deg <- function(exp,
         }
         or = org.Rn.eg.db::org.Rn.eg.db
       }
-      s2e <- bitr(unique(deg[[i]]$symbol), fromType = "SYMBOL",
-                  toType = c( "ENTREZID"),
-                  OrgDb = or)
-      s2e <- s2e[!duplicated(s2e$SYMBOL),]
-      deg[[i]] <- inner_join(deg[[i]],s2e,by=c("symbol"="SYMBOL"))
+      s2e <- tryCatch({
+        bitr(unique(deg[[i]]$symbol), fromType = "SYMBOL",
+             toType = c( "ENTREZID"),
+             OrgDb = or)
+      },error = function(e){666})
+      if(!is.character(s2e)){
+        s2e <- s2e[!duplicated(s2e$SYMBOL),]
+        deg[[i]] <- inner_join(deg[[i]],s2e,by=c("symbol"="SYMBOL"))
+      }else{
+        warning("Entriz ID conversion failed, please check the previous warning.")
+      }
     }
   }
   return(deg)

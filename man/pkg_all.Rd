@@ -5,7 +5,7 @@
 \alias{pkg_all}
 \title{pkg_all}
 \format{
-An object of class \code{data.frame} with 85 rows and 3 columns.
+An object of class \code{data.frame} with 82 rows and 3 columns.
 }
 \usage{
 pkg_all
