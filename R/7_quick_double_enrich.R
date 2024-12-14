@@ -5,6 +5,7 @@
 ##' @param genes a gene symbol or entrizid vector
 ##' @param kkgo_file Rdata filename for kegg and go result
 ##' @param destdir destdir to save kkgofile
+##' @param species species for enrichment analysis, e.g. "human","mouse","rat"
 ##' @inheritParams trans_exp_new
 ##' @return enrichment results and dotplots
 ##' @author Xiaojie Sun
@@ -112,6 +113,7 @@ quick_enrich <- function(genes,
 ##' @param deg a data.frame contains at least two columns:"ENTREZID" and "change"
 ##' @param n how many terms will you perform for up and down genes respectively
 ##' @param color color for bar plot
+##' @param species species for enrichment analysis, e.g. "human","mouse","rat"
 ##' @return a list with kegg and go bar plot according to up and down genes enrichment result.
 ##' @author Xiaojie Sun
 ##' @importFrom stringr str_to_lower
@@ -146,14 +148,17 @@ quick_enrich <- function(genes,
 ##' @seealso
 ##' \code{\link{quick_enrich}}
 
-double_enrich <- function(deg,n = 10,color = c("#2874C5", "#f87669")){
+double_enrich <- function(deg,n = 10,color = c("#2874C5", "#f87669"), species = "human"){
 
   if(!requireNamespace("labeling",quietly = TRUE)) {
     stop("Package \"labeling\" needed for this function to work. Please install it byby install.packages('labeling')",call. = FALSE)
   }
   deg$change = str_to_lower(deg$change)
-  up = quick_enrich(deg$ENTREZID[deg$change=="up"],"up.rdata",destdir = tempdir())
-  down = quick_enrich(deg$ENTREZID[deg$change=="down"],"down.rdata",destdir = tempdir())
+timestamp <- format(Sys.time(), "%Y%m%d%H%M%S")
+temp_dir <- file.path(tempdir(), timestamp)
+dir.create(temp_dir, recursive = TRUE)
+up = quick_enrich(deg$ENTREZID[deg$change=="up"], "up.rdata", destdir = temp_dir, species = species)
+down = quick_enrich(deg$ENTREZID[deg$change=="down"], "down.rdata", destdir = temp_dir, species = species)
   if(!is.null(up$kk) & !is.null(down$kk) &!is.null(up$go) &!is.null(up$go)){
     up$kk@result = mutate(up$kk@result,change = "up")
     down$kk@result = mutate(down$kk@result,change = "down")
